@@ -1,9 +1,9 @@
-[![Release](https://jitpack.io/v/umjammer/vavi.image.jpegxl.svg)](https://jitpack.io/#umjammer/vavi.image.jpegxl)
-[![Java CI](https://github.com/umjammer/vavi.image.jpegxl/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/vavi.image.jpegxl/actions/workflows/maven.yml)
-[![CodeQL](https://github.com/umjammer/vavi.image.jpegxl/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/vavi.image.jpegxl/actions/workflows/codeql-analysis.yml)
+[![Release](https://jitpack.io/v/umjammer/vavi-image-jpegxl.svg)](https://jitpack.io/#umjammer/vavi-image-jpegxl)
+[![Java CI](https://github.com/umjammer/vavi-image-jpegxl/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/vavi-image-jpegxl/actions/workflows/maven.yml)
+[![CodeQL](https://github.com/umjammer/vavi-image-jpegxl/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/vavi-image-jpegxl/actions/workflows/codeql-analysis.yml)
 ![Java](https://img.shields.io/badge/Java-8-b07219)
 
-# vavi.image.jpegxl
+# vavi-image-jpegxl
 
 Java JPEG XL decoder<br/>
 wrapped libjxl by jna<br/>
