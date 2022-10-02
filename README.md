@@ -1,0 +1,18 @@
+[![Release](https://jitpack.io/v/umjammer/vavi.image.jpegxl.svg)](https://jitpack.io/#umjammer/vavi.image.jpegxl)
+[![Java CI](https://github.com/umjammer/vavi.image.jpegxl/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/vavi.image.jpegxl/actions/workflows/maven.yml)
+[![CodeQL](https://github.com/umjammer/vavi.image.jpegxl/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/vavi.image.jpegxl/actions/workflows/codeql-analysis.yml)
+![Java](https://img.shields.io/badge/Java-8-b07219)
+
+# vavi.image.jpegxl
+
+Java JPEG XL decoder<br/>
+wrapped libjxl by jna<br/>
+based on https://github.com/Dwedit/JxlSharp/blob/main/JxlSharp/JXL.cs
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/06/JPEG_XL_logo.svg" width="160"/>
+
+## Install
+
+* install `libjxl` e.g `brew jpeg-xl`
+* https://jitpack.io/#umjammer/vavi-image-jpegxl
+* add `-Djna.library.path=/usr/local/lib` for jvm args
