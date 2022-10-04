@@ -50,4 +50,22 @@ public class JxlPixelFormat extends Structure {
 	}
 	public static class ByValue extends JxlPixelFormat implements Structure.ByValue {
 	}
+	public int necessaryBytes() {
+		switch (data_type) {
+		case Library.JxlDataType.JXL_TYPE_FLOAT:
+			return Float.BYTES;
+		case Library.JxlDataType.JXL_TYPE_BOOLEAN:
+			return Byte.BYTES; // TODO
+		case Library.JxlDataType.JXL_TYPE_UINT8:
+			return Byte.BYTES;
+		case Library.JxlDataType.JXL_TYPE_UINT16:
+			return Short.BYTES;
+		case Library.JxlDataType.JXL_TYPE_UINT32:
+			return Integer.BYTES;
+		case Library.JxlDataType.JXL_TYPE_FLOAT16:
+			return 2;
+		default:
+			throw new IllegalStateException(String.valueOf(data_type));
+		}
+	}
 }
