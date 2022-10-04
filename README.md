@@ -7,16 +7,18 @@
 
 Java JPEG XL decoder<br/>
 wrapped libjxl by jna<br/>
-based on https://github.com/Dwedit/JxlSharp/blob/main/JxlSharp/JXL.cs
+based on https://github.com/libjxl/libjxl/blob/v0.6.x/examples/
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/JPEG_XL_logo.svg" width="160"/>
 
 ## Install
 
-* install `libjxl` e.g `brew jpeg-xl`
+* install `libjxl` version 0.6.1, e.g `brew jpeg-xl`
 * https://jitpack.io/#umjammer/vavi-image-jpegxl
 * add `-Djna.library.path=/usr/local/lib` for jvm args
 
 ## References
 
+ * https://github.com/libjxl/libjxl
+ * https://github.com/Dwedit/JxlSharp/blob/main/JxlSharp/JXL.cs
  * https://github.com/libjxl/libjxl/tree/v0.6.x/tools/jni/org/jpeg/jpegxl/wrapper (jni!!!)
