@@ -312,6 +312,20 @@ public interface DecodeLibrary extends Library {
 	 */
 	int JxlDecoderSetParallelRunner(PointerByReference dec, JxlParallelRunner parallel_runner, Pointer parallel_runner_opaque);
 	/**
+	 * Set the parallel runner for multithreading. May only be set before starting<br>
+	 * decoding.<br>
+	 * @param dec decoder object<br>
+	 * @param parallel_runner function pointer to runner for multithreading. It may<br>
+	 *        be NULL to use the default, single-threaded, runner. A multithreaded<br>
+	 *        runner should be set to reach fast performance.<br>
+	 * @param parallel_runner_opaque opaque pointer for parallel_runner.<br>
+	 * @return JXL_DEC_SUCCESS if the runner was set, JXL_DEC_ERROR<br>
+	 * otherwise (the previous runner remains set).<br>
+	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetParallelRunner(JxlDecoder*, JxlParallelRunner, void*)</code><br>
+	 * <i>native declaration : jxl/decode.h:278</i>
+	 */
+	int JxlDecoderSetParallelRunner(PointerByReference dec, Pointer parallel_runner, Pointer parallel_runner_opaque);
+	/**
 	 * Returns a hint indicating how many more bytes the decoder is expected to<br>
 	 * need to make JxlDecoderGetBasicInfo available after the next<br>
 	 * JxlDecoderProcessInput call. This is a suggested large enough value for<br>

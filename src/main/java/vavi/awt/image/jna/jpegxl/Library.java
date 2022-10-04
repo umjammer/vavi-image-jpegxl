@@ -13,7 +13,7 @@ import com.sun.jna.Pointer;
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
 public interface Library extends com.sun.jna.Library {
-	String JNA_LIBRARY_NAME = "";
+	String JNA_LIBRARY_NAME = "jxl_threads";
 	NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(Library.JNA_LIBRARY_NAME);
 	Library INSTANCE = Native.load(Library.JNA_LIBRARY_NAME, Library.class);
 	/**
@@ -212,4 +212,26 @@ public interface Library extends com.sun.jna.Library {
 	public interface JxlParallelRunner extends Callback {
 		int apply(Pointer runner_opaque, Pointer jpegxl_opaque, Library.JxlParallelRunInit init, Library.JxlParallelRunFunction func, int start_range, int end_range);
 	}
+	/**
+	 * Creates the runner for JxlResizableParallelRunner. Use as the opaque
+	 * runner. The runner will execute tasks on the calling thread until
+	 * {@link #JxlResizableParallelRunnerSetThreads} is called.
+	 */
+	Pointer JxlResizableParallelRunnerCreate(JxlMemoryManagerStruct memory_manager);
+    /**
+	 * Changes the number of threads for JxlResizableParallelRunner.
+	 */
+	void JxlResizableParallelRunnerSetThreads(Pointer runner_opaque, int num_threads);
+	/**
+	 * Suggests a number of threads to use for an image of given size.
+	 */
+	int	JxlResizableParallelRunnerSuggestThreads(long xsize, long ysize);
+    /**
+	 * Destroys the runner created by JxlResizableParallelRunnerCreate.
+	 */
+	void JxlResizableParallelRunnerDestroy(Pointer runner_opaque);
+	/**
+	 * Parallel runner internally using std::thread. Use as JxlParallelRunner.
+	 */
+	Pointer JxlResizableParallelRunner = JNA_NATIVE_LIB.getGlobalVariableAddress("JxlResizableParallelRunner");
 }
