@@ -6,6 +6,7 @@ import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 import com.sun.jna.PointerType;
+import com.sun.jna.ptr.LongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import java.nio.ByteBuffer;
 import vavi.awt.image.jna.jpegxl.JxlBasicInfo;
@@ -535,8 +536,9 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_ERROR if input was already set without releasing,<br>
 	 * JXL_DEC_SUCCESS otherwise<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetInput(JxlDecoder*, const uint8_t*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:394</i><br>
-	 * @deprecated use the safer methods {@link #JxlDecoderSetInput(com.sun.jna.ptr.PointerByReference, byte[], int)} and {@link #JxlDecoderSetInput(com.sun.jna.ptr.PointerByReference, com.sun.jna.Pointer, int)} instead
+	 * <i>native declaration : jxl/decode.h:394</i><br>
+	 * @deprecated use the safer methods {@link #JxlDecoderSetInput(com.sun.jna.ptr.PointerByReference, byte[], long)}
+	 * and {@link #JxlDecoderSetInput(com.sun.jna.ptr.PointerByReference, com.sun.jna.Pointer, long)} instead
 	 */
 	@Deprecated 
 	int JxlDecoderSetInput(Pointer dec, Pointer data, int size);
@@ -815,7 +817,7 @@ public interface DecodeLibrary extends Library {
 	 *    cannot be generated.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetICCProfileSize(const JxlDecoder*, const JxlPixelFormat*, JxlColorProfileTarget, size_t*)</code><br>
 	 * <i>native declaration : intjxl/decode.h:543</i><br>
-	 * @deprecated use the safer method {@link #JxlDecoderGetICCProfileSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, int, int[])} instead
+	 * @deprecated use the safer method {@link #JxlDecoderGetICCProfileSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, int, LongByReference)} instead
 	 */
 	@Deprecated 
 	int JxlDecoderGetICCProfileSize(Pointer dec, JxlPixelFormat format, int target, int[] size);
@@ -992,7 +994,7 @@ public interface DecodeLibrary extends Library {
 	 *    information not available yet.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderPreviewOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
 	 * <i>native declaration : intjxl/decode.h:620</i><br>
-	 * @deprecated use the safer method {@link #JxlDecoderPreviewOutBufferSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, int[])} instead
+	 * @deprecated use the safer method {@link #JxlDecoderPreviewOutBufferSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, LongByReference)} instead
 	 */
 	@Deprecated 
 	int JxlDecoderPreviewOutBufferSize(Pointer dec, JxlPixelFormat format, int[] size);
@@ -1135,10 +1137,10 @@ public interface DecodeLibrary extends Library {
 	 * JxlDecoderFlushImage for progressive rendering.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderDCOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
 	 * <i>native declaration : intjxl/decode.h:686</i><br>
-	 * @deprecated use the safer method {@link #JxlDecoderDCOutBufferSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, int[])} instead
+	 * @deprecated use the safer method {@link #JxlDecoderDCOutBufferSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, LongByReference)} instead
 	 */
 	@Deprecated 
-	int JxlDecoderDCOutBufferSize(Pointer dec, JxlPixelFormat format, int[] size);
+	int JxlDecoderDCOutBufferSize(Pointer dec, JxlPixelFormat format, LongByReference size);
 	/**
 	 * Returns the minimum size in bytes of the DC image output buffer<br>
 	 * for the given format. This is the buffer for JxlDecoderSetDCOutBuffer.<br>
@@ -1153,7 +1155,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderDCOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
 	 * <i>native declaration : intjxl/decode.h:686</i>
 	 */
-	int JxlDecoderDCOutBufferSize(PointerByReference dec, JxlPixelFormat format, int[] size);
+	int JxlDecoderDCOutBufferSize(PointerByReference dec, JxlPixelFormat format, LongByReference size);
 	/**
 	 * Sets the buffer to write the lower resolution (8x8 sub-sampled) DC image<br>
 	 * to. The size of the buffer must be at least as large as given by<br>
@@ -1205,10 +1207,10 @@ public interface DecodeLibrary extends Library {
 	 *    information not available yet.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderImageOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
 	 * <i>native declaration : intjxl/decode.h:721</i><br>
-	 * @deprecated use the safer method {@link #JxlDecoderImageOutBufferSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, int[])} instead
+	 * @deprecated use the safer method {@link #JxlDecoderImageOutBufferSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, LongByReference)} instead
 	 */
 	@Deprecated 
-	int JxlDecoderImageOutBufferSize(Pointer dec, JxlPixelFormat format, int[] size);
+	int JxlDecoderImageOutBufferSize(Pointer dec, JxlPixelFormat format, LongByReference size);
 	/**
 	 * Returns the minimum size in bytes of the image output pixel buffer for the<br>
 	 * given format. This is the buffer for JxlDecoderSetImageOutBuffer. Requires<br>
@@ -1221,7 +1223,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderImageOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
 	 * <i>native declaration : intjxl/decode.h:721</i>
 	 */
-	int JxlDecoderImageOutBufferSize(PointerByReference dec, JxlPixelFormat format, int[] size);
+	int JxlDecoderImageOutBufferSize(PointerByReference dec, JxlPixelFormat format, LongByReference size);
 	/**
 	 * Sets the buffer to write the full resolution image to. This can be set when<br>
 	 * the JXL_DEC_FRAME event occurs, must be set when the<br>
@@ -1238,7 +1240,7 @@ public interface DecodeLibrary extends Library {
 	 * size too small.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetImageOutBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t)</code><br>
 	 * <i>native declaration : intjxl/decode.h:740</i><br>
-	 * @deprecated use the safer method {@link #JxlDecoderSetImageOutBuffer(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, com.sun.jna.Pointer, int)} instead
+	 * @deprecated use the safer method {@link #JxlDecoderSetImageOutBuffer(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, com.sun.jna.Pointer, long)} instead
 	 */
 	@Deprecated 
 	int JxlDecoderSetImageOutBuffer(Pointer dec, JxlPixelFormat format, Pointer buffer, int size);
@@ -1259,7 +1261,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetImageOutBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t)</code><br>
 	 * <i>native declaration : intjxl/decode.h:740</i>
 	 */
-	int JxlDecoderSetImageOutBuffer(PointerByReference dec, JxlPixelFormat format, Pointer buffer, int size);
+	int JxlDecoderSetImageOutBuffer(PointerByReference dec, JxlPixelFormat format, Pointer buffer, long size);
 	/**
 	 * Sets pixel output callback. This is an alternative to<br>
 	 * JxlDecoderSetImageOutBuffer. This can be set when the JXL_DEC_FRAME event<br>
@@ -1359,10 +1361,10 @@ public interface DecodeLibrary extends Library {
 	 *    information not available yet or invalid index.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderExtraChannelBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*, uint32_t)</code><br>
 	 * <i>native declaration : intjxl/decode.h:823</i><br>
-	 * @deprecated use the safer method {@link #JxlDecoderExtraChannelBufferSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, int[], int)} instead
+	 * @deprecated use the safer method {@link #JxlDecoderExtraChannelBufferSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, LongByReference, int)} instead
 	 */
 	@Deprecated 
-	int JxlDecoderExtraChannelBufferSize(Pointer dec, JxlPixelFormat format, int[] size, int index);
+	int JxlDecoderExtraChannelBufferSize(Pointer dec, JxlPixelFormat format, LongByReference size, int index);
 	/**
 	 * Returns the minimum size in bytes of an extra channel pixel buffer for the<br>
 	 * given format. This is the buffer for JxlDecoderSetExtraChannelBuffer.<br>
@@ -1379,7 +1381,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderExtraChannelBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*, uint32_t)</code><br>
 	 * <i>native declaration : intjxl/decode.h:823</i>
 	 */
-	int JxlDecoderExtraChannelBufferSize(PointerByReference dec, JxlPixelFormat format, int[] size, int index);
+	int JxlDecoderExtraChannelBufferSize(PointerByReference dec, JxlPixelFormat format, LongByReference size, int index);
 	/**
 	 * Sets the buffer to write an extra channel to. This can be set when<br>
 	 * the JXL_DEC_FRAME or JXL_DEC_NEED_IMAGE_OUT_BUFFER event occurs, and applies<br>
