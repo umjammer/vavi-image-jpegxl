@@ -9,8 +9,6 @@ package vavi.image.jpegxl;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -41,13 +39,13 @@ Debug.println(image);
         //
         JFrame frame = new JFrame();
         JPanel panel = new JPanel() {
-            public void paint(Graphics g) {
+            public void paintComponent(Graphics g) {
                 g.drawImage(image, 0, 0, this);
             }
         };
         panel.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
         frame.setContentPane(panel);
-        frame.setTitle("AVIF");
+        frame.setTitle("JPEG XL");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

@@ -29,66 +29,66 @@ public interface DecodeLibrary extends Library {
 	NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(DecodeLibrary.JNA_LIBRARY_NAME);
 	DecodeLibrary INSTANCE = Native.load(DecodeLibrary.JNA_LIBRARY_NAME, DecodeLibrary.class);
 	/**
-	 * <i>native declaration : intjxl/decode.h</i><br>
+	 * <i>native declaration : jxl/decode.h</i><br>
 	 * enum values
 	 */
 	interface JxlSignature {
-		/** <i>native declaration : intjxl/decode.h:20</i> */
+		/** <i>native declaration : jxl/decode.h:20</i> */
 		int JXL_SIG_NOT_ENOUGH_BYTES = 0;
-		/** <i>native declaration : intjxl/decode.h:23</i> */
+		/** <i>native declaration : jxl/decode.h:23</i> */
 		int JXL_SIG_INVALID = 1;
-		/** <i>native declaration : intjxl/decode.h:28</i> */
+		/** <i>native declaration : jxl/decode.h:28</i> */
 		int JXL_SIG_CODESTREAM = 2;
-		/** <i>native declaration : intjxl/decode.h:33</i> */
+		/** <i>native declaration : jxl/decode.h:33</i> */
 		int JXL_SIG_CONTAINER = 3;
 	}
 	/**
-	 * <i>native declaration : intjxl/decode.h</i><br>
+	 * <i>native declaration : jxl/decode.h</i><br>
 	 * enum values
 	 */
 	interface JxlDecoderStatus {
-		/** <i>native declaration : intjxl/decode.h:100</i> */
+		/** <i>native declaration : jxl/decode.h:100</i> */
 		int JXL_DEC_SUCCESS = 0;
-		/** <i>native declaration : intjxl/decode.h:105</i> */
+		/** <i>native declaration : jxl/decode.h:105</i> */
 		int JXL_DEC_ERROR = 1;
-		/** <i>native declaration : intjxl/decode.h:116</i> */
+		/** <i>native declaration : jxl/decode.h:116</i> */
 		int JXL_DEC_NEED_MORE_INPUT = 2;
-		/** <i>native declaration : intjxl/decode.h:124</i> */
+		/** <i>native declaration : jxl/decode.h:124</i> */
 		int JXL_DEC_NEED_PREVIEW_OUT_BUFFER = 3;
-		/** <i>native declaration : intjxl/decode.h:134</i> */
+		/** <i>native declaration : jxl/decode.h:134</i> */
 		int JXL_DEC_NEED_DC_OUT_BUFFER = 4;
-		/** <i>native declaration : intjxl/decode.h:141</i> */
+		/** <i>native declaration : jxl/decode.h:141</i> */
 		int JXL_DEC_NEED_IMAGE_OUT_BUFFER = 5;
-		/** <i>native declaration : intjxl/decode.h:149</i> */
+		/** <i>native declaration : jxl/decode.h:149</i> */
 		int JXL_DEC_JPEG_NEED_MORE_OUTPUT = 6;
-		/** <i>native declaration : intjxl/decode.h:154</i> */
+		/** <i>native declaration : jxl/decode.h:154</i> */
 		int JXL_DEC_BASIC_INFO = 0x40;
-		/** <i>native declaration : intjxl/decode.h:160</i> */
+		/** <i>native declaration : jxl/decode.h:160</i> */
 		int JXL_DEC_EXTENSIONS = 0x80;
-		/** <i>native declaration : intjxl/decode.h:167</i> */
+		/** <i>native declaration : jxl/decode.h:167</i> */
 		int JXL_DEC_COLOR_ENCODING = 0x100;
-		/** <i>native declaration : intjxl/decode.h:174</i> */
+		/** <i>native declaration : jxl/decode.h:174</i> */
 		int JXL_DEC_PREVIEW_IMAGE = 0x200;
-		/** <i>native declaration : intjxl/decode.h:187</i> */
+		/** <i>native declaration : jxl/decode.h:187</i> */
 		int JXL_DEC_FRAME = 0x400;
-		/** <i>native declaration : intjxl/decode.h:200</i> */
+		/** <i>native declaration : jxl/decode.h:200</i> */
 		int JXL_DEC_DC_IMAGE = 0x800;
-		/** <i>native declaration : intjxl/decode.h:208</i> */
+		/** <i>native declaration : jxl/decode.h:208</i> */
 		int JXL_DEC_FULL_IMAGE = 0x1000;
-		/** <i>native declaration : intjxl/decode.h:218</i> */
+		/** <i>native declaration : jxl/decode.h:218</i> */
 		int JXL_DEC_JPEG_RECONSTRUCTION = 0x2000;
 	}
 	/**
-	 * <i>native declaration : intjxl/decode.h</i><br>
+	 * <i>native declaration : jxl/decode.h</i><br>
 	 * enum values
 	 */
 	interface JxlColorProfileTarget {
-		/** <i>native declaration : intjxl/decode.h:473</i> */
+		/** <i>native declaration : jxl/decode.h:473</i> */
 		int JXL_COLOR_PROFILE_TARGET_ORIGINAL = 0;
-		/** <i>native declaration : intjxl/decode.h:476</i> */
+		/** <i>native declaration : jxl/decode.h:476</i> */
 		int JXL_COLOR_PROFILE_TARGET_DATA = 1;
 	}
-	/** <i>native declaration : intjxl/decode.h</i> */
+	/** <i>native declaration : jxl/decode.h</i> */
 	public interface JxlImageOutCallback extends Callback {
 		void apply(Pointer opaque, int x, int y, int num_pixels, Pointer pixels);
 	}
@@ -98,7 +98,7 @@ public interface DecodeLibrary extends Library {
 	 * MAJOR_VERSION * 1000000 + MINOR_VERSION * 1000 + PATCH_VERSION. For example,<br>
 	 * version 1.2.3 would return 1002003.<br>
 	 * Original signature : <code>uint32_t JxlDecoderVersion()</code><br>
-	 * <i>native declaration : intjxl/decode.h:13</i>
+	 * <i>native declaration : jxl/decode.h:13</i>
 	 */
 	int JxlDecoderVersion();
 	/**
@@ -113,7 +113,7 @@ public interface DecodeLibrary extends Library {
 	 *   - JXL_SIG_CODESTREAM a valid JPEG XL codestream signature was found.<br>
 	 *   - JXL_SIG_CONTAINER a valid JPEG XL container signature was found.<br>
 	 * Original signature : <code>JxlSignature JxlSignatureCheck(const uint8_t*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:50</i><br>
+	 * <i>native declaration : jxl/decode.h:50</i><br>
 	 * @deprecated use the safer methods {@link #JxlSignatureCheck(byte[], int)} and {@link #JxlSignatureCheck(com.sun.jna.Pointer, int)} instead
 	 */
 	@Deprecated 
@@ -130,7 +130,7 @@ public interface DecodeLibrary extends Library {
 	 *   - JXL_SIG_CODESTREAM a valid JPEG XL codestream signature was found.<br>
 	 *   - JXL_SIG_CONTAINER a valid JPEG XL container signature was found.<br>
 	 * Original signature : <code>JxlSignature JxlSignatureCheck(const uint8_t*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:50</i>
+	 * <i>native declaration : jxl/decode.h:50</i>
 	 */
 	int JxlSignatureCheck(byte[] buf, int len);
 	/**
@@ -143,7 +143,7 @@ public interface DecodeLibrary extends Library {
 	 * @return @c NULL if the instance can not be allocated or initialized<br>
 	 * return pointer to initialized JxlDecoder otherwise<br>
 	 * Original signature : <code>JxlDecoder* JxlDecoderCreate(const JxlMemoryManager*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:72</i>
+	 * <i>native declaration : jxl/decode.h:72</i>
 	 */
 	PointerByReference JxlDecoderCreate(JxlMemoryManagerStruct memory_manager);
 	/**
@@ -152,7 +152,7 @@ public interface DecodeLibrary extends Library {
 	 * newly created with JxlDecoderCreate, but the memory manager is kept.<br>
 	 * @param dec instance to be re-initialized.<br>
 	 * Original signature : <code>void JxlDecoderReset(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:81</i><br>
+	 * <i>native declaration : jxl/decode.h:81</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderReset(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 	@Deprecated 
@@ -163,14 +163,14 @@ public interface DecodeLibrary extends Library {
 	 * newly created with JxlDecoderCreate, but the memory manager is kept.<br>
 	 * @param dec instance to be re-initialized.<br>
 	 * Original signature : <code>void JxlDecoderReset(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:81</i>
+	 * <i>native declaration : jxl/decode.h:81</i>
 	 */
 	void JxlDecoderReset(PointerByReference dec);
 	/**
 	 * Deinitializes and frees JxlDecoder instance.<br>
 	 * @param dec instance to be cleaned up and deallocated.<br>
 	 * Original signature : <code>void JxlDecoderDestroy(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:88</i><br>
+	 * <i>native declaration : jxl/decode.h:88</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderDestroy(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 	@Deprecated 
@@ -179,7 +179,7 @@ public interface DecodeLibrary extends Library {
 	 * Deinitializes and frees JxlDecoder instance.<br>
 	 * @param dec instance to be cleaned up and deallocated.<br>
 	 * Original signature : <code>void JxlDecoderDestroy(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:88</i>
+	 * <i>native declaration : jxl/decode.h:88</i>
 	 */
 	void JxlDecoderDestroy(PointerByReference dec);
 	/**
@@ -194,7 +194,7 @@ public interface DecodeLibrary extends Library {
 	 * before.<br>
 	 * @param dec decoder object<br>
 	 * Original signature : <code>void JxlDecoderRewind(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:232</i><br>
+	 * <i>native declaration : jxl/decode.h:232</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderRewind(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 	@Deprecated 
@@ -211,7 +211,7 @@ public interface DecodeLibrary extends Library {
 	 * before.<br>
 	 * @param dec decoder object<br>
 	 * Original signature : <code>void JxlDecoderRewind(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:232</i>
+	 * <i>native declaration : jxl/decode.h:232</i>
 	 */
 	void JxlDecoderRewind(PointerByReference dec);
 	/**
@@ -231,7 +231,7 @@ public interface DecodeLibrary extends Library {
 	 * @param dec decoder object<br>
 	 * @param amount the amount of frames to skip<br>
 	 * Original signature : <code>void JxlDecoderSkipFrames(JxlDecoder*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:250</i><br>
+	 * <i>native declaration : jxl/decode.h:250</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderSkipFrames(com.sun.jna.ptr.PointerByReference, int)} instead
 	 */
 	@Deprecated 
@@ -253,7 +253,7 @@ public interface DecodeLibrary extends Library {
 	 * @param dec decoder object<br>
 	 * @param amount the amount of frames to skip<br>
 	 * Original signature : <code>void JxlDecoderSkipFrames(JxlDecoder*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:250</i>
+	 * <i>native declaration : jxl/decode.h:250</i>
 	 */
 	void JxlDecoderSkipFrames(PointerByReference dec, int amount);
 	/**
@@ -265,7 +265,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS if no error, JXL_DEC_NEED_MORE_INPUT if the<br>
 	 * basic info isn't yet available, and JXL_DEC_ERROR otherwise.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderDefaultPixelFormat(const JxlDecoder*, JxlPixelFormat*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:263</i><br>
+	 * <i>native declaration : jxl/decode.h:263</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderDefaultPixelFormat(com.sun.jna.ptr.PointerByReference, JxlPixelFormat)} instead
 	 */
 	@Deprecated 
@@ -279,7 +279,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS if no error, JXL_DEC_NEED_MORE_INPUT if the<br>
 	 * basic info isn't yet available, and JXL_DEC_ERROR otherwise.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderDefaultPixelFormat(const JxlDecoder*, JxlPixelFormat*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:263</i>
+	 * <i>native declaration : jxl/decode.h:263</i>
 	 */
 	int JxlDecoderDefaultPixelFormat(PointerByReference dec, JxlPixelFormat format);
 	/**
@@ -293,7 +293,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS if the runner was set, JXL_DEC_ERROR<br>
 	 * otherwise (the previous runner remains set).<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetParallelRunner(JxlDecoder*, JxlParallelRunner, void*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:278</i><br>
+	 * <i>native declaration : jxl/decode.h:278</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderSetParallelRunner(com.sun.jna.ptr.PointerByReference, vavi.awt.image.jna.jpegxl.Library.JxlParallelRunner, com.sun.jna.Pointer)} instead
 	 */
 	@Deprecated 
@@ -309,7 +309,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS if the runner was set, JXL_DEC_ERROR<br>
 	 * otherwise (the previous runner remains set).<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetParallelRunner(JxlDecoder*, JxlParallelRunner, void*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:278</i>
+	 * <i>native declaration : jxl/decode.h:278</i>
 	 */
 	int JxlDecoderSetParallelRunner(PointerByReference dec, JxlParallelRunner parallel_runner, Pointer parallel_runner_opaque);
 	/**
@@ -339,7 +339,7 @@ public interface DecodeLibrary extends Library {
 	 * @return the size hint in bytes if the basic info is not yet fully decoded.<br>
 	 * return 0 when the basic info is already available.<br>
 	 * Original signature : <code>size_t JxlDecoderSizeHintBasicInfo(const JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:296</i><br>
+	 * <i>native declaration : jxl/decode.h:296</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderSizeHintBasicInfo(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 	@Deprecated 
@@ -357,7 +357,7 @@ public interface DecodeLibrary extends Library {
 	 * @return the size hint in bytes if the basic info is not yet fully decoded.<br>
 	 * return 0 when the basic info is already available.<br>
 	 * Original signature : <code>size_t JxlDecoderSizeHintBasicInfo(const JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:296</i>
+	 * <i>native declaration : jxl/decode.h:296</i>
 	 */
 	int JxlDecoderSizeHintBasicInfo(PointerByReference dec);
 	/**
@@ -372,7 +372,7 @@ public interface DecodeLibrary extends Library {
 	 * @param events_wanted bitfield of desired events.<br>
 	 * @return JXL_DEC_SUCCESS if no error, JXL_DEC_ERROR otherwise.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSubscribeEvents(JxlDecoder*, int)</code><br>
-	 * <i>native declaration : intjxl/decode.h:310</i><br>
+	 * <i>native declaration : jxl/decode.h:310</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderSubscribeEvents(com.sun.jna.ptr.PointerByReference, int)} instead
 	 */
 	@Deprecated 
@@ -389,7 +389,7 @@ public interface DecodeLibrary extends Library {
 	 * @param events_wanted bitfield of desired events.<br>
 	 * @return JXL_DEC_SUCCESS if no error, JXL_DEC_ERROR otherwise.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSubscribeEvents(JxlDecoder*, int)</code><br>
-	 * <i>native declaration : intjxl/decode.h:310</i>
+	 * <i>native declaration : jxl/decode.h:310</i>
 	 */
 	int JxlDecoderSubscribeEvents(PointerByReference dec, int events_wanted);
 	/**
@@ -418,7 +418,7 @@ public interface DecodeLibrary extends Library {
 	 * @param keep_orientation JXL_TRUE to enable, JXL_FALSE to disable.<br>
 	 * @return JXL_DEC_SUCCESS if no error, JXL_DEC_ERROR otherwise.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetKeepOrientation(JxlDecoder*, int)</code><br>
-	 * <i>native declaration : intjxl/decode.h:344</i><br>
+	 * <i>native declaration : jxl/decode.h:344</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderSetKeepOrientation(com.sun.jna.ptr.PointerByReference, int)} instead
 	 */
 	@Deprecated 
@@ -449,7 +449,7 @@ public interface DecodeLibrary extends Library {
 	 * @param keep_orientation JXL_TRUE to enable, JXL_FALSE to disable.<br>
 	 * @return JXL_DEC_SUCCESS if no error, JXL_DEC_ERROR otherwise.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetKeepOrientation(JxlDecoder*, int)</code><br>
-	 * <i>native declaration : intjxl/decode.h:344</i>
+	 * <i>native declaration : jxl/decode.h:344</i>
 	 */
 	int JxlDecoderSetKeepOrientation(PointerByReference dec, int keep_orientation);
 	/**
@@ -485,7 +485,7 @@ public interface DecodeLibrary extends Library {
 	 * return JXL_DEC_FULL_IMAGE when all pixel information at highest detail is<br>
 	 * available and has been output in the pixel buffer.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderProcessInput(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:382</i><br>
+	 * <i>native declaration : jxl/decode.h:382</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderProcessInput(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 	@Deprecated 
@@ -523,7 +523,7 @@ public interface DecodeLibrary extends Library {
 	 * return JXL_DEC_FULL_IMAGE when all pixel information at highest detail is<br>
 	 * available and has been output in the pixel buffer.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderProcessInput(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:382</i>
+	 * <i>native declaration : jxl/decode.h:382</i>
 	 */
 	int JxlDecoderProcessInput(PointerByReference dec);
 	/**
@@ -552,9 +552,9 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_ERROR if input was already set without releasing,<br>
 	 * JXL_DEC_SUCCESS otherwise<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetInput(JxlDecoder*, const uint8_t*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:394</i>
+	 * <i>native declaration : jxl/decode.h:394</i>
 	 */
-	int JxlDecoderSetInput(PointerByReference dec, byte[] data, int size);
+	int JxlDecoderSetInput(PointerByReference dec, byte[] data, long size);
 	/**
 	 * Sets input data for JxlDecoderProcessInput. The data is owned by the caller<br>
 	 * and may be used by the decoder until JxlDecoderReleaseInput is called or<br>
@@ -565,9 +565,9 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_ERROR if input was already set without releasing,<br>
 	 * JXL_DEC_SUCCESS otherwise<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetInput(JxlDecoder*, const uint8_t*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:394</i>
+	 * <i>native declaration : jxl/decode.h:394</i>
 	 */
-	int JxlDecoderSetInput(PointerByReference dec, Pointer data, int size);
+	int JxlDecoderSetInput(PointerByReference dec, Pointer data, long size);
 	/**
 	 * Releases input which was provided with JxlDecoderSetInput. Between<br>
 	 * JxlDecoderProcessInput and JxlDecoderReleaseInput, the user may not alter<br>
@@ -585,7 +585,7 @@ public interface DecodeLibrary extends Library {
 	 * truly processed internally or how large the original JPEG XL codestream or<br>
 	 * file are.<br>
 	 * Original signature : <code>size_t JxlDecoderReleaseInput(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:415</i><br>
+	 * <i>native declaration : jxl/decode.h:415</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderReleaseInput(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 	@Deprecated 
@@ -607,7 +607,7 @@ public interface DecodeLibrary extends Library {
 	 * truly processed internally or how large the original JPEG XL codestream or<br>
 	 * file are.<br>
 	 * Original signature : <code>size_t JxlDecoderReleaseInput(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:415</i>
+	 * <i>native declaration : jxl/decode.h:415</i>
 	 */
 	int JxlDecoderReleaseInput(PointerByReference dec);
 	/**
@@ -620,7 +620,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    of other error conditions.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetBasicInfo(const JxlDecoder*, JxlBasicInfo*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:428</i><br>
+	 * <i>native declaration : jxl/decode.h:428</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderGetBasicInfo(com.sun.jna.ptr.PointerByReference, JxlBasicInfo)} instead
 	 */
 	@Deprecated 
@@ -635,7 +635,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    of other error conditions.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetBasicInfo(const JxlDecoder*, JxlBasicInfo*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:428</i>
+	 * <i>native declaration : jxl/decode.h:428</i>
 	 */
 	int JxlDecoderGetBasicInfo(PointerByReference dec, JxlBasicInfo info);
 	/**
@@ -649,7 +649,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    of other error conditions.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetExtraChannelInfo(const JxlDecoder*, size_t, JxlExtraChannelInfo*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:443</i><br>
+	 * <i>native declaration : jxl/decode.h:443</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderGetExtraChannelInfo(com.sun.jna.ptr.PointerByReference, int, JxlExtraChannelInfo)} instead
 	 */
 	@Deprecated 
@@ -665,7 +665,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    of other error conditions.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetExtraChannelInfo(const JxlDecoder*, size_t, JxlExtraChannelInfo*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:443</i>
+	 * <i>native declaration : jxl/decode.h:443</i>
 	 */
 	int JxlDecoderGetExtraChannelInfo(PointerByReference dec, int index, JxlExtraChannelInfo info);
 	/**
@@ -681,7 +681,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    of other error conditions.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetExtraChannelName(const JxlDecoder*, size_t, char*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:460</i><br>
+	 * <i>native declaration : jxl/decode.h:460</i><br>
 	 * @deprecated use the safer methods {@link #JxlDecoderGetExtraChannelName(com.sun.jna.ptr.PointerByReference, int, java.nio.ByteBuffer, int)} and {@link #JxlDecoderGetExtraChannelName(com.sun.jna.ptr.PointerByReference, int, com.sun.jna.Pointer, int)} instead
 	 */
 	@Deprecated 
@@ -699,7 +699,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    of other error conditions.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetExtraChannelName(const JxlDecoder*, size_t, char*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:460</i>
+	 * <i>native declaration : jxl/decode.h:460</i>
 	 */
 	int JxlDecoderGetExtraChannelName(PointerByReference dec, int index, ByteBuffer name, int size);
 	/**
@@ -715,7 +715,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    of other error conditions.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetExtraChannelName(const JxlDecoder*, size_t, char*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:460</i>
+	 * <i>native declaration : jxl/decode.h:460</i>
 	 */
 	int JxlDecoderGetExtraChannelName(PointerByReference dec, int index, Pointer name, int size);
 	/**
@@ -752,7 +752,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    the encoded structured color profile does not exist in the codestream.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetColorAsEncodedProfile(const JxlDecoder*, const JxlPixelFormat*, JxlColorProfileTarget, JxlColorEncoding*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:516</i><br>
+	 * <i>native declaration : jxl/decode.h:516</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderGetColorAsEncodedProfile(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, int, JxlColorEncoding)} instead
 	 */
 	@Deprecated 
@@ -791,7 +791,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    the encoded structured color profile does not exist in the codestream.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetColorAsEncodedProfile(const JxlDecoder*, const JxlPixelFormat*, JxlColorProfileTarget, JxlColorEncoding*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:516</i>
+	 * <i>native declaration : jxl/decode.h:516</i>
 	 */
 	int JxlDecoderGetColorAsEncodedProfile(PointerByReference dec, JxlPixelFormat format, int target, JxlColorEncoding color_encoding);
 	/**
@@ -816,11 +816,11 @@ public interface DecodeLibrary extends Library {
 	 *    size is, JXL_DEC_ERROR in case the ICC profile is not available and<br>
 	 *    cannot be generated.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetICCProfileSize(const JxlDecoder*, const JxlPixelFormat*, JxlColorProfileTarget, size_t*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:543</i><br>
+	 * <i>native declaration : jxl/decode.h:543</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderGetICCProfileSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, int, LongByReference)} instead
 	 */
 	@Deprecated 
-	int JxlDecoderGetICCProfileSize(Pointer dec, JxlPixelFormat format, int target, int[] size);
+	int JxlDecoderGetICCProfileSize(Pointer dec, JxlPixelFormat format, int target, LongByReference size);
 	/**
 	 * Outputs the size in bytes of the ICC profile returned by<br>
 	 * JxlDecoderGetColorAsICCProfile, if available, or indicates there is none<br>
@@ -843,9 +843,9 @@ public interface DecodeLibrary extends Library {
 	 *    size is, JXL_DEC_ERROR in case the ICC profile is not available and<br>
 	 *    cannot be generated.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetICCProfileSize(const JxlDecoder*, const JxlPixelFormat*, JxlColorProfileTarget, size_t*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:543</i>
+	 * <i>native declaration : jxl/decode.h:543</i>
 	 */
-	int JxlDecoderGetICCProfileSize(PointerByReference dec, JxlPixelFormat format, int target, int[] size);
+	int JxlDecoderGetICCProfileSize(PointerByReference dec, JxlPixelFormat format, int target, LongByReference size);
 	/**
 	 * Outputs ICC profile if available. The profile is only available if<br>
 	 * JxlDecoderGetICCProfileSize returns success. The output buffer must have<br>
@@ -862,7 +862,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_ERROR if the profile doesn't exist or the output size is not<br>
 	 *    large enough.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetColorAsICCProfile(const JxlDecoder*, const JxlPixelFormat*, JxlColorProfileTarget, uint8_t*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:564</i><br>
+	 * <i>native declaration : jxl/decode.h:564</i><br>
 	 * @deprecated use the safer methods {@link #JxlDecoderGetColorAsICCProfile(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, int, java.nio.ByteBuffer, int)} and {@link #JxlDecoderGetColorAsICCProfile(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, int, com.sun.jna.Pointer, int)} instead
 	 */
 	@Deprecated 
@@ -883,7 +883,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_ERROR if the profile doesn't exist or the output size is not<br>
 	 *    large enough.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetColorAsICCProfile(const JxlDecoder*, const JxlPixelFormat*, JxlColorProfileTarget, uint8_t*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:564</i>
+	 * <i>native declaration : jxl/decode.h:564</i>
 	 */
 	int JxlDecoderGetColorAsICCProfile(PointerByReference dec, JxlPixelFormat format, int target, ByteBuffer icc_profile, int size);
 	/**
@@ -902,7 +902,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_ERROR if the profile doesn't exist or the output size is not<br>
 	 *    large enough.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetColorAsICCProfile(const JxlDecoder*, const JxlPixelFormat*, JxlColorProfileTarget, uint8_t*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:564</i>
+	 * <i>native declaration : jxl/decode.h:564</i>
 	 */
 	int JxlDecoderGetColorAsICCProfile(PointerByReference dec, JxlPixelFormat format, int target, Pointer icc_profile, int size);
 	/**
@@ -940,7 +940,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS if the preference was set successfully, JXL_DEC_ERROR<br>
 	 *    otherwise.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetPreferredColorProfile(JxlDecoder*, const JxlColorEncoding*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:606</i><br>
+	 * <i>native declaration : jxl/decode.h:606</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderSetPreferredColorProfile(com.sun.jna.ptr.PointerByReference, JxlColorEncoding)} instead
 	 */
 	@Deprecated 
@@ -980,7 +980,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS if the preference was set successfully, JXL_DEC_ERROR<br>
 	 *    otherwise.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetPreferredColorProfile(JxlDecoder*, const JxlColorEncoding*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:606</i>
+	 * <i>native declaration : jxl/decode.h:606</i>
 	 */
 	int JxlDecoderSetPreferredColorProfile(PointerByReference dec, JxlColorEncoding color_encoding);
 	/**
@@ -993,11 +993,11 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 *    information not available yet.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderPreviewOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:620</i><br>
+	 * <i>native declaration : jxl/decode.h:620</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderPreviewOutBufferSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, LongByReference)} instead
 	 */
 	@Deprecated 
-	int JxlDecoderPreviewOutBufferSize(Pointer dec, JxlPixelFormat format, int[] size);
+	int JxlDecoderPreviewOutBufferSize(Pointer dec, JxlPixelFormat format, LongByReference size);
 	/**
 	 * Returns the minimum size in bytes of the preview image output pixel buffer<br>
 	 * for the given format. This is the buffer for JxlDecoderSetPreviewOutBuffer.<br>
@@ -1008,9 +1008,9 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 *    information not available yet.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderPreviewOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:620</i>
+	 * <i>native declaration : jxl/decode.h:620</i>
 	 */
-	int JxlDecoderPreviewOutBufferSize(PointerByReference dec, JxlPixelFormat format, int[] size);
+	int JxlDecoderPreviewOutBufferSize(PointerByReference dec, JxlPixelFormat format, LongByReference size);
 	/**
 	 * Sets the buffer to write the small resolution preview image<br>
 	 * to. The size of the buffer must be at least as large as given by<br>
@@ -1025,7 +1025,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 * size too small.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetPreviewOutBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:638</i><br>
+	 * <i>native declaration : jxl/decode.h:638</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderSetPreviewOutBuffer(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, com.sun.jna.Pointer, int)} instead
 	 */
 	@Deprecated 
@@ -1044,7 +1044,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 * size too small.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetPreviewOutBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:638</i>
+	 * <i>native declaration : jxl/decode.h:638</i>
 	 */
 	int JxlDecoderSetPreviewOutBuffer(PointerByReference dec, JxlPixelFormat format, Pointer buffer, int size);
 	/**
@@ -1058,7 +1058,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    of other error conditions.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetFrameHeader(const JxlDecoder*, JxlFrameHeader*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:653</i><br>
+	 * <i>native declaration : jxl/decode.h:653</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderGetFrameHeader(com.sun.jna.ptr.PointerByReference, JxlFrameHeader)} instead
 	 */
 	@Deprecated 
@@ -1074,7 +1074,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    of other error conditions.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetFrameHeader(const JxlDecoder*, JxlFrameHeader*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:653</i>
+	 * <i>native declaration : jxl/decode.h:653</i>
 	 */
 	int JxlDecoderGetFrameHeader(PointerByReference dec, JxlFrameHeader header);
 	/**
@@ -1089,7 +1089,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    of other error conditions.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetFrameName(const JxlDecoder*, char*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:669</i><br>
+	 * <i>native declaration : jxl/decode.h:669</i><br>
 	 * @deprecated use the safer methods {@link #JxlDecoderGetFrameName(com.sun.jna.ptr.PointerByReference, java.nio.ByteBuffer, int)} and {@link #JxlDecoderGetFrameName(com.sun.jna.ptr.PointerByReference, com.sun.jna.Pointer, int)} instead
 	 */
 	@Deprecated 
@@ -1106,7 +1106,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    of other error conditions.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetFrameName(const JxlDecoder*, char*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:669</i>
+	 * <i>native declaration : jxl/decode.h:669</i>
 	 */
 	int JxlDecoderGetFrameName(PointerByReference dec, ByteBuffer name, int size);
 	/**
@@ -1121,7 +1121,7 @@ public interface DecodeLibrary extends Library {
 	 *    JXL_DEC_NEED_MORE_INPUT if not yet available, JXL_DEC_ERROR in case<br>
 	 *    of other error conditions.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderGetFrameName(const JxlDecoder*, char*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:669</i>
+	 * <i>native declaration : jxl/decode.h:669</i>
 	 */
 	int JxlDecoderGetFrameName(PointerByReference dec, Pointer name, int size);
 	/**
@@ -1136,7 +1136,7 @@ public interface DecodeLibrary extends Library {
 	 * DEPRECATED: the DC feature in this form will be removed. You can use<br>
 	 * JxlDecoderFlushImage for progressive rendering.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderDCOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:686</i><br>
+	 * <i>native declaration : jxl/decode.h:686</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderDCOutBufferSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, LongByReference)} instead
 	 */
 	@Deprecated 
@@ -1153,7 +1153,7 @@ public interface DecodeLibrary extends Library {
 	 * DEPRECATED: the DC feature in this form will be removed. You can use<br>
 	 * JxlDecoderFlushImage for progressive rendering.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderDCOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:686</i>
+	 * <i>native declaration : jxl/decode.h:686</i>
 	 */
 	int JxlDecoderDCOutBufferSize(PointerByReference dec, JxlPixelFormat format, LongByReference size);
 	/**
@@ -1172,7 +1172,7 @@ public interface DecodeLibrary extends Library {
 	 * DEPRECATED: the DC feature in this form will be removed. You can use<br>
 	 * JxlDecoderFlushImage for progressive rendering.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetDCOutBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:707</i><br>
+	 * <i>native declaration : jxl/decode.h:707</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderSetDCOutBuffer(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, com.sun.jna.Pointer, int)} instead
 	 */
 	@Deprecated 
@@ -1193,7 +1193,7 @@ public interface DecodeLibrary extends Library {
 	 * DEPRECATED: the DC feature in this form will be removed. You can use<br>
 	 * JxlDecoderFlushImage for progressive rendering.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetDCOutBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:707</i>
+	 * <i>native declaration : jxl/decode.h:707</i>
 	 */
 	int JxlDecoderSetDCOutBuffer(PointerByReference dec, JxlPixelFormat format, Pointer buffer, int size);
 	/**
@@ -1206,7 +1206,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 *    information not available yet.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderImageOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:721</i><br>
+	 * <i>native declaration : jxl/decode.h:721</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderImageOutBufferSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, LongByReference)} instead
 	 */
 	@Deprecated 
@@ -1221,7 +1221,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 *    information not available yet.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderImageOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:721</i>
+	 * <i>native declaration : jxl/decode.h:721</i>
 	 */
 	int JxlDecoderImageOutBufferSize(PointerByReference dec, JxlPixelFormat format, LongByReference size);
 	/**
@@ -1239,7 +1239,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 * size too small.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetImageOutBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:740</i><br>
+	 * <i>native declaration : jxl/decode.h:740</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderSetImageOutBuffer(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, com.sun.jna.Pointer, long)} instead
 	 */
 	@Deprecated 
@@ -1259,7 +1259,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 * size too small.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetImageOutBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:740</i>
+	 * <i>native declaration : jxl/decode.h:740</i>
 	 */
 	int JxlDecoderSetImageOutBuffer(PointerByReference dec, JxlPixelFormat format, Pointer buffer, long size);
 	/**
@@ -1300,7 +1300,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 * JxlDecoderSetImageOutBuffer already set.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetImageOutCallback(JxlDecoder*, const JxlPixelFormat*, JxlImageOutCallback, void*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:804</i><br>
+	 * <i>native declaration : jxl/decode.h:804</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderSetImageOutCallback(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, vavi.awt.image.jna.jpegxl.decode.DecodeLibrary.JxlImageOutCallback, com.sun.jna.Pointer)} instead
 	 */
 	@Deprecated 
@@ -1343,7 +1343,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 * JxlDecoderSetImageOutBuffer already set.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetImageOutCallback(JxlDecoder*, const JxlPixelFormat*, JxlImageOutCallback, void*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:804</i>
+	 * <i>native declaration : jxl/decode.h:804</i>
 	 */
 	int JxlDecoderSetImageOutCallback(PointerByReference dec, JxlPixelFormat format, DecodeLibrary.JxlImageOutCallback callback, Pointer opaque);
 	/**
@@ -1360,7 +1360,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 *    information not available yet or invalid index.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderExtraChannelBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*, uint32_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:823</i><br>
+	 * <i>native declaration : jxl/decode.h:823</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderExtraChannelBufferSize(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, LongByReference, int)} instead
 	 */
 	@Deprecated 
@@ -1379,7 +1379,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 *    information not available yet or invalid index.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderExtraChannelBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*, uint32_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:823</i>
+	 * <i>native declaration : jxl/decode.h:823</i>
 	 */
 	int JxlDecoderExtraChannelBufferSize(PointerByReference dec, JxlPixelFormat format, LongByReference size, int index);
 	/**
@@ -1410,7 +1410,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 * size too small or invalid index.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetExtraChannelBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t, uint32_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:856</i><br>
+	 * <i>native declaration : jxl/decode.h:856</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderSetExtraChannelBuffer(com.sun.jna.ptr.PointerByReference, JxlPixelFormat, com.sun.jna.Pointer, int, int)} instead
 	 */
 	@Deprecated 
@@ -1443,7 +1443,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_SUCCESS on success, JXL_DEC_ERROR on error, such as<br>
 	 * size too small or invalid index.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetExtraChannelBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t, uint32_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:856</i>
+	 * <i>native declaration : jxl/decode.h:856</i>
 	 */
 	int JxlDecoderSetExtraChannelBuffer(PointerByReference dec, JxlPixelFormat format, Pointer buffer, int size, int index);
 	/**
@@ -1457,7 +1457,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_ERROR if input was already set without releasing,<br>
 	 * JXL_DEC_SUCCESS otherwise<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetJPEGBuffer(JxlDecoder*, uint8_t*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:873</i><br>
+	 * <i>native declaration : jxl/decode.h:873</i><br>
 	 * @deprecated use the safer methods {@link #JxlDecoderSetJPEGBuffer(com.sun.jna.ptr.PointerByReference, java.nio.ByteBuffer, int)} and {@link #JxlDecoderSetJPEGBuffer(com.sun.jna.ptr.PointerByReference, com.sun.jna.Pointer, int)} instead
 	 */
 	@Deprecated 
@@ -1473,7 +1473,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_ERROR if input was already set without releasing,<br>
 	 * JXL_DEC_SUCCESS otherwise<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetJPEGBuffer(JxlDecoder*, uint8_t*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:873</i>
+	 * <i>native declaration : jxl/decode.h:873</i>
 	 */
 	int JxlDecoderSetJPEGBuffer(PointerByReference dec, ByteBuffer data, int size);
 	/**
@@ -1487,7 +1487,7 @@ public interface DecodeLibrary extends Library {
 	 * @return JXL_DEC_ERROR if input was already set without releasing,<br>
 	 * JXL_DEC_SUCCESS otherwise<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetJPEGBuffer(JxlDecoder*, uint8_t*, size_t)</code><br>
-	 * <i>native declaration : intjxl/decode.h:873</i>
+	 * <i>native declaration : jxl/decode.h:873</i>
 	 */
 	int JxlDecoderSetJPEGBuffer(PointerByReference dec, Pointer data, int size);
 	/**
@@ -1503,7 +1503,7 @@ public interface DecodeLibrary extends Library {
 	 * set by JxlDecoderSetJPEGBuffer, or 0 if no buffer is set or<br>
 	 * JxlDecoderReleaseJPEGBuffer was already called.<br>
 	 * Original signature : <code>size_t JxlDecoderReleaseJPEGBuffer(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:892</i><br>
+	 * <i>native declaration : jxl/decode.h:892</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderReleaseJPEGBuffer(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 	@Deprecated 
@@ -1521,7 +1521,7 @@ public interface DecodeLibrary extends Library {
 	 * set by JxlDecoderSetJPEGBuffer, or 0 if no buffer is set or<br>
 	 * JxlDecoderReleaseJPEGBuffer was already called.<br>
 	 * Original signature : <code>size_t JxlDecoderReleaseJPEGBuffer(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:892</i>
+	 * <i>native declaration : jxl/decode.h:892</i>
 	 */
 	int JxlDecoderReleaseJPEGBuffer(PointerByReference dec);
 	/**
@@ -1538,7 +1538,7 @@ public interface DecodeLibrary extends Library {
 	 * not fatal, it only indicates no flushed image is available now, regular,<br>
 	 *  decoding can still be performed.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderFlushImage(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:910</i><br>
+	 * <i>native declaration : jxl/decode.h:910</i><br>
 	 * @deprecated use the safer method {@link #JxlDecoderFlushImage(com.sun.jna.ptr.PointerByReference)} instead
 	 */
 	@Deprecated 
@@ -1557,7 +1557,7 @@ public interface DecodeLibrary extends Library {
 	 * not fatal, it only indicates no flushed image is available now, regular,<br>
 	 *  decoding can still be performed.<br>
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderFlushImage(JxlDecoder*)</code><br>
-	 * <i>native declaration : intjxl/decode.h:910</i>
+	 * <i>native declaration : jxl/decode.h:910</i>
 	 */
 	int JxlDecoderFlushImage(PointerByReference dec);
 	class JxlDecoder extends PointerType {

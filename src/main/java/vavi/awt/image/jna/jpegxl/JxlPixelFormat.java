@@ -25,7 +25,6 @@ public class JxlPixelFormat extends Structure {
 	public int endianness;
 	public int align;
 	public JxlPixelFormat() {
-		super();
 	}
 	protected List<String> getFieldOrder() {
 		return Arrays.asList("num_channels", "data_type", "endianness", "align");
@@ -37,7 +36,6 @@ public class JxlPixelFormat extends Structure {
 	 * C type : JxlEndianness
 	 */
 	public JxlPixelFormat(int num_channels, int data_type, int endianness, int align) {
-		super();
 		this.num_channels = num_channels;
 		this.data_type = data_type;
 		this.endianness = endianness;

@@ -143,10 +143,10 @@ public interface EncodeLibrary extends Library {
 	 * return JXL_ENC_NEED_MORE_OUTPUT more output buffer is necessary.<br>
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderProcessOutput(JxlEncoder*, uint8_t**, size_t*)</code><br>
 	 * <i>native declaration : jxl/encode.h:121</i><br>
-	 * @deprecated use the safer method {@link #JxlEncoderProcessOutput(com.sun.jna.ptr.PointerByReference, com.sun.jna.ptr.PointerByReference, int[])} instead
+	 * @deprecated use the safer method {@link #JxlEncoderProcessOutput(com.sun.jna.ptr.PointerByReference, com.sun.jna.ptr.PointerByReference, long[])} instead
 	 */
 	@Deprecated 
-	int JxlEncoderProcessOutput(Pointer enc, PointerByReference next_out, int[] avail_out);
+	int JxlEncoderProcessOutput(Pointer enc, PointerByReference next_out, long[] avail_out);
 	/**
 	 * Encodes JPEG XL file using the available bytes. @p *avail_out indicates how<br>
 	 * many output bytes are available, and @p *next_out points to the input bytes.<br>
@@ -166,7 +166,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderProcessOutput(JxlEncoder*, uint8_t**, size_t*)</code><br>
 	 * <i>native declaration : jxl/encode.h:121</i>
 	 */
-	int JxlEncoderProcessOutput(PointerByReference enc, PointerByReference next_out, int[] avail_out);
+	int JxlEncoderProcessOutput(PointerByReference enc, PointerByReference next_out, long[] avail_out);
 	/**
 	 * Sets the buffer to read JPEG encoded bytes from for the next frame to encode.<br>
 	 * If JxlEncoderSetBasicInfo has not yet been called, calling<br>

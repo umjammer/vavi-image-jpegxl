@@ -20,6 +20,7 @@ import java.nio.file.Paths;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import com.sun.jna.ptr.LongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import vavi.awt.image.jna.jpegxl.JxlBasicInfo;
 import vavi.awt.image.jna.jpegxl.JxlColorEncoding;
@@ -251,7 +252,7 @@ Debug.println("status is JXL_DEC_BASIC_INFO");
         if (decoder == null) {
             throw new IllegalStateException("JxlDecoderCreate");
         }
-        DecodeLibrary.INSTANCE.JxlDecoderReset(decoder);
+DecodeLibrary.INSTANCE.JxlDecoderReset(decoder);
         try {
             int status = DecodeLibrary.INSTANCE.JxlDecoderSetInput(decoder, data, data.length);
             if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
@@ -281,9 +282,9 @@ Debug.println("status is JXL_DEC_FRAME: stride: " + stride);
                     pixelFormat.num_channels = bytesPerPixel;
                     pixelFormat.align = stride;
 
-int[] buffer_size = new int[1];
+LongByReference buffer_size = new LongByReference();
 status = DecodeLibrary.INSTANCE.JxlDecoderImageOutBufferSize(decoder, pixelFormat, buffer_size);
-Debug.println("min: " + buffer_size[0]);
+Debug.println("min: " + buffer_size.getValue());
 
                     FloatBuffer fb = ByteBuffer.allocateDirect(width * height * 4 * Float.BYTES * 10).asFloatBuffer();
                     Pointer fbp = Native.getDirectBufferPointer(fb);
@@ -318,14 +319,14 @@ Debug.println("buffer: bb: " + fb.capacity() + ", w*h*4: " + width * height * 4 
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_COLOR_ENCODING) {
 Debug.println("status is JXL_DEC_COLOR_ENCODING");
                     // Get the ICC color profile of the pixel data
-                    int[] icc_size = new int[1];
+                    LongByReference icc_size = new LongByReference();
                     status = DecodeLibrary.INSTANCE.JxlDecoderGetICCProfileSize(
                             decoder, pixelFormat, DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA, icc_size);
                     if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                         throw new IllegalStateException("JxlDecoderGetICCProfileSize: " + status);
                     }
 
-                    ByteBuffer icc_profile = ByteBuffer.allocateDirect(icc_size[0]);
+                    ByteBuffer icc_profile = ByteBuffer.allocateDirect((int) icc_size.getValue());
                     status = DecodeLibrary.INSTANCE.JxlDecoderGetColorAsICCProfile(
                             decoder, pixelFormat,
                             DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA,
@@ -335,14 +336,14 @@ Debug.println("status is JXL_DEC_COLOR_ENCODING");
                     }
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_NEED_IMAGE_OUT_BUFFER) {
 Debug.println("status is JXL_DEC_NEED_IMAGE_OUT_BUFFER");
-                    int[] buffer_size = new int[1];
+                    LongByReference buffer_size = new LongByReference();
                     status = DecodeLibrary.INSTANCE.JxlDecoderImageOutBufferSize(decoder, pixelFormat, buffer_size);
                     if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                         throw new IllegalStateException("JxlDecoderImageOutBufferSize: " + status);
                     }
-                    if (buffer_size[0] != basicInfo.xsize * basicInfo.ysize * 16) {
+                    if (buffer_size.getValue() != basicInfo.xsize * basicInfo.ysize * 16L) {
                         throw new IllegalStateException(String.format("Invalid out buffer size %d %d\n",
-                                buffer_size[0], basicInfo.xsize * basicInfo.ysize * 16));
+                                buffer_size.getValue(), basicInfo.xsize * basicInfo.ysize * 16));
                     }
 
                     FloatBuffer pixels = ByteBuffer.allocateDirect(basicInfo.xsize * basicInfo.ysize * 4 * Float.BYTES).asFloatBuffer();
@@ -621,7 +622,7 @@ Debug.println(basicInfo);
         ByteBuffer compressed = ByteBuffer.allocateDirect(64);
 
         int next_out = 0;
-        int[] avail_out = new int[] { compressed.capacity() };
+        long[] avail_out = new long[] { compressed.capacity() };
         int status = EncodeLibrary.JxlEncoderStatus.JXL_ENC_NEED_MORE_OUTPUT;
         while (status == EncodeLibrary.JxlEncoderStatus.JXL_ENC_NEED_MORE_OUTPUT) {
             PointerByReference p1 = new PointerByReference(Native.getDirectBufferPointer(compressed).getPointer(next_out));

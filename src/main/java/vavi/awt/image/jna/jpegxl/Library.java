@@ -33,7 +33,7 @@ public interface Library extends com.sun.jna.Library {
 		int JXL_TYPE_UINT32 = 4;
 		/** <i>native declaration : jxl/types.h:46</i> */
 		int JXL_TYPE_FLOAT16 = 5;
-	};
+	}
 	/**
 	 * <i>native declaration : jxl/types.h</i><br>
 	 * enum values
@@ -45,7 +45,7 @@ public interface Library extends com.sun.jna.Library {
 		int JXL_LITTLE_ENDIAN = 1;
 		/** <i>native declaration : jxl/types.h:60</i> */
 		int JXL_BIG_ENDIAN = 2;
-	};
+	}
 	/**
 	 * <i>native declaration : jxl/color_encoding.h</i><br>
 	 * enum values
@@ -193,24 +193,24 @@ public interface Library extends com.sun.jna.Library {
 	/** <i>native declaration : jxl/parallel_runner.h</i> */
 	int JXL_PARALLEL_RET_RUNNER_ERROR = -1;
 	/** <i>native declaration : jxl/memory_manager.h</i> */
-	public interface jpegxl_alloc_func extends Callback {
+	interface jpegxl_alloc_func extends Callback {
 		Pointer apply(Pointer opaque, int size);
 	}
 	/** <i>native declaration : jxl/memory_manager.h</i> */
-	public interface jpegxl_free_func extends Callback {
+	interface jpegxl_free_func extends Callback {
 		void apply(Pointer opaque, Pointer address);
 	}
 	/** <i>native declaration : jxl/parallel_runner.h</i> */
-	public interface JxlParallelRunInit extends Callback {
+	interface JxlParallelRunInit extends Callback {
 		int apply(Pointer jpegxl_opaque, int num_threads);
 	}
 	/** <i>native declaration : jxl/parallel_runner.h</i> */
-	public interface JxlParallelRunFunction extends Callback {
+	interface JxlParallelRunFunction extends Callback {
 		void apply(Pointer jpegxl_opaque, int value, int thread_id);
 	}
 	/** <i>native declaration : jxl/parallel_runner.h</i> */
-	public interface JxlParallelRunner extends Callback {
-		int apply(Pointer runner_opaque, Pointer jpegxl_opaque, Library.JxlParallelRunInit init, Library.JxlParallelRunFunction func, int start_range, int end_range);
+	interface JxlParallelRunner extends Callback {
+		int apply(Pointer runner_opaque, Pointer jpegxl_opaque, JxlParallelRunInit init, JxlParallelRunFunction func, int start_range, int end_range);
 	}
 	/**
 	 * Creates the runner for JxlResizableParallelRunner. Use as the opaque
