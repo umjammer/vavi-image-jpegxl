@@ -13,6 +13,85 @@
 
   <profiles>
     <profile>
+      <id>local (not on jitpack)</id>
+      <activation>
+        <os>
+          <family>mac</family>
+          <arch>x86_64</arch>
+        </os>
+        <property>
+          <name>env.JITPACK</name>
+          <value>!true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+            <version>1.0-alpha-11</version>
+            <extensions>true</extensions>
+            <configuration>
+              <javahOS>darwin</javahOS>
+              <compilerProvider>generic</compilerProvider>
+              <compilerStartOptions>
+                <compilerStartOption>-g -Wall -O2 -fomit-frame-pointer -fPIC -std=c++11</compilerStartOption>
+                <!-- unless locating jdk includes, cause error why??? -->
+                <compilerStartOption>-arch x86_64
+                  -I${java.home}/../include
+                  -I${java.home}/../include/darwin
+                  -I/usr/local/include/jxl
+                </compilerStartOption>
+              </compilerStartOptions>
+              <sources>
+                <source>
+                  <directory>src/main/native</directory>
+                  <fileNames>
+                    <fileName>decoder_jni.cc</fileName>
+                    <fileName>decoder_jni_onload.cc</fileName>
+                  </fileNames>
+                </source>
+              </sources>
+              <linkerStartOptions>
+                <linkerStartOption>-dynamiclib -arch x86_64 -v
+                  -L/usr/local/lib -lc++ -ljxl -ljxl_threads</linkerStartOption>
+              </linkerStartOptions>
+              <linkerFinalName/>
+            </configuration>
+            <executions>
+              <execution>
+                <id>test-dylib</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>compile</goal>
+                  <goal>link</goal>
+                </goals>
+                <configuration>
+                  <linkerEndOptions>
+                    <linkerEndOption>-o ${project.build.testOutputDirectory}/libjxlwrapper.dylib</linkerEndOption>
+                  </linkerEndOptions>
+                </configuration>
+              </execution>
+              <execution>
+                <id>dylib</id>
+                <phase>compile</phase>
+                <goals>
+                  <goal>compile</goal>
+                  <goal>link</goal>
+                </goals>
+                <configuration>
+                  <linkerEndOptions>
+                    <linkerEndOption>-o ${project.build.directory}/libjxlwrapper-${project.version}.dylib</linkerEndOption>
+                  </linkerEndOptions>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
       <!-- mvn -P jnaerator jnaerator:generate -->
       <id>jnaerator</id>
       <build>
@@ -55,6 +134,7 @@
         <configuration>
           <argLine>
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
+            -Djava.library.path=${project.build.testOutputDirectory}
           </argLine>
           <trimStackTrace>false</trimStackTrace>
         </configuration>

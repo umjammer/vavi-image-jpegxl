@@ -16,3 +16,7 @@ based on https://github.com/Dwedit/JxlSharp/blob/main/JxlSharp/JXL.cs
 * install `libjxl` e.g `brew jpeg-xl`
 * https://jitpack.io/#umjammer/vavi-image-jpegxl
 * add `-Djna.library.path=/usr/local/lib` for jvm args
+
+## References
+
+ * https://github.com/libjxl/libjxl/tree/v0.6.x/tools/jni/org/jpeg/jpegxl/wrapper (jni!!!)
