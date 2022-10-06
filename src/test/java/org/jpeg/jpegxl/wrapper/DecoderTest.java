@@ -7,7 +7,6 @@ package org.jpeg.jpegxl.wrapper;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.ScrollPane;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
@@ -140,6 +139,8 @@ Debug.println("decoded: " + imageData.pixels.capacity());
         byte[] raster = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
 Debug.println("raster: " + raster.length);
 //        decoded.get(raster);
+        // TODO i don't wanna do this.
+        //  but using JXL_BIG_ENDIAN at decoder_jni.cc#ToPixelFormat doesn't work (nothing changes)
         int p = 0;
         for (int y = 0; y < imageData.height; y++) {
             for (int x = 0; x < imageData.width; x++) {
