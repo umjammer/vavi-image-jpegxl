@@ -34,3 +34,8 @@ https://github.com/umjammer/vavi-image-jpegxl/wiki/How-To-Install
  * https://github.com/libjxl/libjxl
  * https://github.com/Dwedit/JxlSharp/blob/main/JxlSharp/JXL.cs
  * https://github.com/libjxl/libjxl/tree/v0.6.x/tools/jni/org/jpeg/jpegxl/wrapper (jni!!!)
+
+## TODO
+
+ * jna version doesn't work well
+   * different result per every execution (maybe memory related?) 

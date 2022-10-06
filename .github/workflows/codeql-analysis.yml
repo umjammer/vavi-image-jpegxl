@@ -17,7 +17,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     strategy:
       fail-fast: false
@@ -63,6 +63,7 @@ jobs:
 
     - name: Autobuild
       run: |
+        brew install jpeg-xl
         mvn -B install --file pom.xml
 
     - name: Perform CodeQL Analysis
