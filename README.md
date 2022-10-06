@@ -13,9 +13,21 @@ based on https://github.com/libjxl/libjxl/blob/v0.6.x/examples/
 
 ## Install
 
-* install `libjxl` version 0.6.1, e.g `brew jpeg-xl`
-* https://jitpack.io/#umjammer/vavi-image-jpegxl
-* add `-Djna.library.path=/usr/local/lib` for jvm args
+### maven
+
+* repository
+
+https://jitpack.io/#umjammer/vavi-image-jpegxl
+
+* dylib
+
+https://github.com/umjammer/vavi-image-jpegxl/wiki/How-To-Install
+
+* jvm option
+
+```
+      -Djava.library.path=${project.build.testOutputDirectory}              # for AppleScriptEngine
+```
 
 ## References
 

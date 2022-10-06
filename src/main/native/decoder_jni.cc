@@ -44,6 +44,8 @@ constexpr const size_t kLastPixelFormat = 3;
 constexpr const size_t kNoPixelFormat = static_cast<size_t>(-1);
 
 JxlPixelFormat ToPixelFormat(size_t pixel_format) {
+//fprintf(stderr, "pixel_format: %d\n", pixel_format);
+//fflush(stderr);
   if (pixel_format == 0) {
     // RGBA, 4 x byte per pixel, no scanline padding.
     return {/*num_channels=*/4, JXL_TYPE_UINT8, JXL_LITTLE_ENDIAN, /*align=*/0};

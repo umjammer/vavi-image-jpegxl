@@ -7,15 +7,19 @@ package org.jpeg.jpegxl.wrapper;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.ScrollPane;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.File;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
@@ -26,6 +30,9 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
+/**
+ * jni
+ */
 public class DecoderTest {
 
     private static final int SIMPLE_IMAGE_DIM = 1024;
@@ -144,6 +151,11 @@ Debug.println("raster: " + raster.length);
             }
         }
 
+        show(image);
+    }
+
+    /** */
+    private void show(BufferedImage image) {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel() {
             public void paintComponent(Graphics g) {
@@ -151,11 +163,34 @@ Debug.println("raster: " + raster.length);
             }
         };
         panel.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
-        frame.setContentPane(panel);
+        frame.setContentPane(new JScrollPane(panel));
         frame.setTitle("JPEG XL");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         while (true) Thread.yield();
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
+    void test2() throws Exception {
+        String file = "src/test/resources/test2.jxl";
+
+        ImageReader ir = ImageIO.getImageReadersByFormatName("jpegxl").next();
+        ImageInputStream iis = ImageIO.createImageInputStream(Files.newInputStream(Paths.get(file)));
+        ir.setInput(iis);
+        BufferedImage image = ir.read(0);
+
+        show(image);
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
+    void test3() throws Exception {
+        String file = "src/test/resources/test.jxl";
+
+        BufferedImage image = ImageIO.read(new File(file));
+
+        show(image);
     }
 }

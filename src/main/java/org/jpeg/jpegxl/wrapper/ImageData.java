@@ -10,11 +10,11 @@ import java.nio.Buffer;
 
 /** POJO that contains necessary image data (dimensions, pixels,...). */
 public class ImageData {
-    final int width;
-    final int height;
-    final Buffer pixels;
-    final Buffer icc;
-    final PixelFormat pixelFormat;
+    public final int width;
+    public final int height;
+    public final Buffer pixels;
+    public final Buffer icc;
+    public final PixelFormat pixelFormat;
 
     ImageData(int width, int height, Buffer pixels, Buffer icc, PixelFormat pixelFormat) {
         this.width = width;

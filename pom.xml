@@ -11,6 +11,13 @@
     <jnaerator.version>0.12</jnaerator.version>
   </properties>
 
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/umjammer/vavi-image-jpegxl</url>
+    </repository>
+  </distributionManagement>
+
   <profiles>
     <profile>
       <id>local (not on jitpack)</id>
@@ -87,6 +94,70 @@
               </execution>
             </executions>
           </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-install-plugin</artifactId>
+            <version>3.0.0-M1</version>
+            <executions>
+              <execution>
+                <id>install-library</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>install-file</goal>
+                </goals>
+                <configuration>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>${project.artifactId}</artifactId>
+                  <version>${project.version}</version>
+                  <packaging>dylib</packaging>
+                  <file>${project.build.directory}/libjxlwrapper-${project.version}.dylib</file>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>3.0.0-M2</version>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <!-- because of maven deploy-file uploads source, jar also -->
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.6.0</version>
+            <executions>
+              <execution>
+                <id>deploy-library</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>mvn</executable>
+                  <arguments>
+                    <argument>deploy:deploy-file</argument>
+                    <argument>-DgroupId=${project.groupId}</argument>
+                    <argument>-DartifactId=${project.artifactId}</argument>
+                    <argument>-Dversion=${project.version}</argument>
+                    <argument>-Dpackaging=dylib</argument>
+                    <argument>-Dfile=${project.build.directory}/libjxlwrapper-${project.version}.dylib</argument>
+                    <argument>-DrepositoryId=github</argument>
+                    <argument>-Durl=https://maven.pkg.github.com/umjammer/vavi-image-jpegxl</argument>
+                    <argument>-DgeneratePom=false</argument>
+                    <argument>-s</argument>
+                    <argument>${env.GITHUB_WORKSPACE}/settings.xml</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
         </plugins>
       </build>
     </profile>
@@ -164,8 +235,8 @@
   <dependencies>
     <dependency>
       <groupId>com.github.umjammer</groupId>
-      <artifactId>vavi-commons</artifactId>
-      <version>1.1.6</version>
+      <artifactId>vavi-image</artifactId>
+      <version>1.0.9</version>
     </dependency>
 
     <dependency>
