@@ -29,6 +29,12 @@ https://github.com/umjammer/vavi-image-jpegxl/wiki/How-To-Install
   -Djava.library.path=${project.build.testOutputDirectory}
 ```
 
+## Usage
+
+```java
+    BufferedImage image = ImageIO.read(Paths.get("/foo/baa.jxl").toFile());
+```
+
 ## References
 
  * https://github.com/libjxl/libjxl
