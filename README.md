@@ -26,7 +26,7 @@ https://github.com/umjammer/vavi-image-jpegxl/wiki/How-To-Install
 * jvm option
 
 ```
-      -Djava.library.path=${project.build.testOutputDirectory}              # for AppleScriptEngine
+  -Djava.library.path=${project.build.testOutputDirectory}
 ```
 
 ## References

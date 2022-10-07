@@ -110,7 +110,9 @@ public class JpegXL {
         try {
             JxlBasicInfo.ByReference basicInfo = new JxlBasicInfo.ByReference();
             canTranscodeToJpeg[0] = false;
-            int status = DecodeLibrary.INSTANCE.JxlDecoderSetInput(decoder, data, data.length);
+            ByteBuffer bb = ByteBuffer.allocateDirect(data.length);
+            bb.put(data);
+            int status = DecodeLibrary.INSTANCE.JxlDecoderSetInput(decoder, Native.getDirectBufferPointer(bb), bb.capacity());
             if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                 throw new IllegalStateException("JxlDecoderSetInput: " + status);
             }
@@ -254,7 +256,9 @@ Debug.println("status is JXL_DEC_BASIC_INFO");
         }
 DecodeLibrary.INSTANCE.JxlDecoderReset(decoder);
         try {
-            int status = DecodeLibrary.INSTANCE.JxlDecoderSetInput(decoder, data, data.length);
+            ByteBuffer bb = ByteBuffer.allocateDirect(data.length);
+            bb.put(data);
+            int status = DecodeLibrary.INSTANCE.JxlDecoderSetInput(decoder, Native.getDirectBufferPointer(bb), bb.capacity());
             if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                 throw new IllegalStateException("JxlDecoderSetInput: " + status);
             }
@@ -330,7 +334,7 @@ Debug.println("status is JXL_DEC_COLOR_ENCODING");
                     status = DecodeLibrary.INSTANCE.JxlDecoderGetColorAsICCProfile(
                             decoder, pixelFormat,
                             DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA,
-                            icc_profile, icc_profile.capacity());
+                            Native.getDirectBufferPointer(icc_profile), icc_profile.capacity());
                     if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                         throw new IllegalStateException("JxlDecoderGetColorAsICCProfile: " + status);
                     }
@@ -417,12 +421,13 @@ Debug.println(basicInfo);
      * @return The resulting com.sun.imageio.plugins.jpeg.JPEG bytes on success, otherwise returns null
      */
     public byte[] transcodeJxlToJpeg(byte[] jxlBytes) {
-        byte[] buffer = new byte[0];
+        ByteBuffer buffer = null;
         int outputPosition = 0;
-        //byte[] buffer = new byte[1024 * 1024];
         PointerByReference jxlDecoder = DecodeLibrary.INSTANCE.JxlDecoderCreate(null);
         try {
-            DecodeLibrary.INSTANCE.JxlDecoderSetInput(jxlDecoder, jxlBytes, jxlBytes.length);
+            ByteBuffer bb = ByteBuffer.allocateDirect(jxlBytes.length);
+            bb.put(jxlBytes);
+            DecodeLibrary.INSTANCE.JxlDecoderSetInput(jxlDecoder, Native.getDirectBufferPointer(bb), bb.capacity());
             JxlBasicInfo.ByReference basicInfo = new JxlBasicInfo.ByReference();
             boolean[] canTranscodeToJpeg = new boolean[1];
             DecodeLibrary.INSTANCE.JxlDecoderSubscribeEvents(jxlDecoder, DecodeLibrary.JxlDecoderStatus.JXL_DEC_BASIC_INFO | DecodeLibrary.JxlDecoderStatus.JXL_DEC_JPEG_RECONSTRUCTION | DecodeLibrary.JxlDecoderStatus.JXL_DEC_FRAME | DecodeLibrary.JxlDecoderStatus.JXL_DEC_FULL_IMAGE);
@@ -432,30 +437,32 @@ Debug.println(basicInfo);
                     status = DecodeLibrary.INSTANCE.JxlDecoderGetBasicInfo(jxlDecoder, /*out*/ basicInfo);
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_JPEG_RECONSTRUCTION) {
                     canTranscodeToJpeg[0] = true;
-                    buffer = new byte[1024 * 1024];
-                    DecodeLibrary.INSTANCE.JxlDecoderSetJPEGBuffer(jxlDecoder, ByteBuffer.wrap(buffer), outputPosition);
+                    buffer = ByteBuffer.allocateDirect(1024 * 1024);
+                    DecodeLibrary.INSTANCE.JxlDecoderSetJPEGBuffer(jxlDecoder, Native.getDirectBufferPointer(buffer), outputPosition);
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_NEED_PREVIEW_OUT_BUFFER) {
-                    outputPosition += buffer.length - DecodeLibrary.INSTANCE.JxlDecoderReleaseJPEGBuffer(jxlDecoder);
-                    byte[] nextBuffer = new byte[buffer.length * 4];
+                    outputPosition += buffer.capacity() - DecodeLibrary.INSTANCE.JxlDecoderReleaseJPEGBuffer(jxlDecoder);
+                    ByteBuffer nextBuffer = ByteBuffer.allocateDirect(buffer.capacity() * 4);
                     if (outputPosition > 0) {
                         System.arraycopy(buffer, 0, nextBuffer, 0, outputPosition);
                     }
                     buffer = nextBuffer;
-                    DecodeLibrary.INSTANCE.JxlDecoderSetJPEGBuffer(jxlDecoder, ByteBuffer.wrap(buffer), outputPosition);
+                    DecodeLibrary.INSTANCE.JxlDecoderSetJPEGBuffer(jxlDecoder, Native.getDirectBufferPointer(buffer), outputPosition);
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_FRAME) {
                     //if (!canTranscodeToJpeg) {
                     //	return null;
                     //}
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
-                    outputPosition += buffer.length - DecodeLibrary.INSTANCE.JxlDecoderReleaseJPEGBuffer(jxlDecoder);
-                    byte[] jpegBytes;
-                    if (buffer.length == outputPosition) {
+                    outputPosition += buffer.capacity() - DecodeLibrary.INSTANCE.JxlDecoderReleaseJPEGBuffer(jxlDecoder);
+                    ByteBuffer jpegBytes;
+                    if (buffer.capacity() == outputPosition) {
                         jpegBytes = buffer;
                     } else {
-                        jpegBytes = new byte[outputPosition];
+                        jpegBytes = ByteBuffer.allocateDirect(outputPosition);
                         System.arraycopy(buffer, 0, jpegBytes, 0, outputPosition);
                     }
-                    return jpegBytes;
+                    byte[] bytes = new byte[buffer.capacity()];
+                    buffer.get(bytes);
+                    return bytes;
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_NEED_IMAGE_OUT_BUFFER) {
                     return null;
                 } else if (status >= DecodeLibrary.JxlDecoderStatus.JXL_DEC_ERROR && status < DecodeLibrary.JxlDecoderStatus.JXL_DEC_BASIC_INFO) {

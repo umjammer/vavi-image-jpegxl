@@ -326,6 +326,8 @@ public interface DecodeLibrary extends Library {
 	 * <i>native declaration : jxl/decode.h:278</i>
 	 */
 	int JxlDecoderSetParallelRunner(PointerByReference dec, Pointer parallel_runner, Pointer parallel_runner_opaque);
+	@Deprecated
+	int JxlDecoderSetParallelRunner(Pointer dec, Pointer parallel_runner, Pointer parallel_runner_opaque);
 	/**
 	 * Returns a hint indicating how many more bytes the decoder is expected to<br>
 	 * need to make JxlDecoderGetBasicInfo available after the next<br>
