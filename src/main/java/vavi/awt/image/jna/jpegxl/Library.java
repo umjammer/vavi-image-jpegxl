@@ -3,6 +3,7 @@ package vavi.awt.image.jna.jpegxl;
 import com.sun.jna.Callback;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 
@@ -234,4 +235,18 @@ public interface Library extends com.sun.jna.Library {
 	 * Parallel runner internally using std::thread. Use as JxlParallelRunner.
 	 */
 	Pointer JxlResizableParallelRunner = JNA_NATIVE_LIB.getGlobalVariableAddress("JxlResizableParallelRunner");
+
+	/**
+	 * Creates the runner for JxlThreadParallelRunner. Use as the opaque
+	 * runner.
+	 */
+	Pointer JxlThreadParallelRunnerCreate(Pointer memory_manager, NativeLong num_worker_threads);
+    /**
+     * Destroys the runner created by JxlThreadParallelRunnerCreate.
+     */
+	void JxlThreadParallelRunnerDestroy(Pointer runner_opaque);
+	/**
+	 * Parallel runner internally using std::thread. Use as JxlParallelRunner.
+	 */
+	Pointer JxlThreadParallelRunner = JNA_NATIVE_LIB.getGlobalVariableAddress("JxlThreadParallelRunner");
 }

@@ -19,8 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.sun.jna.Native;
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
-import com.sun.jna.ptr.LongByReference;
+import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import vavi.awt.image.jna.jpegxl.JxlBasicInfo;
 import vavi.awt.image.jna.jpegxl.JxlPixelFormat;
@@ -47,6 +48,7 @@ public class Test2 {
 
         // Multi-threaded parallel runner.
         Pointer runner = Library.INSTANCE.JxlResizableParallelRunnerCreate(null);
+//        Pointer runner = Library.INSTANCE.JxlThreadParallelRunnerCreate(null, null);
 Debug.println("runner: " + runner);
 
         PointerByReference dec = DecodeLibrary.INSTANCE.JxlDecoderCreate(null);
@@ -61,8 +63,10 @@ Debug.println("dec: " + dec);
         }
 try {
 Debug.println("JxlResizableParallelRunner: " + Library.JxlResizableParallelRunner);
+//Debug.println("JxlThreadParallelRunner: " + Library.JxlThreadParallelRunner);
         status = DecodeLibrary.INSTANCE.JxlDecoderSetParallelRunner(dec,
             Library.JxlResizableParallelRunner,
+//            Library.JxlThreadParallelRunner,
             runner);
         if (DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS != status) {
             throw new IllegalStateException("JxlDecoderSetParallelRunner failed: " + status);
@@ -75,7 +79,7 @@ Debug.println("JxlResizableParallelRunner: " + Library.JxlResizableParallelRunne
 
         ByteBuffer bbs = ByteBuffer.allocateDirect(jxl.length);
         bbs.put(jxl);
-        DecodeLibrary.INSTANCE.JxlDecoderSetInput(dec, Native.getDirectBufferPointer(bbs), bbs.capacity());
+        DecodeLibrary.INSTANCE.JxlDecoderSetInput(dec, Native.getDirectBufferPointer(bbs), new NativeLong(bbs.capacity()));
 
         ByteBuffer pixels = null;
         int xsize = 0;
@@ -104,33 +108,33 @@ Debug.printf("size: %dx%d", xsize, ysize);
             } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_COLOR_ENCODING) {
 Debug.printf("JXL_DEC_COLOR_ENCODING");
                 // Get the ICC color profile of the pixel data
-                LongByReference icc_size = new LongByReference();
+                NativeLongByReference icc_size = new NativeLongByReference();
                 status = DecodeLibrary.INSTANCE.JxlDecoderGetICCProfileSize(
                         dec, format,
                         DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA, icc_size);
                 if (DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS != status) {
                     throw new IllegalStateException("JxlDecoderGetICCProfileSize failed: " + status);
                 }
-                ByteBuffer icc_profile = ByteBuffer.allocateDirect((int) icc_size.getValue());
+                ByteBuffer icc_profile = ByteBuffer.allocateDirect(icc_size.getValue().intValue());
 Debug.printf("icc_profile: " + icc_profile.capacity());
                 status = DecodeLibrary.INSTANCE.JxlDecoderGetColorAsICCProfile(
                         dec, format,
                         DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA,
-                        Native.getDirectBufferPointer(icc_profile), icc_profile.capacity());
+                        Native.getDirectBufferPointer(icc_profile), new NativeLong(icc_profile.capacity()));
                 if (DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS != status) {
                     throw new IllegalStateException("JxlDecoderGetColorAsICCProfile failed: " + status);
                 }
             } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_NEED_IMAGE_OUT_BUFFER) {
 Debug.printf("JXL_DEC_NEED_IMAGE_OUT_BUFFER");
-                LongByReference buffer_size = new LongByReference();
+                NativeLongByReference buffer_size = new NativeLongByReference();
                 status = DecodeLibrary.INSTANCE.JxlDecoderImageOutBufferSize(dec, format, buffer_size);
                 if (DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS != status) {
                     throw new IllegalStateException("JxlDecoderImageOutBufferSize failed: " + status);
                 }
 Debug.printf("buffer_size: " + (buffer_size.getValue()));
-                if (buffer_size.getValue() != (long) xsize * ysize * format.num_channels * bytes) {
+                if (buffer_size.getValue().intValue() != (long) xsize * ysize * format.num_channels * bytes) {
                     String sizes = String.format("%d, %d",
-                            buffer_size.getValue(), (long) xsize * ysize * format.num_channels * bytes);
+                            buffer_size.getValue().intValue(), (long) xsize * ysize * format.num_channels * bytes);
 Debug.printf("sizes: " + sizes);
 //                    throw new IllegalStateException("Invalid out buffer size " + sizes);
                 }
@@ -139,7 +143,7 @@ Debug.printf("sizes: " + sizes);
                 int pixels_buffer_size = pixels.capacity() * bytes;
                 status = DecodeLibrary.INSTANCE.JxlDecoderSetImageOutBuffer(
                         dec, format,
-                        pixels_buffer, pixels_buffer_size);
+                        pixels_buffer, new NativeLong(pixels_buffer_size));
                 if (DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS != status) {
                     throw new IllegalStateException("JxlDecoderSetImageOutBuffer failed: " + status);
                 }
@@ -190,6 +194,7 @@ Debug.printf("pixel: " + pixels.capacity() + ", " + pixels.limit());
 } finally {
         DecodeLibrary.INSTANCE.JxlDecoderDestroy(dec);
         Library.INSTANCE.JxlResizableParallelRunnerDestroy(runner);
+//        Library.INSTANCE.JxlThreadParallelRunnerDestroy(runner);
 }
     }
 }

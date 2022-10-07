@@ -19,8 +19,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import com.sun.jna.Native;
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
-import com.sun.jna.ptr.LongByReference;
+import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import vavi.awt.image.jna.jpegxl.JxlBasicInfo;
 import vavi.awt.image.jna.jpegxl.JxlColorEncoding;
@@ -112,7 +113,7 @@ public class JpegXL {
             canTranscodeToJpeg[0] = false;
             ByteBuffer bb = ByteBuffer.allocateDirect(data.length);
             bb.put(data);
-            int status = DecodeLibrary.INSTANCE.JxlDecoderSetInput(decoder, Native.getDirectBufferPointer(bb), bb.capacity());
+            int status = DecodeLibrary.INSTANCE.JxlDecoderSetInput(decoder, Native.getDirectBufferPointer(bb), new NativeLong(bb.capacity()));
             if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                 throw new IllegalStateException("JxlDecoderSetInput: " + status);
             }
@@ -258,7 +259,7 @@ DecodeLibrary.INSTANCE.JxlDecoderReset(decoder);
         try {
             ByteBuffer bb = ByteBuffer.allocateDirect(data.length);
             bb.put(data);
-            int status = DecodeLibrary.INSTANCE.JxlDecoderSetInput(decoder, Native.getDirectBufferPointer(bb), bb.capacity());
+            int status = DecodeLibrary.INSTANCE.JxlDecoderSetInput(decoder, Native.getDirectBufferPointer(bb), new NativeLong(bb.capacity()));
             if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                 throw new IllegalStateException("JxlDecoderSetInput: " + status);
             }
@@ -286,7 +287,7 @@ Debug.println("status is JXL_DEC_FRAME: stride: " + stride);
                     pixelFormat.num_channels = bytesPerPixel;
                     pixelFormat.align = stride;
 
-LongByReference buffer_size = new LongByReference();
+NativeLongByReference buffer_size = new NativeLongByReference();
 status = DecodeLibrary.INSTANCE.JxlDecoderImageOutBufferSize(decoder, pixelFormat, buffer_size);
 Debug.println("min: " + buffer_size.getValue());
 
@@ -294,7 +295,7 @@ Debug.println("min: " + buffer_size.getValue());
                     Pointer fbp = Native.getDirectBufferPointer(fb);
 Debug.println("buffer: bb: " + fb.capacity() + ", w*h*4: " + width * height * 4 + ", bytesPerPixel: " + bytesPerPixel);
 
-                    status = DecodeLibrary.INSTANCE.JxlDecoderSetImageOutBuffer(decoder, pixelFormat, fbp, fb.capacity() * Float.BYTES);
+                    status = DecodeLibrary.INSTANCE.JxlDecoderSetImageOutBuffer(decoder, pixelFormat, fbp, new NativeLong(fb.capacity() * Float.BYTES));
                     if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                         throw new IllegalStateException("JxlDecoderSetImageOutBuffer: " + status);
                     }
@@ -323,37 +324,37 @@ Debug.println("buffer: bb: " + fb.capacity() + ", w*h*4: " + width * height * 4 
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_COLOR_ENCODING) {
 Debug.println("status is JXL_DEC_COLOR_ENCODING");
                     // Get the ICC color profile of the pixel data
-                    LongByReference icc_size = new LongByReference();
+                    NativeLongByReference icc_size = new NativeLongByReference();
                     status = DecodeLibrary.INSTANCE.JxlDecoderGetICCProfileSize(
                             decoder, pixelFormat, DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA, icc_size);
                     if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                         throw new IllegalStateException("JxlDecoderGetICCProfileSize: " + status);
                     }
 
-                    ByteBuffer icc_profile = ByteBuffer.allocateDirect((int) icc_size.getValue());
+                    ByteBuffer icc_profile = ByteBuffer.allocateDirect(icc_size.getValue().intValue());
                     status = DecodeLibrary.INSTANCE.JxlDecoderGetColorAsICCProfile(
                             decoder, pixelFormat,
                             DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA,
-                            Native.getDirectBufferPointer(icc_profile), icc_profile.capacity());
+                            Native.getDirectBufferPointer(icc_profile), new NativeLong(icc_profile.capacity()));
                     if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                         throw new IllegalStateException("JxlDecoderGetColorAsICCProfile: " + status);
                     }
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_NEED_IMAGE_OUT_BUFFER) {
 Debug.println("status is JXL_DEC_NEED_IMAGE_OUT_BUFFER");
-                    LongByReference buffer_size = new LongByReference();
+                    NativeLongByReference buffer_size = new NativeLongByReference();
                     status = DecodeLibrary.INSTANCE.JxlDecoderImageOutBufferSize(decoder, pixelFormat, buffer_size);
                     if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                         throw new IllegalStateException("JxlDecoderImageOutBufferSize: " + status);
                     }
-                    if (buffer_size.getValue() != basicInfo.xsize * basicInfo.ysize * 16L) {
+                    if (buffer_size.getValue().intValue() != basicInfo.xsize * basicInfo.ysize * 16L) {
                         throw new IllegalStateException(String.format("Invalid out buffer size %d %d\n",
-                                buffer_size.getValue(), basicInfo.xsize * basicInfo.ysize * 16));
+                                buffer_size.getValue().intValue(), basicInfo.xsize * basicInfo.ysize * 16));
                     }
 
                     FloatBuffer pixels = ByteBuffer.allocateDirect(basicInfo.xsize * basicInfo.ysize * 4 * Float.BYTES).asFloatBuffer();
                     Pointer pixels_buffer = Native.getDirectBufferPointer(pixels);
                     int pixels_buffer_size = pixels.capacity() * Float.BYTES;
-                    status = DecodeLibrary.INSTANCE.JxlDecoderSetImageOutBuffer(decoder, pixelFormat, pixels_buffer, pixels_buffer_size);
+                    status = DecodeLibrary.INSTANCE.JxlDecoderSetImageOutBuffer(decoder, pixelFormat, pixels_buffer, new NativeLong(pixels_buffer_size));
                     if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                         throw new IllegalStateException("JxlDecoderSetImageOutBuffer: " + status);
                     }
@@ -427,7 +428,7 @@ Debug.println(basicInfo);
         try {
             ByteBuffer bb = ByteBuffer.allocateDirect(jxlBytes.length);
             bb.put(jxlBytes);
-            DecodeLibrary.INSTANCE.JxlDecoderSetInput(jxlDecoder, Native.getDirectBufferPointer(bb), bb.capacity());
+            DecodeLibrary.INSTANCE.JxlDecoderSetInput(jxlDecoder, Native.getDirectBufferPointer(bb), new NativeLong(bb.capacity()));
             JxlBasicInfo.ByReference basicInfo = new JxlBasicInfo.ByReference();
             boolean[] canTranscodeToJpeg = new boolean[1];
             DecodeLibrary.INSTANCE.JxlDecoderSubscribeEvents(jxlDecoder, DecodeLibrary.JxlDecoderStatus.JXL_DEC_BASIC_INFO | DecodeLibrary.JxlDecoderStatus.JXL_DEC_JPEG_RECONSTRUCTION | DecodeLibrary.JxlDecoderStatus.JXL_DEC_FRAME | DecodeLibrary.JxlDecoderStatus.JXL_DEC_FULL_IMAGE);
@@ -438,7 +439,7 @@ Debug.println(basicInfo);
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_JPEG_RECONSTRUCTION) {
                     canTranscodeToJpeg[0] = true;
                     buffer = ByteBuffer.allocateDirect(1024 * 1024);
-                    DecodeLibrary.INSTANCE.JxlDecoderSetJPEGBuffer(jxlDecoder, Native.getDirectBufferPointer(buffer), outputPosition);
+                    DecodeLibrary.INSTANCE.JxlDecoderSetJPEGBuffer(jxlDecoder, Native.getDirectBufferPointer(buffer), new NativeLong(outputPosition));
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_NEED_PREVIEW_OUT_BUFFER) {
                     outputPosition += buffer.capacity() - DecodeLibrary.INSTANCE.JxlDecoderReleaseJPEGBuffer(jxlDecoder);
                     ByteBuffer nextBuffer = ByteBuffer.allocateDirect(buffer.capacity() * 4);
@@ -446,7 +447,7 @@ Debug.println(basicInfo);
                         System.arraycopy(buffer, 0, nextBuffer, 0, outputPosition);
                     }
                     buffer = nextBuffer;
-                    DecodeLibrary.INSTANCE.JxlDecoderSetJPEGBuffer(jxlDecoder, Native.getDirectBufferPointer(buffer), outputPosition);
+                    DecodeLibrary.INSTANCE.JxlDecoderSetJPEGBuffer(jxlDecoder, Native.getDirectBufferPointer(buffer), new NativeLong(outputPosition));
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_FRAME) {
                     //if (!canTranscodeToJpeg) {
                     //	return null;
