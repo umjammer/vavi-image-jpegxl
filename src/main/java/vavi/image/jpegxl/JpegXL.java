@@ -285,7 +285,7 @@ Debug.println("status is JXL_DEC_FRAME: stride: " + stride);
                     pixelFormat.data_type = Library.JxlDataType.JXL_TYPE_UINT8;
                     pixelFormat.endianness = Library.JxlEndianness.JXL_NATIVE_ENDIAN;
                     pixelFormat.num_channels = bytesPerPixel;
-                    pixelFormat.align = stride;
+                    pixelFormat.align = new NativeLong(stride);
 
 NativeLongByReference buffer_size = new NativeLongByReference();
 status = DecodeLibrary.INSTANCE.JxlDecoderImageOutBufferSize(decoder, pixelFormat, buffer_size);
@@ -441,7 +441,7 @@ Debug.println(basicInfo);
                     buffer = ByteBuffer.allocateDirect(1024 * 1024);
                     DecodeLibrary.INSTANCE.JxlDecoderSetJPEGBuffer(jxlDecoder, Native.getDirectBufferPointer(buffer), new NativeLong(outputPosition));
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_NEED_PREVIEW_OUT_BUFFER) {
-                    outputPosition += buffer.capacity() - DecodeLibrary.INSTANCE.JxlDecoderReleaseJPEGBuffer(jxlDecoder);
+                    outputPosition += buffer.capacity() - DecodeLibrary.INSTANCE.JxlDecoderReleaseJPEGBuffer(jxlDecoder).intValue();
                     ByteBuffer nextBuffer = ByteBuffer.allocateDirect(buffer.capacity() * 4);
                     if (outputPosition > 0) {
                         System.arraycopy(buffer, 0, nextBuffer, 0, outputPosition);
@@ -453,7 +453,7 @@ Debug.println(basicInfo);
                     //	return null;
                     //}
                 } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
-                    outputPosition += buffer.capacity() - DecodeLibrary.INSTANCE.JxlDecoderReleaseJPEGBuffer(jxlDecoder);
+                    outputPosition += buffer.capacity() - DecodeLibrary.INSTANCE.JxlDecoderReleaseJPEGBuffer(jxlDecoder).intValue();
                     ByteBuffer jpegBytes;
                     if (buffer.capacity() == outputPosition) {
                         jpegBytes = buffer;
@@ -488,7 +488,7 @@ Debug.println(basicInfo);
         try {
             int status = EncodeLibrary.INSTANCE.JxlEncoderStoreJPEGMetadata(encoder, Library.JXL_TRUE);
             PointerByReference options = EncodeLibrary.INSTANCE.JxlEncoderOptionsCreate(encoder, null);
-            status = EncodeLibrary.INSTANCE.JxlEncoderAddJPEGFrame(options, jpegBytes, jpegBytes.length);
+            status = EncodeLibrary.INSTANCE.JxlEncoderAddJPEGFrame(options, jpegBytes, new NativeLong(jpegBytes.length));
             EncodeLibrary.INSTANCE.JxlEncoderCloseInput(encoder);
             status = processOutput(encoder);
             if (status == EncodeLibrary.JxlEncoderStatus.JXL_ENC_SUCCESS) {
@@ -612,7 +612,7 @@ Debug.println(basicInfo);
             ByteBuffer bb = ByteBuffer.allocateDirect(bitmapCopy.length);
             bb.put(bitmapCopy);
             Pointer p = Native.getDirectBufferPointer(bb);
-            status = EncodeLibrary.INSTANCE.JxlEncoderAddImageFrame(options, pixelFormat, p, bitmapCopy.length);
+            status = EncodeLibrary.INSTANCE.JxlEncoderAddImageFrame(options, pixelFormat, p, new NativeLong(bitmapCopy.length));
             EncodeLibrary.INSTANCE.JxlEncoderCloseInput(encoder);
             status = processOutput(encoder);
             byte[] bytes = null;
@@ -630,14 +630,14 @@ Debug.println(basicInfo);
         ByteBuffer compressed = ByteBuffer.allocateDirect(64);
 
         int next_out = 0;
-        long[] avail_out = new long[] { compressed.capacity() };
+        NativeLongByReference avail_out = new NativeLongByReference(new NativeLong(compressed.capacity()));
         int status = EncodeLibrary.JxlEncoderStatus.JXL_ENC_NEED_MORE_OUTPUT;
         while (status == EncodeLibrary.JxlEncoderStatus.JXL_ENC_NEED_MORE_OUTPUT) {
             PointerByReference p1 = new PointerByReference(Native.getDirectBufferPointer(compressed).getPointer(next_out));
             status = EncodeLibrary.INSTANCE.JxlEncoderProcessOutput(encoder, p1, avail_out);
             if (status == EncodeLibrary.JxlEncoderStatus.JXL_ENC_NEED_MORE_OUTPUT) {
                 compressed = ByteBuffer.allocateDirect(compressed.capacity() * 2);
-                avail_out[0] = compressed.capacity() - next_out;
+                avail_out.setValue(new NativeLong(compressed.capacity() - next_out));
             }
         }
         return status;

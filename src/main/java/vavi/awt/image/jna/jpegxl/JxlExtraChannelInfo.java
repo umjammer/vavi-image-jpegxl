@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class JxlExtraChannelInfo extends Structure {
 	/**
-	 * @see JxlExtraChannelType<br>
+	 * @see Library.JxlExtraChannelType
 	 * C type : JxlExtraChannelType
 	 */
 	public int type;
@@ -24,7 +24,6 @@ public class JxlExtraChannelInfo extends Structure {
 	public float[] spot_color = new float[4];
 	public int cfa_channel;
 	public JxlExtraChannelInfo() {
-		super();
 	}
 	protected List<String> getFieldOrder() {
 		return Arrays.asList("type", "bits_per_sample", "exponent_bits_per_sample", "dim_shift", "name_length", "alpha_premultiplied", "spot_color", "cfa_channel");
@@ -35,7 +34,6 @@ public class JxlExtraChannelInfo extends Structure {
 	 * @param spot_color C type : float[4]
 	 */
 	public JxlExtraChannelInfo(int type, int bits_per_sample, int exponent_bits_per_sample, int dim_shift, int name_length, int alpha_premultiplied, float spot_color[], int cfa_channel) {
-		super();
 		this.type = type;
 		this.bits_per_sample = bits_per_sample;
 		this.exponent_bits_per_sample = exponent_bits_per_sample;
@@ -51,9 +49,7 @@ public class JxlExtraChannelInfo extends Structure {
 		super(peer);
 	}
 	public static class ByReference extends JxlExtraChannelInfo implements Structure.ByReference {
-		
-	};
+	}
 	public static class ByValue extends JxlExtraChannelInfo implements Structure.ByValue {
-		
-	};
+	}
 }

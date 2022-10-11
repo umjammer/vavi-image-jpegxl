@@ -43,7 +43,7 @@ public class Test2 {
      */
     public static void main(String[] args) throws Exception{
 //        String file = args[0];
-        String file = "src/test/resources/test.jxl";
+        String file = "src/test/resources/test2.jxl";
         byte[] jxl = Files.readAllBytes(Paths.get(file));
 
         // Multi-threaded parallel runner.
@@ -74,7 +74,7 @@ Debug.println("JxlResizableParallelRunner: " + Library.JxlResizableParallelRunne
 
         JxlBasicInfo.ByReference info = new JxlBasicInfo.ByReference();
         // 8-bit integer with 4-channel RGBA
-        JxlPixelFormat format = new JxlPixelFormat(4, Library.JxlDataType.JXL_TYPE_UINT8, Library.JxlEndianness.JXL_LITTLE_ENDIAN, 0);
+        JxlPixelFormat format = new JxlPixelFormat(4, Library.JxlDataType.JXL_TYPE_UINT8, Library.JxlEndianness.JXL_LITTLE_ENDIAN, new NativeLong(0));
         int bytes = format.necessaryBytes();
 
         ByteBuffer bbs = ByteBuffer.allocateDirect(jxl.length);
@@ -186,7 +186,7 @@ Debug.printf("pixel: " + pixels.capacity() + ", " + pixels.limit());
         };
         panel.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
         frame.setContentPane(new JScrollPane(panel));
-        frame.setTitle("JPEG XL");
+        frame.setTitle("JPEG XL (JNA)");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

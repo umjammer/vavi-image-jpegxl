@@ -1,6 +1,6 @@
 -I /usr/local/src/aom/aom
 
--root vavi.awt.image.jna
+-root vavi.awt.image.jna.jpegxl
 
 //-parseInOneChunk
 -runtime JNA

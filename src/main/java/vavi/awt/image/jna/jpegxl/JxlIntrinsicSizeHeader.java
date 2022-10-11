@@ -2,7 +2,6 @@ package vavi.awt.image.jna.jpegxl;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 /**
  * <i>native declaration : jxl/codestream_header.h</i><br>
@@ -10,21 +9,23 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class JxlHeaderExtensions extends Structure {
-	public long extensions;
-	public JxlHeaderExtensions() {
+public class JxlIntrinsicSizeHeader extends Structure {
+	public int xsize;
+	public int ysize;
+	public JxlIntrinsicSizeHeader() {
 	}
 	protected List<String> getFieldOrder() {
-		return Collections.singletonList("extensions");
+		return Arrays.asList("xsize", "ysize");
 	}
-	public JxlHeaderExtensions(long extensions) {
-		this.extensions = extensions;
+	public JxlIntrinsicSizeHeader(int xsize, int ysize) {
+		this.xsize = xsize;
+		this.ysize = ysize;
 	}
-	public JxlHeaderExtensions(Pointer peer) {
+	public JxlIntrinsicSizeHeader(Pointer peer) {
 		super(peer);
 	}
-	public static class ByReference extends JxlHeaderExtensions implements Structure.ByReference {
+	public static class ByReference extends JxlIntrinsicSizeHeader implements Structure.ByReference {
 	}
-	public static class ByValue extends JxlHeaderExtensions implements Structure.ByValue {
+	public static class ByValue extends JxlIntrinsicSizeHeader implements Structure.ByValue {
 	}
 }
