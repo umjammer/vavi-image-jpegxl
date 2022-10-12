@@ -46,3 +46,4 @@ https://github.com/umjammer/vavi-image-jpegxl/wiki/How-To-Install
  * ~~jna version doesn't work well~~ 0.7.0 works fine
    * ~~different result per every execution (maybe memory related?)~~ 
  * ~~brew updated to 0.7.0~~ done
+ * jna version spi

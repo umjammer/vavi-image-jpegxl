@@ -4,7 +4,7 @@
  * Programmed by Naohide Sano
  */
 
-package vavi.image.jpegxl;
+package vavi.image.jpegxl.obsolate;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

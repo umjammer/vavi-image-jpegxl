@@ -4,12 +4,11 @@
  * Programmed by Naohide Sano
  */
 
-package vavi.imageio.jpegxl;
+package vavi.imageio.jpegxl.jna;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.logging.Level;
 import javax.imageio.ImageReader;
@@ -31,9 +30,9 @@ import vavi.util.Debug;
 public class JpegXLImageReaderSpi extends ImageReaderSpi {
 
     private static final String VendorName = "https://github.com/umjammer/vavi-image-jpegxl";
-    private static final String Version = "0.0.1";
+    private static final String Version = "0.0.2";
     private static final String ReaderClassName =
-        "vavi.imageio.jpegxl.JpegXLImageReader";
+        "vavi.imageio.jpegxl.jna.JpegXLImageReader";
     private static final String[] Names = {
         "jpegxl", "JpegXL"
     };
