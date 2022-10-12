@@ -19,7 +19,6 @@ public class JxlMemoryManagerStruct extends Structure {
 	/** C type : jpegxl_free_func */
 	public jpegxl_free_func free;
 	public JxlMemoryManagerStruct() {
-		super();
 	}
 	protected List<String> getFieldOrder() {
 		return Arrays.asList("opaque", "alloc", "free");
@@ -30,7 +29,6 @@ public class JxlMemoryManagerStruct extends Structure {
 	 * @param free C type : jpegxl_free_func
 	 */
 	public JxlMemoryManagerStruct(Pointer opaque, jpegxl_alloc_func alloc, jpegxl_free_func free) {
-		super();
 		this.opaque = opaque;
 		this.alloc = alloc;
 		this.free = free;

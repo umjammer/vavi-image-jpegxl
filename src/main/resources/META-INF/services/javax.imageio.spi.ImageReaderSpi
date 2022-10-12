@@ -1,1 +1,2 @@
-vavi.imageio.jpegxl.JpegXLImageReaderSpi
+vavi.imageio.jpegxl.jna.JpegXLImageReaderSpi
+#vavi.imageio.jpegxl.jni.JpegXLImageReaderSpi

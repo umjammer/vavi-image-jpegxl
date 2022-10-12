@@ -13,6 +13,7 @@ import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -29,20 +30,15 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-/**
- * jni
- */
 public class DecoderTest {
 
     private static final int SIMPLE_IMAGE_DIM = 1024;
-
     // Base64: "/wr6H0GRCAYBAGAASzgkunkeVbaSBu95EXDn0e7ABz2ShAMA"
     private static final byte[] SIMPLE_IMAGE_BYTES = {-1, 10, -6, 31, 65, -111, 8, 6, 1, 0, 96, 0, 75,
             56, 36, -70, 121, 30, 85, -74, -110, 6, -17, 121, 17, 112, -25, -47, -18, -64, 7, 61, -110,
             -124, 3, 0};
 
     private static final int PIXEL_IMAGE_DIM = 1;
-
     // Base64: "/woAELASCBAQABwASxLFgoUkDA=="
     private static final byte[] PIXEL_IMAGE_BYTES = {
             -1, 10, 0, 16, -80, 18, 8, 16, 16, 0, 28, 0, 75, 18, -59, -126, -123, 36, 12};
@@ -165,7 +161,7 @@ Debug.println("raster: " + raster.length);
         };
         panel.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
         frame.setContentPane(new JScrollPane(panel));
-        frame.setTitle("JPEG XL");
+        frame.setTitle("JPEG XL (JNI)");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

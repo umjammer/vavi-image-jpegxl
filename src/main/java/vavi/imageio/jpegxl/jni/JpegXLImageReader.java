@@ -4,7 +4,7 @@
  * Programmed by Naohide Sano
  */
 
-package vavi.imageio.jpegxl;
+package vavi.imageio.jpegxl.jni;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;

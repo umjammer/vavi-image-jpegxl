@@ -4,7 +4,7 @@
  * Programmed by Naohide Sano
  */
 
-package vavi.image.jpegxl;
+package vavi.image.jpegxl.obsolate;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -29,7 +29,7 @@ class Test1 {
     @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
     void test1() throws Exception {
         JpegXL jpegXL = JpegXL.getInstance();
-        BufferedImage image = jpegXL.loadImage("src/test/resources/test.jxl");
+        BufferedImage image = jpegXL.loadImage("src/test/resources/test2.jxl");
 Debug.println(image);
         show(image);
         while (true) Thread.yield();

@@ -2,7 +2,6 @@ package vavi.awt.image.jna.jpegxl;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 /**
  * <i>native declaration : jxl/codestream_header.h</i><br>
@@ -10,21 +9,37 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class JxlHeaderExtensions extends Structure {
-	public long extensions;
-	public JxlHeaderExtensions() {
+public class JxlBlendInfo extends Structure {
+	/**
+	 * @see Library.JxlBlendMode
+	 * C type : JxlBlendMode
+	 */
+	public int blendmode;
+	public int source;
+	public int alpha;
+	public int clamp;
+	public JxlBlendInfo() {
+		super();
 	}
 	protected List<String> getFieldOrder() {
-		return Collections.singletonList("extensions");
+		return Arrays.asList("blendmode", "source", "alpha", "clamp");
 	}
-	public JxlHeaderExtensions(long extensions) {
-		this.extensions = extensions;
+	/**
+	 * @param blendmode @see JxlBlendMode<br>
+	 * C type : JxlBlendMode
+	 */
+	public JxlBlendInfo(int blendmode, int source, int alpha, int clamp) {
+		super();
+		this.blendmode = blendmode;
+		this.source = source;
+		this.alpha = alpha;
+		this.clamp = clamp;
 	}
-	public JxlHeaderExtensions(Pointer peer) {
+	public JxlBlendInfo(Pointer peer) {
 		super(peer);
 	}
-	public static class ByReference extends JxlHeaderExtensions implements Structure.ByReference {
+	public static class ByReference extends JxlBlendInfo implements Structure.ByReference {
 	}
-	public static class ByValue extends JxlHeaderExtensions implements Structure.ByValue {
+	public static class ByValue extends JxlBlendInfo implements Structure.ByValue {
 	}
 }

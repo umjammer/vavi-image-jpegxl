@@ -26,7 +26,13 @@ https://github.com/umjammer/vavi-image-jpegxl/wiki/How-To-Install
 * jvm option
 
 ```
-      -Djava.library.path=${project.build.testOutputDirectory}              # for AppleScriptEngine
+  -Djava.library.path=${project.build.testOutputDirectory}
+```
+
+## Usage
+
+```java
+    BufferedImage image = ImageIO.read(Paths.get("/foo/baa.jxl").toFile());
 ```
 
 ## References
@@ -37,5 +43,7 @@ https://github.com/umjammer/vavi-image-jpegxl/wiki/How-To-Install
 
 ## TODO
 
- * jna version doesn't work well
-   * different result per every execution (maybe memory related?) 
+ * ~~jna version doesn't work well~~ 0.7.0 works fine
+   * ~~different result per every execution (maybe memory related?)~~ 
+ * ~~brew updated to 0.7.0~~ done
+ * jna version spi

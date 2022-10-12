@@ -13,13 +13,11 @@ public class JxlPreviewHeader extends Structure {
 	public int xsize;
 	public int ysize;
 	public JxlPreviewHeader() {
-		super();
 	}
 	protected List<String> getFieldOrder() {
 		return Arrays.asList("xsize", "ysize");
 	}
 	public JxlPreviewHeader(int xsize, int ysize) {
-		super();
 		this.xsize = xsize;
 		this.ysize = ysize;
 	}
