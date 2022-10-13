@@ -226,10 +226,12 @@ Debug.printf("pixel: " + pixels.capacity() + ", " + pixels.limit());
     void test2() throws Exception {
         String file = "src/test/resources/test2.jxl";
 
+long t = System.currentTimeMillis();
         ImageReader ir = ImageIO.getImageReadersByFormatName("jpegxl").next();
         ImageInputStream iis = ImageIO.createImageInputStream(Files.newInputStream(Paths.get(file)));
         ir.setInput(iis);
         BufferedImage image = ir.read(0);
+Debug.println((System.currentTimeMillis() - t) + " ms");
 
         show(image);
     }
@@ -239,7 +241,9 @@ Debug.printf("pixel: " + pixels.capacity() + ", " + pixels.limit());
     void test3() throws Exception {
         String file = "src/test/resources/test.jxl";
 
+long t = System.currentTimeMillis();
         BufferedImage image = ImageIO.read(new File(file));
+Debug.println((System.currentTimeMillis() - t) + " ms");
 
         show(image);
     }
