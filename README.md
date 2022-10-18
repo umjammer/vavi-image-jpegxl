@@ -42,7 +42,7 @@ https://github.com/umjammer/vavi-image-jpegxl/wiki/How-To-Install
 ## Usage
 
 ```java
-    BufferedImage image = ImageIO.read(Paths.get("/foo/baa.jxl").toFile());
+    BufferedImage image = ImageIO.read(Paths.get("/foo/bar.jxl").toFile());
 ```
 
 ## References
