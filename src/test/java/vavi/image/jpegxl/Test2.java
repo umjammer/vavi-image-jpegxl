@@ -12,6 +12,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,6 +28,8 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.PointerByReference;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import vavi.awt.image.jna.jpegxl.JxlBasicInfo;
@@ -34,6 +37,10 @@ import vavi.awt.image.jna.jpegxl.JxlPixelFormat;
 import vavi.awt.image.jna.jpegxl.Library;
 import vavi.awt.image.jna.jpegxl.decode.DecodeLibrary;
 import vavi.util.Debug;
+import vavi.util.properties.annotation.Property;
+import vavi.util.properties.annotation.PropsEntity;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -42,14 +49,36 @@ import vavi.util.Debug;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2022-10-03 nsano initial version <br>
  */
+@PropsEntity(url = "file:local.properties")
 public class Test2 {
+
+    static boolean localPropertiesExists() {
+        return Files.exists(Paths.get("local.properties"));
+    }
+
+    @Property(name = "file")
+    String file = "src/test/resources/test2.jxl";
+
+    @BeforeEach
+    void setup() throws IOException {
+        if (localPropertiesExists()) {
+            PropsEntity.Util.bind(this);
+        }
+    }
 
     /**
      * @param args 0: jxl
      */
-    public static void main(String[] args) throws Exception{
-//        String file = args[0];
-        String file = "src/test/resources/test2.jxl";
+    public static void main(String[] args) throws Exception {
+        Test2 app = new Test2();
+        app.setup();
+        app.test();
+    }
+
+    @Test
+    @DisplayName("prototype")
+    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
+    void test() throws Exception {
         byte[] jxl = Files.readAllBytes(Paths.get(file));
 
         // Multi-threaded parallel runner.
@@ -204,7 +233,7 @@ Debug.printf("pixel: " + pixels.capacity() + ", " + pixels.limit());
 }
     }
 
-    /** */
+    /** gui */
     private void show(BufferedImage image) {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel() {
@@ -222,10 +251,26 @@ Debug.printf("pixel: " + pixels.capacity() + ", " + pixels.limit());
     }
 
     @Test
+    @DisplayName("spi specified")
+    void test02() throws Exception {
+        ImageReader ir = ImageIO.getImageReadersByFormatName("jpegxl").next();
+        ImageInputStream iis = ImageIO.createImageInputStream(Files.newInputStream(Paths.get(file)));
+        ir.setInput(iis);
+        BufferedImage image = ir.read(0);
+        assertNotNull(image);
+    }
+
+    @Test
+    @DisplayName("spi auto")
+    void test03() throws Exception {
+        BufferedImage image = ImageIO.read(new File(file));
+        assertNotNull(image);
+    }
+
+    @Test
+    @DisplayName("spi specified gui")
     @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
     void test2() throws Exception {
-        String file = "src/test/resources/test2.jxl";
-
 long t = System.currentTimeMillis();
         ImageReader ir = ImageIO.getImageReadersByFormatName("jpegxl").next();
         ImageInputStream iis = ImageIO.createImageInputStream(Files.newInputStream(Paths.get(file)));
@@ -237,10 +282,9 @@ Debug.println((System.currentTimeMillis() - t) + " ms");
     }
 
     @Test
+    @DisplayName("spi auto gui")
     @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
     void test3() throws Exception {
-        String file = "src/test/resources/test.jxl";
-
 long t = System.currentTimeMillis();
         BufferedImage image = ImageIO.read(new File(file));
 Debug.println((System.currentTimeMillis() - t) + " ms");
