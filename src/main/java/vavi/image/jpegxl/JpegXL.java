@@ -38,6 +38,7 @@ public class JpegXL {
     private final JxlPixelFormat format;
     private final int bytes;
 
+    /** */
     public JpegXL() {
         // Multi-threaded parallel runner.
         this.runner = Library.INSTANCE.JxlResizableParallelRunnerCreate(null);
@@ -78,19 +79,11 @@ Debug.println("shutdownHook");
     }
 
     /** */
-    public boolean canDecode(byte[] jxl) {
-        ByteBuffer bbs = ByteBuffer.allocateDirect(jxl.length);
-        bbs.put(jxl);
-        DecodeLibrary.INSTANCE.JxlDecoderSetInput(dec, Native.getDirectBufferPointer(bbs), new NativeLong(bbs.capacity()));
-        int status = DecodeLibrary.INSTANCE.JxlDecoderProcessInput(dec);
-        if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_BASIC_INFO) {
-            status = DecodeLibrary.INSTANCE.JxlDecoderGetBasicInfo(dec, info);
-Debug.printf(Level.FINER, "JxlDecoderGetBasicInfo: " + status);
-            return DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS == status;
-        } else {
-Debug.printf(Level.FINER, "JxlDecoderSetInput: " + status);
-            return false;
-        }
+    public static boolean canDecode(byte[] jxl) {
+        int r = DecodeLibrary.INSTANCE.JxlSignatureCheck(jxl, new NativeLong(jxl.length));
+Debug.println(Level.FINE, "JxlSignatureCheck: " + r);
+        return r == DecodeLibrary.JxlSignature.JXL_SIG_CODESTREAM ||
+                r == DecodeLibrary.JxlSignature.JXL_SIG_CONTAINER;
     }
 
     /** */
@@ -98,13 +91,18 @@ Debug.printf(Level.FINER, "JxlDecoderSetInput: " + status);
 
         ByteBuffer bbs = ByteBuffer.allocateDirect(jxl.length);
         bbs.put(jxl);
-        DecodeLibrary.INSTANCE.JxlDecoderSetInput(dec, Native.getDirectBufferPointer(bbs), new NativeLong(bbs.capacity()));
+        int status = DecodeLibrary.INSTANCE.JxlDecoderSetInput(dec, Native.getDirectBufferPointer(bbs), new NativeLong(bbs.capacity()));
+        if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
+Debug.printf(Level.FINE, "JxlDecoderStatus: " + status);
+            throw new IllegalStateException("JxlDecoderSetInput failed: " + status);
+        }
+        DecodeLibrary.INSTANCE.JxlDecoderCloseInput(dec);
 
         ByteBuffer pixels = null;
         int xsize = 0;
         int ysize = 0;
         while (true) {
-            int status = DecodeLibrary.INSTANCE.JxlDecoderProcessInput(dec);
+            status = DecodeLibrary.INSTANCE.JxlDecoderProcessInput(dec);
 
             if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_ERROR) {
 Debug.printf(Level.FINE, "JXL_DEC_ERROR");
@@ -196,6 +194,7 @@ Debug.printf(Level.FINE, "pixel: " + pixels.capacity() + ", " + pixels.limit());
                 p += 4;
             }
         }
+        DecodeLibrary.INSTANCE.JxlDecoderReleaseInput(dec);
         return image;
     }
 }

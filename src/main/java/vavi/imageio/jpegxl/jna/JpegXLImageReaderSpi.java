@@ -8,16 +8,12 @@ package vavi.imageio.jpegxl.jna;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Locale;
 import java.util.logging.Level;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 
-import org.jpeg.jpegxl.wrapper.Decoder;
-import org.jpeg.jpegxl.wrapper.Status;
-import org.jpeg.jpegxl.wrapper.StreamInfo;
 import vavi.image.jpegxl.JpegXL;
 import vavi.util.Debug;
 
@@ -98,7 +94,7 @@ Debug.println(Level.FINE, "input: " + obj);
             int l = baos.size();
 Debug.println(Level.FINE, "size: " + l);
             stream.reset();
-            return new JpegXL().canDecode(baos.toByteArray());
+            return JpegXL.canDecode(baos.toByteArray());
         } else {
             return false;
         }
