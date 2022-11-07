@@ -78,6 +78,22 @@ Debug.println("shutdownHook");
     }
 
     /** */
+    public boolean canDecode(byte[] jxl) {
+        ByteBuffer bbs = ByteBuffer.allocateDirect(jxl.length);
+        bbs.put(jxl);
+        DecodeLibrary.INSTANCE.JxlDecoderSetInput(dec, Native.getDirectBufferPointer(bbs), new NativeLong(bbs.capacity()));
+        int status = DecodeLibrary.INSTANCE.JxlDecoderProcessInput(dec);
+        if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_BASIC_INFO) {
+            status = DecodeLibrary.INSTANCE.JxlDecoderGetBasicInfo(dec, info);
+Debug.printf(Level.FINER, "JxlDecoderGetBasicInfo: " + status);
+            return DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS == status;
+        } else {
+Debug.printf(Level.FINER, "JxlDecoderSetInput: " + status);
+            return false;
+        }
+    }
+
+    /** */
     public BufferedImage decode(byte[] jxl) {
 
         ByteBuffer bbs = ByteBuffer.allocateDirect(jxl.length);
