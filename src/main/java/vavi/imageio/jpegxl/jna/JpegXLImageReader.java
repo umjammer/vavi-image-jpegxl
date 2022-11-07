@@ -109,7 +109,7 @@ Debug.println(Level.FINE, "time: " + (System.currentTimeMillis() - t));
     @Override
     public Iterator<ImageTypeSpecifier> getImageTypes(int imageIndex) throws IIOException {
         checkIndex(imageIndex);
-        ImageTypeSpecifier specifier = null;
+        ImageTypeSpecifier specifier = new ImageTypeSpecifier(image);
         List<ImageTypeSpecifier> l = new ArrayList<>();
         l.add(specifier);
         return l.iterator();

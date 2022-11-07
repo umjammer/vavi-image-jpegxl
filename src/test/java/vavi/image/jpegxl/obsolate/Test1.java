@@ -35,6 +35,7 @@ Debug.println(image);
         while (true) Thread.yield();
     }
 
+    /** gui */
     static void show(BufferedImage image) {
         //
         JFrame frame = new JFrame();

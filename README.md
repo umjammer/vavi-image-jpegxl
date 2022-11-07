@@ -19,6 +19,16 @@ based on https://github.com/libjxl/libjxl/blob/v0.6.x/examples/
 
 https://jitpack.io/#umjammer/vavi-image-jpegxl
 
+### jna
+
+* jvm option
+
+```
+  -Djna.library.path=/usr/local/lib
+```
+
+### jni
+
 * dylib
 
 https://github.com/umjammer/vavi-image-jpegxl/wiki/How-To-Install
@@ -32,7 +42,7 @@ https://github.com/umjammer/vavi-image-jpegxl/wiki/How-To-Install
 ## Usage
 
 ```java
-    BufferedImage image = ImageIO.read(Paths.get("/foo/baa.jxl").toFile());
+    BufferedImage image = ImageIO.read(Paths.get("/foo/bar.jxl").toFile());
 ```
 
 ## References
@@ -46,4 +56,4 @@ https://github.com/umjammer/vavi-image-jpegxl/wiki/How-To-Install
  * ~~jna version doesn't work well~~ 0.7.0 works fine
    * ~~different result per every execution (maybe memory related?)~~ 
  * ~~brew updated to 0.7.0~~ done
- * jna version spi
+ * ~~jna version spi~~

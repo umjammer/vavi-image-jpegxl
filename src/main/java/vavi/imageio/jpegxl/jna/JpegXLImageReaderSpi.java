@@ -18,6 +18,7 @@ import javax.imageio.stream.ImageInputStream;
 import org.jpeg.jpegxl.wrapper.Decoder;
 import org.jpeg.jpegxl.wrapper.Status;
 import org.jpeg.jpegxl.wrapper.StreamInfo;
+import vavi.image.jpegxl.JpegXL;
 import vavi.util.Debug;
 
 
@@ -95,12 +96,9 @@ Debug.println(Level.FINE, "input: " + obj);
                 baos.write(b, 0, r);
             }
             int l = baos.size();
-            Debug.println(Level.FINE, "size: " + l);
-            ByteBuffer bb = ByteBuffer.allocateDirect(l);
-            bb.put(baos.toByteArray(), 0, l);
+Debug.println(Level.FINE, "size: " + l);
             stream.reset();
-            StreamInfo streamInfo = Decoder.decodeInfo(bb);
-            return streamInfo.status == Status.OK;
+            return new JpegXL().canDecode(baos.toByteArray());
         } else {
             return false;
         }

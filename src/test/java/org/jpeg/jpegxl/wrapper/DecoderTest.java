@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -21,16 +22,40 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import vavi.util.Debug;
+import vavi.util.properties.annotation.Property;
+import vavi.util.properties.annotation.PropsEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
+/**
+ * JNI test.
+ */
+@PropsEntity(url = "file:local.properties")
 public class DecoderTest {
+
+    static boolean localPropertiesExists() {
+        return Files.exists(Paths.get("local.properties"));
+    }
+
+    @Property(name = "file")
+    String file = "src/test/resources/test.jxl";
+
+    @BeforeEach
+    void setup() throws IOException {
+        if (localPropertiesExists()) {
+            PropsEntity.Util.bind(this);
+        }
+    }
 
     private static final int SIMPLE_IMAGE_DIM = 1024;
     // Base64: "/wr6H0GRCAYBAGAASzgkunkeVbaSBu95EXDn0e7ABz2ShAMA"
@@ -119,10 +144,8 @@ public class DecoderTest {
         testNotEnoughInput();
     }
 
-    @Test
-    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
-    void test1() throws Exception {
-        String file = "src/test/resources/test2.jxl";
+    /** direct */
+    private BufferedImage getImage() throws Exception {
         byte[] jxl = Files.readAllBytes(Paths.get(file));
         ByteBuffer bb = ByteBuffer.allocateDirect(jxl.length);
         bb.put(jxl);
@@ -147,11 +170,17 @@ Debug.println("raster: " + raster.length);
                 p += 4;
             }
         }
-
-        show(image);
+        return image;
     }
 
-    /** */
+    /** direct gui */
+    public static void main(String[] args) throws Exception {
+        DecoderTest app = new DecoderTest();
+        app.setup();
+        app.show(app.getImage());
+    }
+
+    /** gui */
     private void show(BufferedImage image) {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel() {
@@ -169,10 +198,36 @@ Debug.println("raster: " + raster.length);
     }
 
     @Test
+    @DisplayName("direct")
+    void test1() throws Exception {
+        BufferedImage image = getImage();
+        assertNotNull(image);
+    }
+
+    @Test
+    @Disabled("currently jna version is used")
+    @DisplayName("spi specified")
+    void test02() throws Exception {
+        ImageReader ir = ImageIO.getImageReadersByFormatName("jpegxl").next();
+        ImageInputStream iis = ImageIO.createImageInputStream(Files.newInputStream(Paths.get(file)));
+        ir.setInput(iis);
+        BufferedImage image = ir.read(0);
+        assertNotNull(image);
+    }
+
+    @Test
+    @Disabled("currently jna version is used")
+    @DisplayName("spi auto")
+    void test03() throws Exception {
+        BufferedImage image = ImageIO.read(new File(file));
+        assertNotNull(image);
+    }
+
+    @Test
+    @Disabled("currently jna version is used")
+    @DisplayName("spi specified gui")
     @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
     void test2() throws Exception {
-        String file = "src/test/resources/test2.jxl";
-
         ImageReader ir = ImageIO.getImageReadersByFormatName("jpegxl").next();
         ImageInputStream iis = ImageIO.createImageInputStream(Files.newInputStream(Paths.get(file)));
         ir.setInput(iis);
@@ -182,10 +237,10 @@ Debug.println("raster: " + raster.length);
     }
 
     @Test
+    @Disabled("currently jna version is used")
+    @DisplayName("spi auto gui")
     @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
     void test3() throws Exception {
-        String file = "src/test/resources/test.jxl";
-
         BufferedImage image = ImageIO.read(new File(file));
 
         show(image);
