@@ -25,4 +25,6 @@ jobs:
       - name: Build with Maven
         run: |
           brew install jpeg-xl
+          brew upgrade jpeg-xl
+          brew info jpeg-xl
           mvn -B package --file pom.xml
