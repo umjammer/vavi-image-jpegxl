@@ -20,11 +20,35 @@
 
   <profiles>
     <profile>
-      <id>local (not on jitpack)</id>
+      <id>mac arm64</id>
+      <activation>
+        <os>
+          <family>mac</family>
+          <arch>aarch64</arch>
+        </os>
+      </activation>
+      <properties>
+        <native.prefix>/opt/homebrew</native.prefix>
+      </properties>
+    </profile>
+    <profile>
+      <id>mac x86_64</id>
       <activation>
         <os>
           <family>mac</family>
           <arch>x86_64</arch>
+        </os>
+      </activation>
+      <properties>
+        <native.prefix>/usr/local</native.prefix>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>local (not on jitpack)</id>
+      <activation>
+        <os>
+          <family>mac</family>
         </os>
         <property>
           <name>env.JITPACK</name>
@@ -44,10 +68,11 @@
               <compilerStartOptions>
                 <compilerStartOption>-g -Wall -O2 -fomit-frame-pointer -fPIC -std=c++11</compilerStartOption>
                 <!-- unless locating jdk includes, cause error why??? -->
-                <compilerStartOption>-arch x86_64
-                  -I${java.home}/../include
-                  -I${java.home}/../include/darwin
-                  -I/usr/local/include/jxl
+                <!-- spaces must not be included in ${java.home} (i.e. JetBrain jdk) -->
+                <compilerStartOption> -arch arm64
+                  -I${java.home}/include
+                  -I${java.home}/include/darwin
+                  -I${native.prefix}/include
                 </compilerStartOption>
               </compilerStartOptions>
               <sources>
@@ -60,8 +85,8 @@
                 </source>
               </sources>
               <linkerStartOptions>
-                <linkerStartOption>-dynamiclib -arch x86_64 -v
-                  -L/usr/local/lib -lc++ -ljxl -ljxl_threads</linkerStartOption>
+                <linkerStartOption>-dynamiclib -arch arm64 -v
+                  -L${native.prefix}/lib -lc++ -ljxl -ljxl_threads</linkerStartOption>
               </linkerStartOptions>
               <linkerFinalName/>
             </configuration>
@@ -98,7 +123,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-install-plugin</artifactId>
-            <version>3.0.0-M1</version>
+            <version>3.1.1</version>
             <executions>
               <execution>
                 <id>install-library</id>
@@ -120,17 +145,23 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-deploy-plugin</artifactId>
-            <version>3.0.0-M2</version>
+            <version>3.1.1</version>
             <configuration>
               <skip>true</skip>
             </configuration>
+          </plugin>
+
+          <plugin> <!-- ⚠⚠⚠ avoiding "You have to use a classifier to attach supplemental artifacts to the project instead of replacing them." -->
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.5</version>
           </plugin>
 
           <plugin>
             <!-- because of maven deploy-file uploads source, jar also -->
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>1.6.0</version>
+            <version>3.1.0</version>
             <executions>
               <execution>
                 <id>deploy-library</id>
@@ -163,7 +194,7 @@
     </profile>
 
     <profile>
-      <!-- mvn -P jnaerator jnaerator:generate -->
+      <!-- mvn -P jnaerator jnaerator:generate (needs to run on jdk1.8) -->
       <id>jnaerator</id>
       <build>
         <plugins>
@@ -190,23 +221,22 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version>
+        <version>3.11.0</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <encoding>UTF-8</encoding>
+          <target>17</target>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M7</version>
+        <version>3.1.2</version>
         <configuration>
           <argLine>
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
             -Djava.library.path=${project.build.testOutputDirectory}
-            -Djna.library.path=/usr/local/lib
+            -Djna.library.path=${native.prefix}/lib
           </argLine>
           <trimStackTrace>false</trimStackTrace>
         </configuration>
@@ -226,7 +256,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.9.1</version>
+        <version>5.10.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -237,13 +267,13 @@
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-image</artifactId>
-      <version>1.0.10</version>
+      <version>1.0.11</version>
     </dependency>
 
     <dependency>
       <groupId>net.java.dev.jna</groupId>
       <artifactId>jna</artifactId>
-      <version>5.12.1</version>
+      <version>5.13.0</version>
     </dependency>
 
     <dependency>
