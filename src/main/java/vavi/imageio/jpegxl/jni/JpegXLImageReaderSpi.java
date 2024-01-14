@@ -30,7 +30,7 @@ import vavi.util.Debug;
 public class JpegXLImageReaderSpi extends ImageReaderSpi {
 
     private static final String VendorName = "https://github.com/umjammer/vavi-image-jpegxl";
-    private static final String Version = "0.0.1";
+    private static final String Version = "0.0.5";
     private static final String ReaderClassName =
         "vavi.imageio.jpegxl.jni.JpegXLImageReader";
     private static final String[] Names = {

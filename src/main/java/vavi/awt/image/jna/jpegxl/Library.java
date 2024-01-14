@@ -15,6 +15,10 @@ public interface Library extends com.sun.jna.Library {
 	String JNA_LIBRARY_NAME = "jxl_threads";
 	NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(Library.JNA_LIBRARY_NAME);
 	Library INSTANCE = Native.load(Library.JNA_LIBRARY_NAME, Library.class);
+	interface JXL_BOOL {
+		int JXL_TRUE = 1;
+		int JXL_FALSE = 0;
+	}
 	/**
 	 * <i>native declaration : jxl/types.h</i><br>
 	 * enum values
@@ -276,7 +280,7 @@ public interface Library extends com.sun.jna.Library {
 	 * runner. The runner will execute tasks on the calling thread until
 	 * {@link #JxlResizableParallelRunnerSetThreads} is called.
 	 */
-	Pointer JxlResizableParallelRunnerCreate(vavi.awt.image.jna.jpegxl.JxlMemoryManagerStruct memory_manager);
+	Pointer JxlResizableParallelRunnerCreate(JxlMemoryManagerStruct memory_manager);
 	/**
 	 * Changes the number of threads for JxlResizableParallelRunner.
 	 */

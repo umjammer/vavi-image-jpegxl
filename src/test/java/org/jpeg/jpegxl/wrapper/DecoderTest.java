@@ -7,6 +7,8 @@ package org.jpeg.jpegxl.wrapper;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.CountDownLatch;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -180,21 +183,34 @@ Debug.println("raster: " + raster.length);
         app.show(app.getImage());
     }
 
-    /** gui */
-    private void show(BufferedImage image) {
+    /** using cdl cause junit stops awt thread suddenly */
+    private void show(BufferedImage image) throws Exception {
+        CountDownLatch cdl = new CountDownLatch(1);
         JFrame frame = new JFrame();
         JPanel panel = new JPanel() {
             public void paintComponent(Graphics g) {
                 g.drawImage(image, 0, 0, this);
             }
         };
+        frame.addWindowListener(new WindowAdapter() {
+            @Override public void windowClosing(WindowEvent e) { cdl.countDown(); }
+        });
         panel.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
         frame.setContentPane(new JScrollPane(panel));
         frame.setTitle("JPEG XL (JNI)");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        while (true) Thread.yield();
+        cdl.await();
+    }
+
+    @Test
+    @DisplayName("direct")
+    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
+    void test0() throws Exception {
+Debug.println(System.getProperty("os.arch"));
+        BufferedImage image = getImage();
+        assertNotNull(image);
+        show(image);
     }
 
     @Test
