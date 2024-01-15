@@ -18,6 +18,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import vavi.awt.image.jna.jpegxl.JxlBasicInfo;
+import vavi.awt.image.jna.jpegxl.JxlMemoryManagerStruct;
 import vavi.awt.image.jna.jpegxl.JxlPixelFormat;
 import vavi.awt.image.jna.jpegxl.Library;
 import vavi.awt.image.jna.jpegxl.decode.DecodeLibrary;
@@ -38,6 +39,14 @@ public class JpegXL {
     private final JxlPixelFormat format;
     private final int bytes;
 
+    static {
+        int version = DecodeLibrary.INSTANCE.JxlDecoderVersion();
+Debug.println(Level.FINE, "version: " + version);
+        if (version < 9000) {
+            throw new IllegalStateException("unsupported libjxl version " + version);
+        }
+    }
+
     /** */
     public JpegXL() {
         // Multi-threaded parallel runner.
@@ -45,7 +54,7 @@ public class JpegXL {
 //        Pointer runner = Library.INSTANCE.JxlThreadParallelRunnerCreate(null, null);
 Debug.println(Level.FINE, "runner: " + runner);
 
-        this.dec = DecodeLibrary.INSTANCE.JxlDecoderCreate(null);
+        this.dec = DecodeLibrary.INSTANCE.JxlDecoderCreate((JxlMemoryManagerStruct[]) null);
 Debug.println(Level.FINE, "dec: " + dec);
 
         int status = DecodeLibrary.INSTANCE.JxlDecoderSubscribeEvents(dec,
@@ -71,7 +80,7 @@ Debug.println(Level.FINE, "JxlResizableParallelRunner: " + Library.JxlResizableP
         this.bytes = format.necessaryBytes();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-Debug.println("shutdownHook");
+Debug.println(Level.FINE, "shutdownHook");
             DecodeLibrary.INSTANCE.JxlDecoderDestroy(dec);
             Library.INSTANCE.JxlResizableParallelRunnerDestroy(runner);
 //        Library.INSTANCE.JxlThreadParallelRunnerDestroy(runner);
@@ -127,7 +136,7 @@ Debug.printf(Level.FINE, "JXL_DEC_COLOR_ENCODING");
                 // Get the ICC color profile of the pixel data
                 NativeLongByReference icc_size = new NativeLongByReference();
                 status = DecodeLibrary.INSTANCE.JxlDecoderGetICCProfileSize(
-                        dec, format,
+                        dec,
                         DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA, icc_size);
                 if (DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS != status) {
                     throw new IllegalStateException("JxlDecoderGetICCProfileSize failed: " + status);
@@ -135,7 +144,7 @@ Debug.printf(Level.FINE, "JXL_DEC_COLOR_ENCODING");
                 ByteBuffer icc_profile = ByteBuffer.allocateDirect(icc_size.getValue().intValue());
 Debug.printf(Level.FINE, "icc_profile: " + icc_profile.capacity());
                 status = DecodeLibrary.INSTANCE.JxlDecoderGetColorAsICCProfile(
-                        dec, format,
+                        dec,
                         DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA,
                         Native.getDirectBufferPointer(icc_profile), new NativeLong(icc_profile.capacity()));
                 if (DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS != status) {

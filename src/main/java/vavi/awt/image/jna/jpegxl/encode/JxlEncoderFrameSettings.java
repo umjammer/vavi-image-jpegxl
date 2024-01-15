@@ -1,0 +1,28 @@
+/*
+ * Copyright (c) 2024 by Naohide Sano, All rights reserved.
+ *
+ * Programmed by Naohide Sano
+ */
+
+package vavi.awt.image.jna.jpegxl.encode;
+
+import com.sun.jna.Pointer;
+import com.sun.jna.PointerType;
+
+
+/**
+ * JxlEncoderFrameSettings.
+ *
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
+ * @version 0.00 2024-01-14 nsano initial version <br>
+ */
+public class JxlEncoderFrameSettings extends PointerType {
+
+    public JxlEncoderFrameSettings(Pointer address) {
+        super(address);
+    }
+
+    public JxlEncoderFrameSettings() {
+        super();
+    }
+}

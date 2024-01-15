@@ -1,4 +1,4 @@
--I /usr/local/src/aom/aom
+-I /opt/homebrew/src/aom/aom
 
 -root vavi.awt.image.jna.jpegxl
 
@@ -8,7 +8,7 @@
 //-o "$(DIR)/../java" // overwrite versioned files instead of writing to target/generated-sources/java
 
 //-v
-//-choicesOut "$(DIR)/rococoa.choices"
+//-choicesOut "$(DIR)/jxl.choices"
 
-/usr/local/include/jxl/decode.h
-/usr/local/include/jxl/encode.h
+/opt/homebrew/include/jxl/decode.h
+/opt/homebrew/include/jxl/encode.h

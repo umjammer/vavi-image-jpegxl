@@ -103,7 +103,7 @@ public class JpegXL {
      * @return A JxlBasicInfo object describing the image
      */
     public JxlBasicInfo.ByReference getBasicInfo(byte[] data, /*out*/ boolean[] canTranscodeToJpeg) {
-        PointerByReference decoder = DecodeLibrary.INSTANCE.JxlDecoderCreate(null);
+        PointerByReference decoder = DecodeLibrary.INSTANCE.JxlDecoderCreate((JxlMemoryManagerStruct[]) null);
         if (decoder == null) {
             throw new IllegalStateException("JxlDecoderCreate");
         }
@@ -251,7 +251,7 @@ Debug.println("status is JXL_DEC_BASIC_INFO");
             throw new IllegalArgumentException("bytesPerPixel must be between 1 and 4: " + bytesPerPixel);
 
         JxlBasicInfo.ByReference basicInfo = new JxlBasicInfo.ByReference();
-        PointerByReference decoder = DecodeLibrary.INSTANCE.JxlDecoderCreate(null);
+        PointerByReference decoder = DecodeLibrary.INSTANCE.JxlDecoderCreate((JxlMemoryManagerStruct[]) null);
         if (decoder == null) {
             throw new IllegalStateException("JxlDecoderCreate");
         }
@@ -326,14 +326,14 @@ Debug.println("status is JXL_DEC_COLOR_ENCODING");
                     // Get the ICC color profile of the pixel data
                     NativeLongByReference icc_size = new NativeLongByReference();
                     status = DecodeLibrary.INSTANCE.JxlDecoderGetICCProfileSize(
-                            decoder, pixelFormat, DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA, icc_size);
+                            decoder, DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA, icc_size);
                     if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                         throw new IllegalStateException("JxlDecoderGetICCProfileSize: " + status);
                     }
 
                     ByteBuffer icc_profile = ByteBuffer.allocateDirect(icc_size.getValue().intValue());
                     status = DecodeLibrary.INSTANCE.JxlDecoderGetColorAsICCProfile(
-                            decoder, pixelFormat,
+                            decoder,
                             DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA,
                             Native.getDirectBufferPointer(icc_profile), new NativeLong(icc_profile.capacity()));
                     if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
@@ -424,7 +424,7 @@ Debug.println(basicInfo);
     public byte[] transcodeJxlToJpeg(byte[] jxlBytes) {
         ByteBuffer buffer = null;
         int outputPosition = 0;
-        PointerByReference jxlDecoder = DecodeLibrary.INSTANCE.JxlDecoderCreate(null);
+        PointerByReference jxlDecoder = DecodeLibrary.INSTANCE.JxlDecoderCreate((JxlMemoryManagerStruct[]) null);
         try {
             ByteBuffer bb = ByteBuffer.allocateDirect(jxlBytes.length);
             bb.put(jxlBytes);
@@ -484,10 +484,10 @@ Debug.println(basicInfo);
      */
     public byte[] transcodeJpegToJxl(byte[] jpegBytes) {
         JxlMemoryManagerStruct ms = new JxlMemoryManagerStruct();
-        PointerByReference encoder = EncodeLibrary.INSTANCE.JxlEncoderCreate(ms);
+        PointerByReference encoder = EncodeLibrary.INSTANCE.JxlEncoderCreate(new JxlMemoryManagerStruct[] { ms });
         try {
             int status = EncodeLibrary.INSTANCE.JxlEncoderStoreJPEGMetadata(encoder, Library.JXL_TRUE);
-            PointerByReference options = EncodeLibrary.INSTANCE.JxlEncoderOptionsCreate(encoder, null);
+            PointerByReference options = EncodeLibrary.INSTANCE.JxlEncoderFrameSettingsCreate(encoder, null);
             status = EncodeLibrary.INSTANCE.JxlEncoderAddJPEGFrame(options, jpegBytes, new NativeLong(jpegBytes.length));
             EncodeLibrary.INSTANCE.JxlEncoderCloseInput(encoder);
             status = processOutput(encoder);
@@ -590,7 +590,7 @@ Debug.println(basicInfo);
     public byte[] encodeJxl(BufferedImage bitmap, JxlLossyMode lossyMode, float frameDistance, PointerByReference settings) {
         int status;
         JxlMemoryManagerStruct ms = new JxlMemoryManagerStruct();
-        PointerByReference encoder = EncodeLibrary.INSTANCE.JxlEncoderCreate(ms);
+        PointerByReference encoder = EncodeLibrary.INSTANCE.JxlEncoderCreate(new JxlMemoryManagerStruct[] { ms });
         try {
             JxlBasicInfo basicInfo = new JxlBasicInfo();
             JxlPixelFormat pixelFormat = new JxlPixelFormat();
@@ -600,13 +600,13 @@ Debug.println(basicInfo);
             byte[] bitmapCopy = copyBufferedImageAndBgrSwap(bitmap, hasAlpha);
             status = EncodeLibrary.INSTANCE.JxlEncoderSetBasicInfo(encoder, basicInfo);
             status = EncodeLibrary.INSTANCE.JxlEncoderSetColorEncoding(encoder, colorEncoding);
-            PointerByReference options = EncodeLibrary.INSTANCE.JxlEncoderOptionsCreate(encoder, settings);
+            PointerByReference options = EncodeLibrary.INSTANCE.JxlEncoderFrameSettingsCreate(encoder, settings);
             if (lossyMode == JxlLossyMode.Lossless) {
-                status = EncodeLibrary.INSTANCE.JxlEncoderOptionsSetLossless(encoder, Library.JXL_TRUE);
-                status = EncodeLibrary.INSTANCE.JxlEncoderOptionsSetDistance(encoder, 0);
+                status = EncodeLibrary.INSTANCE.JxlEncoderSetFrameLossless(encoder, Library.JXL_TRUE);
+                status = EncodeLibrary.INSTANCE.JxlEncoderSetFrameDistance(encoder, 0);
             } else {
-                status = EncodeLibrary.INSTANCE.JxlEncoderOptionsSetDistance(encoder, frameDistance);
-                status = EncodeLibrary.INSTANCE.JxlEncoderOptionsSetLossless(encoder, Library.JXL_FALSE);
+                status = EncodeLibrary.INSTANCE.JxlEncoderSetFrameDistance(encoder, frameDistance);
+                status = EncodeLibrary.INSTANCE.JxlEncoderSetFrameLossless(encoder, Library.JXL_FALSE);
             }
 
             ByteBuffer bb = ByteBuffer.allocateDirect(bitmapCopy.length);

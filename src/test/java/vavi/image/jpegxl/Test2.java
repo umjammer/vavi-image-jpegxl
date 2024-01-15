@@ -9,6 +9,8 @@ package vavi.image.jpegxl;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.CountDownLatch;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -33,6 +36,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import vavi.awt.image.jna.jpegxl.JxlBasicInfo;
+import vavi.awt.image.jna.jpegxl.JxlMemoryManagerStruct;
 import vavi.awt.image.jna.jpegxl.JxlPixelFormat;
 import vavi.awt.image.jna.jpegxl.Library;
 import vavi.awt.image.jna.jpegxl.decode.DecodeLibrary;
@@ -40,6 +44,7 @@ import vavi.util.Debug;
 import vavi.util.properties.annotation.Property;
 import vavi.util.properties.annotation.PropsEntity;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
@@ -86,7 +91,7 @@ public class Test2 {
 //        Pointer runner = Library.INSTANCE.JxlThreadParallelRunnerCreate(null, null);
 Debug.println("runner: " + runner);
 
-        PointerByReference dec = DecodeLibrary.INSTANCE.JxlDecoderCreate(null);
+        PointerByReference dec = DecodeLibrary.INSTANCE.JxlDecoderCreate((JxlMemoryManagerStruct[]) null);
 Debug.println("dec: " + dec);
 
         int status = DecodeLibrary.INSTANCE.JxlDecoderSubscribeEvents(dec,
@@ -145,7 +150,7 @@ Debug.printf("JXL_DEC_COLOR_ENCODING");
                 // Get the ICC color profile of the pixel data
                 NativeLongByReference icc_size = new NativeLongByReference();
                 status = DecodeLibrary.INSTANCE.JxlDecoderGetICCProfileSize(
-                        dec, format,
+                        dec,
                         DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA, icc_size);
                 if (DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS != status) {
                     throw new IllegalStateException("JxlDecoderGetICCProfileSize failed: " + status);
@@ -153,7 +158,7 @@ Debug.printf("JXL_DEC_COLOR_ENCODING");
                 ByteBuffer icc_profile = ByteBuffer.allocateDirect(icc_size.getValue().intValue());
 Debug.printf("icc_profile: " + icc_profile.capacity());
                 status = DecodeLibrary.INSTANCE.JxlDecoderGetColorAsICCProfile(
-                        dec, format,
+                        dec,
                         DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA,
                         Native.getDirectBufferPointer(icc_profile), new NativeLong(icc_profile.capacity()));
                 if (DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS != status) {
@@ -233,11 +238,15 @@ Debug.printf("pixel: " + pixels.capacity() + ", " + pixels.limit());
 }
     }
 
-    /** gui */
-    private void show(BufferedImage image) {
+    /** using cdl cause junit stops awt thread suddenly */
+    private void show(BufferedImage image) throws Exception {
+        CountDownLatch cdl = new CountDownLatch(1);
         JFrame frame = new JFrame();
+        frame.addWindowListener(new WindowAdapter() {
+            @Override public void windowClosing(WindowEvent e) { cdl.countDown(); }
+        });
         JPanel panel = new JPanel() {
-            public void paintComponent(Graphics g) {
+            @Override public void paintComponent(Graphics g) {
                 g.drawImage(image, 0, 0, this);
             }
         };
@@ -247,7 +256,7 @@ Debug.printf("pixel: " + pixels.capacity() + ", " + pixels.limit());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        while (true) Thread.yield();
+        cdl.await();
     }
 
     @Test
@@ -290,5 +299,13 @@ long t = System.currentTimeMillis();
 Debug.println((System.currentTimeMillis() - t) + " ms");
 
         show(image);
+    }
+
+    @Test
+    @DisplayName("version")
+    void test4() throws Exception {
+        int version = DecodeLibrary.INSTANCE.JxlDecoderVersion();
+Debug.println("version: " + version);
+        assertEquals(9000, version);
     }
 }
