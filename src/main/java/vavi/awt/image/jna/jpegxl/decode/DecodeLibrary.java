@@ -45,8 +45,9 @@ public interface DecodeLibrary extends Library {
 		int JXL_SIG_CODESTREAM = 2;
 		/** <i>native declaration : jxl/decode.h:33</i> */
 		int JXL_SIG_CONTAINER = 3;
-	};
-	/**
+	}
+
+    /**
 	 * <i>native declaration : jxl/decode.h</i><br>
 	 * enum values
 	 */
@@ -81,8 +82,9 @@ public interface DecodeLibrary extends Library {
 		int JXL_DEC_BOX = 0x4000;
 		/** <i>native declaration : jxl/decode.h:295</i> */
 		int JXL_DEC_FRAME_PROGRESSION = 0x8000;
-	};
-	/**
+	}
+
+    /**
 	 * <i>native declaration : jxl/decode.h</i><br>
 	 * enum values
 	 */
@@ -101,8 +103,9 @@ public interface DecodeLibrary extends Library {
 		int kDCGroups = 5;
 		/** <i>native declaration : jxl/decode.h:322</i> */
 		int kGroups = 6;
-	};
-	/**
+	}
+
+    /**
 	 * <i>native declaration : jxl/decode.h</i><br>
 	 * enum values
 	 */
@@ -111,24 +114,29 @@ public interface DecodeLibrary extends Library {
 		int JXL_COLOR_PROFILE_TARGET_ORIGINAL = 0;
 		/** <i>native declaration : jxl/decode.h:673</i> */
 		int JXL_COLOR_PROFILE_TARGET_DATA = 1;
-	};
-	/** <i>native declaration : jxl/decode.h</i> */
-	public interface JxlImageOutCallback extends Callback {
+	}
+
+    /** <i>native declaration : jxl/decode.h</i> */
+    interface JxlImageOutCallback extends Callback {
 		void apply(Pointer opaque, NativeLong x, NativeLong y, NativeLong num_pixels, Pointer pixels);
-	};
-	/** <i>native declaration : jxl/decode.h</i> */
-	public interface JxlImageOutInitCallback extends Callback {
+	}
+
+    /** <i>native declaration : jxl/decode.h</i> */
+    interface JxlImageOutInitCallback extends Callback {
 		Pointer apply(Pointer init_opaque, NativeLong num_threads, NativeLong num_pixels_per_thread);
-	};
-	/** <i>native declaration : jxl/decode.h</i> */
-	public interface JxlImageOutRunCallback extends Callback {
+	}
+
+    /** <i>native declaration : jxl/decode.h</i> */
+    interface JxlImageOutRunCallback extends Callback {
 		void apply(Pointer run_opaque, NativeLong thread_id, NativeLong x, NativeLong y, NativeLong num_pixels, Pointer pixels);
-	};
-	/** <i>native declaration : jxl/decode.h</i> */
-	public interface JxlImageOutDestroyCallback extends Callback {
+	}
+
+    /** <i>native declaration : jxl/decode.h</i> */
+    interface JxlImageOutDestroyCallback extends Callback {
 		void apply(Pointer run_opaque);
-	};
-	/**
+	}
+
+    /**
 	 * Decoder library version.<br>
 	 * @return the decoder library version as an integer:<br>
 	 * MAJOR_VERSION * 1000000 + MINOR_VERSION * 1000 + PATCH_VERSION. For example,<br>
@@ -170,7 +178,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlSignature JxlSignatureCheck(const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : jxl/decode.h:51</i>
 	 */
-	int JxlSignatureCheck(byte buf[], NativeLong len);
+	int JxlSignatureCheck(byte[] buf, NativeLong len);
 	/**
 	 * Creates an instance of @ref JxlDecoder and initializes it.<br>
 	 * @p memory_manager will be used for all the library dynamic allocations made<br>
@@ -198,7 +206,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoder* JxlDecoderCreate(const JxlMemoryManagerStruct*)</code><br>
 	 * <i>native declaration : jxl/decode.h:73</i>
 	 */
-	PointerByReference JxlDecoderCreate(JxlMemoryManagerStruct memory_manager[]);
+	PointerByReference JxlDecoderCreate(JxlMemoryManagerStruct[] memory_manager);
 	/**
 	 * Re-initializes a @ref JxlDecoder instance, so it can be re-used for decoding<br>
 	 * another image. All state and settings are reset as if the object was<br>
@@ -732,7 +740,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetInput(JxlDecoder*, const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : jxl/decode.h:569</i>
 	 */
-	int JxlDecoderSetInput(PointerByReference dec, byte data[], NativeLong size);
+	int JxlDecoderSetInput(PointerByReference dec, byte[] data, NativeLong size);
 	/**
 	 * Sets input data for @ref JxlDecoderProcessInput. The data is owned by the<br>
 	 * caller and may be used by the decoder until @ref JxlDecoderReleaseInput is<br>
@@ -1167,7 +1175,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetPreferredColorProfile(JxlDecoder*, const JxlColorEncoding*)</code><br>
 	 * <i>native declaration : jxl/decode.h:782</i>
 	 */
-	int JxlDecoderSetPreferredColorProfile(PointerByReference dec, JxlColorEncoding color_encoding[]);
+	int JxlDecoderSetPreferredColorProfile(PointerByReference dec, JxlColorEncoding[] color_encoding);
 	/**
 	 * Sets the desired output color profile of the decoded image by calling<br>
 	 * @ref JxlDecoderSetOutputColorProfile, passing on @c color_encoding and<br>
@@ -1282,7 +1290,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetOutputColorProfile(JxlDecoder*, const JxlColorEncoding*, const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : jxl/decode.h:839</i>
 	 */
-	int JxlDecoderSetOutputColorProfile(PointerByReference dec, JxlColorEncoding color_encoding[], byte icc_data[], NativeLong icc_size);
+	int JxlDecoderSetOutputColorProfile(PointerByReference dec, JxlColorEncoding[] color_encoding, byte[] icc_data, NativeLong icc_size);
 	/**
 	 * Sets the desired output color profile of the decoded image either from a<br>
 	 * color encoding or an ICC profile. Valid calls of this function have either @c<br>
@@ -1375,7 +1383,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderPreviewOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
 	 * <i>native declaration : jxl/decode.h:872</i>
 	 */
-	int JxlDecoderPreviewOutBufferSize(PointerByReference dec, JxlPixelFormat format[], NativeLongByReference size);
+	int JxlDecoderPreviewOutBufferSize(PointerByReference dec, JxlPixelFormat[] format, NativeLongByReference size);
 	/**
 	 * Returns the minimum size in bytes of the preview image output pixel buffer<br>
 	 * for the given format. This is the buffer for @ref<br>
@@ -1425,7 +1433,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetPreviewOutBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t)</code><br>
 	 * <i>native declaration : jxl/decode.h:890</i>
 	 */
-	int JxlDecoderSetPreviewOutBuffer(PointerByReference dec, JxlPixelFormat format[], Pointer buffer, NativeLong size);
+	int JxlDecoderSetPreviewOutBuffer(PointerByReference dec, JxlPixelFormat[] format, Pointer buffer, NativeLong size);
 	/**
 	 * Sets the buffer to write the small resolution preview image<br>
 	 * to. The size of the buffer must be at least as large as given by @ref<br>
@@ -1582,7 +1590,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderImageOutBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*)</code><br>
 	 * <i>native declaration : jxl/decode.h:953</i>
 	 */
-	int JxlDecoderImageOutBufferSize(PointerByReference dec, JxlPixelFormat format[], NativeLongByReference size);
+	int JxlDecoderImageOutBufferSize(PointerByReference dec, JxlPixelFormat[] format, NativeLongByReference size);
 	/**
 	 * Returns the minimum size in bytes of the image output pixel buffer for the<br>
 	 * given format. This is the buffer for @ref JxlDecoderSetImageOutBuffer.<br>
@@ -1637,7 +1645,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetImageOutBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t)</code><br>
 	 * <i>native declaration : jxl/decode.h:972</i>
 	 */
-	int JxlDecoderSetImageOutBuffer(PointerByReference dec, JxlPixelFormat format[], Pointer buffer, NativeLong size);
+	int JxlDecoderSetImageOutBuffer(PointerByReference dec, JxlPixelFormat[] format, Pointer buffer, NativeLong size);
 	/**
 	 * Sets the buffer to write the full resolution image to. This can be set when<br>
 	 * the @ref JXL_DEC_FRAME event occurs, must be set when the @ref<br>
@@ -1739,7 +1747,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetImageOutCallback(JxlDecoder*, const JxlPixelFormat*, JxlImageOutCallback, void*)</code><br>
 	 * <i>native declaration : jxl/decode.h:1080</i>
 	 */
-	int JxlDecoderSetImageOutCallback(PointerByReference dec, JxlPixelFormat format[], DecodeLibrary.JxlImageOutCallback callback, Pointer opaque);
+	int JxlDecoderSetImageOutCallback(PointerByReference dec, JxlPixelFormat[] format, DecodeLibrary.JxlImageOutCallback callback, Pointer opaque);
 	/**
 	 * Sets pixel output callback. This is an alternative to @ref<br>
 	 * JxlDecoderSetImageOutBuffer. This can be set when the @ref JXL_DEC_FRAME<br>
@@ -1826,7 +1834,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetMultithreadedImageOutCallback(JxlDecoder*, const JxlPixelFormat*, JxlImageOutInitCallback, JxlImageOutRunCallback, JxlImageOutDestroyCallback, void*)</code><br>
 	 * <i>native declaration : jxl/decode.h:1103</i>
 	 */
-	int JxlDecoderSetMultithreadedImageOutCallback(PointerByReference dec, JxlPixelFormat format[], DecodeLibrary.JxlImageOutInitCallback init_callback, DecodeLibrary.JxlImageOutRunCallback run_callback, DecodeLibrary.JxlImageOutDestroyCallback destroy_callback, Pointer init_opaque);
+	int JxlDecoderSetMultithreadedImageOutCallback(PointerByReference dec, JxlPixelFormat[] format, DecodeLibrary.JxlImageOutInitCallback init_callback, DecodeLibrary.JxlImageOutRunCallback run_callback, DecodeLibrary.JxlImageOutDestroyCallback destroy_callback, Pointer init_opaque);
 	/**
 	 * Similar to @ref JxlDecoderSetImageOutCallback except that the callback is<br>
 	 * allowed an initialization phase during which it is informed of how many<br>
@@ -1884,7 +1892,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderExtraChannelBufferSize(const JxlDecoder*, const JxlPixelFormat*, size_t*, uint32_t)</code><br>
 	 * <i>native declaration : jxl/decode.h:1123</i>
 	 */
-	int JxlDecoderExtraChannelBufferSize(PointerByReference dec, JxlPixelFormat format[], NativeLongByReference size, int index);
+	int JxlDecoderExtraChannelBufferSize(PointerByReference dec, JxlPixelFormat[] format, NativeLongByReference size, int index);
 	/**
 	 * Returns the minimum size in bytes of an extra channel pixel buffer for the<br>
 	 * given format. This is the buffer for @ref JxlDecoderSetExtraChannelBuffer.<br>
@@ -1967,7 +1975,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetExtraChannelBuffer(JxlDecoder*, const JxlPixelFormat*, void*, size_t, uint32_t)</code><br>
 	 * <i>native declaration : jxl/decode.h:1157</i>
 	 */
-	int JxlDecoderSetExtraChannelBuffer(PointerByReference dec, JxlPixelFormat format[], Pointer buffer, NativeLong size, int index);
+	int JxlDecoderSetExtraChannelBuffer(PointerByReference dec, JxlPixelFormat[] format, Pointer buffer, NativeLong size, int index);
 	/**
 	 * Sets the buffer to write an extra channel to. This can be set when<br>
 	 * the @ref JXL_DEC_FRAME or @ref JXL_DEC_NEED_IMAGE_OUT_BUFFER event occurs,<br>
@@ -2533,7 +2541,7 @@ public interface DecodeLibrary extends Library {
 	 * Original signature : <code>JxlDecoderStatus JxlDecoderSetImageOutBitDepth(JxlDecoder*, const JxlBitDepth*)</code><br>
 	 * <i>native declaration : jxl/decode.h:1409</i>
 	 */
-	int JxlDecoderSetImageOutBitDepth(PointerByReference dec, JxlBitDepth bit_depth[]);
+	int JxlDecoderSetImageOutBitDepth(PointerByReference dec, JxlBitDepth[] bit_depth);
 	/**
 	 * Sets the bit depth of the output buffer or callback.<br>
 	 * Can be called after @ref JxlDecoderSetImageOutBuffer or @ref<br>

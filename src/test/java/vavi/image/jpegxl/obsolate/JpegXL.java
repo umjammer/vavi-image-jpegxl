@@ -295,7 +295,7 @@ Debug.println("min: " + buffer_size.getValue());
                     Pointer fbp = Native.getDirectBufferPointer(fb);
 Debug.println("buffer: bb: " + fb.capacity() + ", w*h*4: " + width * height * 4 + ", bytesPerPixel: " + bytesPerPixel);
 
-                    status = DecodeLibrary.INSTANCE.JxlDecoderSetImageOutBuffer(decoder, pixelFormat, fbp, new NativeLong(fb.capacity() * Float.BYTES));
+                    status = DecodeLibrary.INSTANCE.JxlDecoderSetImageOutBuffer(decoder, pixelFormat, fbp, new NativeLong((long) fb.capacity() * Float.BYTES));
                     if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
                         throw new IllegalStateException("JxlDecoderSetImageOutBuffer: " + status);
                     }
