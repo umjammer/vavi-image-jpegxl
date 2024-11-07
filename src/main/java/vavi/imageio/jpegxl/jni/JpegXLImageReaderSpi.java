@@ -8,9 +8,12 @@ package vavi.imageio.jpegxl.jni;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.ByteBuffer;
 import java.util.Locale;
-import java.util.logging.Level;
+import java.util.Properties;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
@@ -18,7 +21,8 @@ import javax.imageio.stream.ImageInputStream;
 import org.jpeg.jpegxl.wrapper.Decoder;
 import org.jpeg.jpegxl.wrapper.Status;
 import org.jpeg.jpegxl.wrapper.StreamInfo;
-import vavi.util.Debug;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -29,8 +33,26 @@ import vavi.util.Debug;
  */
 public class JpegXLImageReaderSpi extends ImageReaderSpi {
 
+    private static final Logger logger = getLogger(JpegXLImageReaderSpi.class.getName());
+
+    static {
+        try {
+            try (InputStream is = JpegXLImageReaderSpi.class.getResourceAsStream("/META-INF/maven/vavi/vavi-image-jpegxl/pom.properties")) {
+                if (is != null) {
+                    Properties props = new Properties();
+                    props.load(is);
+                    Version = props.getProperty("version", "undefined in pom.properties");
+                } else {
+                    Version = System.getProperty("vavi.test.version", "undefined");
+                }
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     private static final String VendorName = "https://github.com/umjammer/vavi-image-jpegxl";
-    private static final String Version = "0.0.5";
+    private static final String Version;
     private static final String ReaderClassName =
         "vavi.imageio.jpegxl.jni.JpegXLImageReader";
     private static final String[] Names = {
@@ -83,7 +105,7 @@ public class JpegXLImageReaderSpi extends ImageReaderSpi {
 
     @Override
     public boolean canDecodeInput(Object obj) throws IOException {
-Debug.println(Level.FINE, "input: " + obj);
+logger.log(Level.DEBUG, "input: " + obj);
         if (obj instanceof ImageInputStream) {
             ImageInputStream stream = (ImageInputStream) obj;
             stream.mark();
@@ -95,7 +117,7 @@ Debug.println(Level.FINE, "input: " + obj);
                 baos.write(b, 0, r);
             }
             int l = baos.size();
-            Debug.println(Level.FINE, "size: " + l);
+logger.log(Level.DEBUG, "size: " + l);
             ByteBuffer bb = ByteBuffer.allocateDirect(l);
             bb.put(baos.toByteArray(), 0, l);
             stream.reset();

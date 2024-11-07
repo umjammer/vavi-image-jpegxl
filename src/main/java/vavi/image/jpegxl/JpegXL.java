@@ -9,8 +9,9 @@ package vavi.image.jpegxl;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.ByteBuffer;
-import java.util.logging.Level;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
@@ -24,6 +25,8 @@ import vavi.awt.image.jna.jpegxl.Library;
 import vavi.awt.image.jna.jpegxl.decode.DecodeLibrary;
 import vavi.util.Debug;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * JpegXL.
@@ -33,6 +36,8 @@ import vavi.util.Debug;
  */
 public class JpegXL {
 
+    private static final Logger logger = getLogger(JpegXL.class.getName());
+
     private final PointerByReference dec;
     private final Pointer runner;
     private final JxlBasicInfo.ByReference info;
@@ -41,7 +46,7 @@ public class JpegXL {
 
     static {
         int version = DecodeLibrary.INSTANCE.JxlDecoderVersion();
-Debug.println(Level.FINE, "version: " + version);
+logger.log(Level.DEBUG, "version: " + version);
         if (version < 9000) {
             throw new IllegalStateException("unsupported libjxl version " + version);
         }
@@ -52,10 +57,10 @@ Debug.println(Level.FINE, "version: " + version);
         // Multi-threaded parallel runner.
         this.runner = Library.INSTANCE.JxlResizableParallelRunnerCreate(null);
 //        Pointer runner = Library.INSTANCE.JxlThreadParallelRunnerCreate(null, null);
-Debug.println(Level.FINE, "runner: " + runner);
+logger.log(Level.DEBUG, "runner: " + runner);
 
         this.dec = DecodeLibrary.INSTANCE.JxlDecoderCreate((JxlMemoryManagerStruct[]) null);
-Debug.println(Level.FINE, "dec: " + dec);
+logger.log(Level.DEBUG, "dec: " + dec);
 
         int status = DecodeLibrary.INSTANCE.JxlDecoderSubscribeEvents(dec,
                 DecodeLibrary.JxlDecoderStatus.JXL_DEC_BASIC_INFO |
@@ -64,8 +69,8 @@ Debug.println(Level.FINE, "dec: " + dec);
         if (DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS != status) {
             throw new IllegalStateException("JxlDecoderSubscribeEvents failed: " + status);
         }
-Debug.println(Level.FINE, "JxlResizableParallelRunner: " + Library.JxlResizableParallelRunner);
-//Debug.println("JxlThreadParallelRunner: " + Library.JxlThreadParallelRunner);
+logger.log(Level.DEBUG, "JxlResizableParallelRunner: " + Library.JxlResizableParallelRunner);
+//logger.log(Level.TRACE, "JxlThreadParallelRunner: " + Library.JxlThreadParallelRunner);
         status = DecodeLibrary.INSTANCE.JxlDecoderSetParallelRunner(dec,
                 Library.JxlResizableParallelRunner,
 //            Library.JxlThreadParallelRunner,
@@ -80,7 +85,7 @@ Debug.println(Level.FINE, "JxlResizableParallelRunner: " + Library.JxlResizableP
         this.bytes = format.necessaryBytes();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-Debug.println(Level.FINE, "shutdownHook");
+logger.log(Level.DEBUG, "shutdownHook");
             DecodeLibrary.INSTANCE.JxlDecoderDestroy(dec);
             Library.INSTANCE.JxlResizableParallelRunnerDestroy(runner);
 //        Library.INSTANCE.JxlThreadParallelRunnerDestroy(runner);
@@ -90,7 +95,7 @@ Debug.println(Level.FINE, "shutdownHook");
     /** */
     public static boolean canDecode(byte[] jxl) {
         int r = DecodeLibrary.INSTANCE.JxlSignatureCheck(jxl, new NativeLong(jxl.length));
-Debug.println(Level.FINE, "JxlSignatureCheck: " + r);
+logger.log(Level.DEBUG, "JxlSignatureCheck: " + r);
         return r == DecodeLibrary.JxlSignature.JXL_SIG_CODESTREAM ||
                 r == DecodeLibrary.JxlSignature.JXL_SIG_CONTAINER;
     }
@@ -102,7 +107,7 @@ Debug.println(Level.FINE, "JxlSignatureCheck: " + r);
         bbs.put(jxl);
         int status = DecodeLibrary.INSTANCE.JxlDecoderSetInput(dec, Native.getDirectBufferPointer(bbs), new NativeLong(bbs.capacity()));
         if (status != DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
-Debug.printf(Level.FINE, "JxlDecoderStatus: " + status);
+logger.log(Level.DEBUG, "JxlDecoderStatus: " + status);
             throw new IllegalStateException("JxlDecoderSetInput failed: " + status);
         }
         DecodeLibrary.INSTANCE.JxlDecoderCloseInput(dec);
@@ -114,25 +119,25 @@ Debug.printf(Level.FINE, "JxlDecoderStatus: " + status);
             status = DecodeLibrary.INSTANCE.JxlDecoderProcessInput(dec);
 
             if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_ERROR) {
-Debug.printf(Level.FINE, "JXL_DEC_ERROR");
+logger.log(Level.DEBUG, "JXL_DEC_ERROR");
                 throw new IllegalStateException("Decoder error");
             } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_NEED_MORE_INPUT) {
-Debug.printf(Level.FINE, "JXL_DEC_NEED_MORE_INPUT");
+logger.log(Level.DEBUG, "JXL_DEC_NEED_MORE_INPUT");
                 throw new IllegalStateException("Error, already provided all input");
             } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_BASIC_INFO) {
-Debug.printf(Level.FINE, "JXL_DEC_BASIC_INFO");
+logger.log(Level.DEBUG, "JXL_DEC_BASIC_INFO");
                 status = DecodeLibrary.INSTANCE.JxlDecoderGetBasicInfo(dec, info);
                 if (DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS != status) {
                     throw new IllegalStateException("JxlDecoderGetBasicInfo failed: " + status);
                 }
                 xsize = info.xsize;
                 ysize = info.ysize;
-Debug.printf(Level.FINE, "size: %dx%d", xsize, ysize);
+logger.log(Level.DEBUG, "size: %dx%d", xsize, ysize);
                 Library.INSTANCE.JxlResizableParallelRunnerSetThreads(
                         runner,
                         Library.INSTANCE.JxlResizableParallelRunnerSuggestThreads(info.xsize, info.ysize));
             } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_COLOR_ENCODING) {
-Debug.printf(Level.FINE, "JXL_DEC_COLOR_ENCODING");
+logger.log(Level.DEBUG, "JXL_DEC_COLOR_ENCODING");
                 // Get the ICC color profile of the pixel data
                 NativeLongByReference icc_size = new NativeLongByReference();
                 status = DecodeLibrary.INSTANCE.JxlDecoderGetICCProfileSize(
@@ -142,7 +147,7 @@ Debug.printf(Level.FINE, "JXL_DEC_COLOR_ENCODING");
                     throw new IllegalStateException("JxlDecoderGetICCProfileSize failed: " + status);
                 }
                 ByteBuffer icc_profile = ByteBuffer.allocateDirect(icc_size.getValue().intValue());
-Debug.printf(Level.FINE, "icc_profile: " + icc_profile.capacity());
+logger.log(Level.DEBUG, "icc_profile: " + icc_profile.capacity());
                 status = DecodeLibrary.INSTANCE.JxlDecoderGetColorAsICCProfile(
                         dec,
                         DecodeLibrary.JxlColorProfileTarget.JXL_COLOR_PROFILE_TARGET_DATA,
@@ -151,17 +156,17 @@ Debug.printf(Level.FINE, "icc_profile: " + icc_profile.capacity());
                     throw new IllegalStateException("JxlDecoderGetColorAsICCProfile failed: " + status);
                 }
             } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_NEED_IMAGE_OUT_BUFFER) {
-Debug.printf(Level.FINE, "JXL_DEC_NEED_IMAGE_OUT_BUFFER");
+logger.log(Level.DEBUG, "JXL_DEC_NEED_IMAGE_OUT_BUFFER");
                 NativeLongByReference buffer_size = new NativeLongByReference();
                 status = DecodeLibrary.INSTANCE.JxlDecoderImageOutBufferSize(dec, format, buffer_size);
                 if (DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS != status) {
                     throw new IllegalStateException("JxlDecoderImageOutBufferSize failed: " + status);
                 }
-Debug.printf(Level.FINE, "buffer_size: " + (buffer_size.getValue()));
+logger.log(Level.DEBUG, "buffer_size: " + (buffer_size.getValue()));
                 if (buffer_size.getValue().intValue() != (long) xsize * ysize * format.num_channels * bytes) {
                     String sizes = String.format("%d, %d",
                             buffer_size.getValue().intValue(), (long) xsize * ysize * format.num_channels * bytes);
-Debug.printf(Level.FINE, "sizes: " + sizes);
+logger.log(Level.DEBUG, "sizes: " + sizes);
 //                    throw new IllegalStateException("Invalid out buffer size " + sizes);
                 }
                 pixels = ByteBuffer.allocateDirect(xsize * ysize * format.num_channels * bytes);
@@ -174,11 +179,11 @@ Debug.printf(Level.FINE, "sizes: " + sizes);
                     throw new IllegalStateException("JxlDecoderSetImageOutBuffer failed: " + status);
                 }
             } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_FULL_IMAGE) {
-Debug.printf(Level.FINE, "JXL_DEC_FULL_IMAGE");
+logger.log(Level.DEBUG, "JXL_DEC_FULL_IMAGE");
                 // Nothing to do. Do not yet return. If the image is an animation, more
                 // full frames may be decoded. This example only keeps the last one.
             } else if (status == DecodeLibrary.JxlDecoderStatus.JXL_DEC_SUCCESS) {
-Debug.printf(Level.FINE, "JXL_DEC_SUCCESS");
+logger.log(Level.DEBUG, "JXL_DEC_SUCCESS");
                 // All decoding successfully finished.
                 // It's not required to call JxlDecoderReleaseInput(dec) here since
                 // the decoder will be destroyed.
@@ -189,7 +194,7 @@ Debug.printf(Level.FINE, "JXL_DEC_SUCCESS");
         }
 
         pixels.position(0);
-Debug.printf(Level.FINE, "pixel: " + pixels.capacity() + ", " + pixels.limit());
+logger.log(Level.DEBUG, "pixel: " + pixels.capacity() + ", " + pixels.limit());
         BufferedImage image = new BufferedImage(xsize, ysize, BufferedImage.TYPE_4BYTE_ABGR);
         byte[] d = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
 //        pixels.get(d);

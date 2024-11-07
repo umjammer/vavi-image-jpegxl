@@ -11,11 +11,12 @@ import java.awt.image.DataBufferByte;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 import javax.imageio.IIOException;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
@@ -28,7 +29,8 @@ import org.jpeg.jpegxl.wrapper.Decoder;
 import org.jpeg.jpegxl.wrapper.ImageData;
 import org.jpeg.jpegxl.wrapper.PixelFormat;
 import vavi.imageio.WrappedImageInputStream;
-import vavi.util.Debug;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -38,6 +40,8 @@ import vavi.util.Debug;
  * @version 0.00 2022-10-06 umjammer initial version <br>
  */
 public class JpegXLImageReader extends ImageReader {
+
+    private static final Logger logger = getLogger(JpegXLImageReader.class.getName());
 
     /** */
     private BufferedImage image;
@@ -75,7 +79,7 @@ public class JpegXLImageReader extends ImageReader {
     public BufferedImage read(int imageIndex, ImageReadParam param)
         throws IIOException {
 
-Debug.println(Level.FINE, "decode start");
+logger.log(Level.DEBUG, "decode start");
 long t = System.currentTimeMillis();
         InputStream stream = new WrappedImageInputStream((ImageInputStream) input);
 
@@ -88,18 +92,18 @@ long t = System.currentTimeMillis();
                 baos.write(b, 0, r);
             }
             int l = baos.size();
-Debug.println(Level.FINE, "size: " + l);
+logger.log(Level.DEBUG, "size: " + l);
             ByteBuffer bb = ByteBuffer.allocateDirect(l);
             bb.put(baos.toByteArray(), 0, l);
 
             ImageData imageData = Decoder.decode(bb, PixelFormat.RGBA_8888);
-Debug.println("image: " + imageData.width + "x" + imageData.height);
-Debug.println("decoded: " + imageData.pixels.capacity());
+logger.log(Level.DEBUG, "image: " + imageData.width + "x" + imageData.height);
+logger.log(Level.DEBUG, "decoded: " + imageData.pixels.capacity());
 
             image = new BufferedImage(imageData.width, imageData.height, BufferedImage.TYPE_4BYTE_ABGR);
             ByteBuffer decoded = (ByteBuffer) imageData.pixels;
             byte[] raster = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-Debug.println("raster: " + raster.length);
+logger.log(Level.DEBUG, "raster: " + raster.length);
             int p = 0;
             for (int y = 0; y < imageData.height; y++) {
                 for (int x = 0; x < imageData.width; x++) {
@@ -115,7 +119,7 @@ Debug.println("raster: " + raster.length);
         } catch (IOException e) {
             throw new IIOException(e.getMessage(), e);
 } finally {
-Debug.println(Level.FINE, "time: " + (System.currentTimeMillis() - t));
+logger.log(Level.DEBUG, "time: " + (System.currentTimeMillis() - t));
         }
     }
 
