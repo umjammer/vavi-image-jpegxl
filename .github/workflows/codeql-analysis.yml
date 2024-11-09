@@ -17,7 +17,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: macos-14
+    runs-on: macos-latest
 
     strategy:
       fail-fast: false
@@ -60,7 +60,6 @@ jobs:
 
     - name: Build with Maven
       run: |
-        arch -arm64 brew install jpeg-xl
         mvn -B install --file pom.xml -Dmaven.test.skip=true
 
     - name: Perform CodeQL Analysis
