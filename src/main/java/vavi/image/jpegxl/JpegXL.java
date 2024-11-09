@@ -23,7 +23,6 @@ import vavi.awt.image.jna.jpegxl.JxlMemoryManagerStruct;
 import vavi.awt.image.jna.jpegxl.JxlPixelFormat;
 import vavi.awt.image.jna.jpegxl.Library;
 import vavi.awt.image.jna.jpegxl.decode.DecodeLibrary;
-import vavi.util.Debug;
 
 import static java.lang.System.getLogger;
 
