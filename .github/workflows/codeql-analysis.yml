@@ -60,7 +60,7 @@ jobs:
 
     - name: Build with Maven
       run: |
-        /opt/homebrew/bin/brew install jpeg-xl
+        arch -arm64 /opt/homebrew/bin/brew install jpeg-xl
         mvn -B install --file pom.xml -Dmaven.test.skip=true
 
     - name: Perform CodeQL Analysis
