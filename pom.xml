@@ -9,14 +9,8 @@
 
   <properties>
     <jnaerator.version>0.12</jnaerator.version>
+    <native.prefix>/usr/local</native.prefix>
   </properties>
-
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <url>https://maven.pkg.github.com/umjammer/vavi-image-jpegxl</url>
-    </repository>
-  </distributionManagement>
 
   <profiles>
     <profile>
@@ -29,20 +23,7 @@
       </activation>
       <properties>
         <native.prefix>/opt/homebrew</native.prefix>
-        <native.arch>aarch64</native.arch>
-      </properties>
-    </profile>
-    <profile>
-      <id>mac x86_64</id>
-      <activation>
-        <os>
-          <family>mac</family>
-          <arch>x86_64</arch>
-        </os>
-      </activation>
-      <properties>
-        <native.prefix>/usr/local</native.prefix>
-        <native.arch>x86_64</native.arch>
+        <native.arch>arm64</native.arch>
       </properties>
     </profile>
 
@@ -60,6 +41,53 @@
       <build>
         <plugins>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.12.1</version>
+            <executions>
+              <execution>
+                <id>javah</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <phase>compile</phase>
+                <configuration>
+                  <compilerArgs>
+                    <arg>-h</arg>
+                    <arg>${project.build.directory}/native</arg>
+                    <arg>-d</arg>
+                    <arg>${project.build.directory}/native/classes</arg>
+                  </compilerArgs>
+                  <includes>
+                    <include>org/jpeg/jpegxl/wrapper/DecoderJni.java</include>
+                  </includes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>javah</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <phase>compile</phase>
+                <configuration>
+                  <target>
+                    <mkdir dir="${project.build.outputDirectory}/natives/osx_${native.arch}" />
+                  </target>
+                  <failOnError>true</failOnError>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>native-maven-plugin</artifactId>
             <version>1.0-alpha-11</version>
@@ -75,6 +103,7 @@
                   -I${java.home}/include
                   -I${java.home}/include/darwin
                   -I${native.prefix}/include
+                  -I${project.build.directory}/native
                 </compilerStartOption>
               </compilerStartOptions>
               <sources>
@@ -94,19 +123,6 @@
             </configuration>
             <executions>
               <execution>
-                <id>test-dylib</id>
-                <phase>test-compile</phase>
-                <goals>
-                  <goal>compile</goal>
-                  <goal>link</goal>
-                </goals>
-                <configuration>
-                  <linkerEndOptions>
-                    <linkerEndOption>-o ${project.build.testOutputDirectory}/libjxlwrapper.dylib</linkerEndOption>
-                  </linkerEndOptions>
-                </configuration>
-              </execution>
-              <execution>
                 <id>dylib</id>
                 <phase>compile</phase>
                 <goals>
@@ -115,42 +131,11 @@
                 </goals>
                 <configuration>
                   <linkerEndOptions>
-                    <linkerEndOption>-o ${project.build.directory}/libjxlwrapper-${project.version}.dylib</linkerEndOption>
+                    <linkerEndOption>-o ${project.build.outputDirectory}/natives/osx_${native.arch}/libjxlwrapper.dylib</linkerEndOption>
                   </linkerEndOptions>
                 </configuration>
               </execution>
             </executions>
-          </plugin>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-install-plugin</artifactId>
-            <version>3.1.1</version>
-            <executions>
-              <execution>
-                <id>install-library</id>
-                <phase>install</phase>
-                <goals>
-                  <goal>install-file</goal>
-                </goals>
-                <configuration>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>${project.artifactId}</artifactId>
-                  <version>${project.version}</version>
-                  <packaging>dylib</packaging>
-                  <file>${project.build.directory}/libjxlwrapper-${project.version}.dylib</file>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <version>3.1.1</version>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
           </plugin>
 
           <plugin> <!-- ⚠⚠⚠ avoiding "You have to use a classifier to attach supplemental artifacts to the project instead of replacing them." -->
@@ -158,39 +143,43 @@
             <artifactId>maven-jar-plugin</artifactId>
             <version>2.5</version>
           </plugin>
+        </plugins>
+      </build>
+    </profile>
 
+    <profile>
+      <id>on jitpack</id>
+      <activation>
+        <property>
+          <name>env.JITPACK</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
           <plugin>
-            <!-- because of maven deploy-file uploads source, jar also -->
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
             <version>3.1.0</version>
             <executions>
               <execution>
-                <id>deploy-library</id>
-                <phase>deploy</phase>
+                <id>assets-download</id>
                 <goals>
-                  <goal>exec</goal>
+                  <goal>run</goal>
                 </goals>
+                <phase>compile</phase>
                 <configuration>
-                  <executable>mvn</executable>
-                  <arguments>
-                    <argument>deploy:deploy-file</argument>
-                    <argument>-DgroupId=${project.groupId}</argument>
-                    <argument>-DartifactId=${project.artifactId}</argument>
-                    <argument>-Dversion=${project.version}</argument>
-                    <argument>-Dpackaging=dylib</argument>
-                    <argument>-Dfile=${project.build.directory}/libjxlwrapper-${project.version}.dylib</argument>
-                    <argument>-DrepositoryId=github</argument>
-                    <argument>-Durl=https://maven.pkg.github.com/umjammer/vavi-image-jpegxl</argument>
-                    <argument>-DgeneratePom=false</argument>
-                    <argument>-s</argument>
-                    <argument>${env.GITHUB_WORKSPACE}/settings.xml</argument>
-                  </arguments>
+                  <target>
+                    <mkdir dir="${project.build.outputDirectory}/natives/osx_arm64" />
+                    <get src="${project.url}/releases/download/${project.version}/libjxlwrapper.dylib"
+                         dest="${project.build.outputDirectory}/natives/osx_arm64"
+                         usetimestamp="true"/>
+                  </target>
+                  <failOnError>true</failOnError>
                 </configuration>
               </execution>
             </executions>
           </plugin>
-
         </plugins>
       </build>
     </profile>
@@ -225,20 +214,20 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
+        <version>3.12.1</version>
         <configuration>
-          <target>17</target>
+          <release>17</release>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.1.2</version>
+        <version>3.2.5</version>
         <configuration>
           <argLine>
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
             -Djava.library.path=${project.build.testOutputDirectory}
-            -Djna.library.path=${native.prefix}/lib
+            -Djna.library.path=@{native.prefix}/lib
           </argLine>
           <trimStackTrace>false</trimStackTrace>
         </configuration>
@@ -258,7 +247,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.10.0</version>
+        <version>5.10.3</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -269,13 +258,19 @@
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-image</artifactId>
-      <version>1.0.11</version>
+      <version>1.0.12</version>
     </dependency>
 
     <dependency>
       <groupId>net.java.dev.jna</groupId>
       <artifactId>jna</artifactId>
-      <version>5.13.0</version>
+      <version>5.14.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.scijava</groupId>
+      <artifactId>native-lib-loader</artifactId>
+      <version>2.5.0</version>
     </dependency>
 
     <dependency>
