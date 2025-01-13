@@ -131,7 +131,7 @@ logger.log(Level.DEBUG, "JXL_DEC_BASIC_INFO");
                 }
                 xsize = info.xsize;
                 ysize = info.ysize;
-logger.log(Level.DEBUG, "size: %dx%d", xsize, ysize);
+logger.log(Level.DEBUG, "size: %dx%d".formatted(xsize, ysize));
                 Library.INSTANCE.JxlResizableParallelRunnerSetThreads(
                         runner,
                         Library.INSTANCE.JxlResizableParallelRunnerSuggestThreads(info.xsize, info.ysize));
