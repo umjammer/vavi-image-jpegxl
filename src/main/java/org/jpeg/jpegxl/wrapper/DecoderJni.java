@@ -5,7 +5,10 @@
 
 package org.jpeg.jpegxl.wrapper;
 
+import java.io.IOException;
 import java.nio.Buffer;
+
+import org.scijava.nativelib.NativeLoader;
 
 
 /**
@@ -17,13 +20,13 @@ class DecoderJni {
 
     static {
         try {
-            System.loadLibrary("jxlwrapper");
-        } catch (UnsatisfiedLinkError ex) {
+            NativeLoader.loadLibrary("jxlwrapper");
+        } catch (IOException ex) {
             String message =
                     "If the nested exception message says that some standard library (stdc++, tcmalloc, etc.) was not found, "
                             + "it is likely that JDK discovered by the build system overrides library search path. "
                             + "Try specifying a different JDK via JAVA_HOME environment variable and doing a clean build.";
-            throw new RuntimeException(message, ex);
+            throw new IllegalStateException(message, ex);
         }
     }
 

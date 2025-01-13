@@ -42,8 +42,9 @@ public interface EncodeLibrary extends Library {
 		int JXL_ENC_ERROR = 1;
 		/** <i>native declaration : jxl/encode.h:48</i> */
 		int JXL_ENC_NEED_MORE_OUTPUT = 2;
-	};
-	/**
+	}
+
+    /**
 	 * <i>native declaration : jxl/encode.h</i><br>
 	 * enum values
 	 */
@@ -62,8 +63,9 @@ public interface EncodeLibrary extends Library {
 		int JXL_ENC_ERR_NOT_SUPPORTED = 0x80;
 		/** <i>native declaration : jxl/encode.h:90</i> */
 		int JXL_ENC_ERR_API_USAGE = 0x81;
-	};
-	/**
+	}
+
+    /**
 	 * <i>native declaration : jxl/encode.h</i><br>
 	 * enum values
 	 */
@@ -146,12 +148,14 @@ public interface EncodeLibrary extends Library {
 		int JXL_ENC_FRAME_SETTING_JPEG_KEEP_JUMBF = 37;
 		/** <i>native declaration : jxl/encode.h:357</i> */
 		int JXL_ENC_FRAME_SETTING_FILL_ENUM = 65535;
-	};
-	/** <i>native declaration : jxl/encode.h</i> */
-	public interface JxlDebugImageCallback extends Callback {
+	}
+
+    /** <i>native declaration : jxl/encode.h</i> */
+    interface JxlDebugImageCallback extends Callback {
 		void apply(Pointer opaque, Pointer label, NativeLong xsize, NativeLong ysize, JxlColorEncoding color, ShortByReference pixels);
-	};
-	/**
+	}
+
+    /**
 	 * Encoder library version.<br>
 	 * @return the encoder library version as an integer:<br>
 	 * MAJOR_VERSION * 1000000 + MINOR_VERSION * 1000 + PATCH_VERSION. For example,<br>
@@ -187,7 +191,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoder* JxlEncoderCreate(const JxlMemoryManagerStruct*)</code><br>
 	 * <i>native declaration : jxl/encode.h:373</i>
 	 */
-	PointerByReference JxlEncoderCreate(JxlMemoryManagerStruct memory_manager[]);
+	PointerByReference JxlEncoderCreate(JxlMemoryManagerStruct[] memory_manager);
 	/**
 	 * Re-initializes a JxlEncoder instance, so it can be re-used for encoding<br>
 	 * another image. All state and settings are reset as if the object was<br>
@@ -423,7 +427,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderSetFrameHeader(JxlEncoderFrameSettings*, const JxlFrameHeader*)</code><br>
 	 * <i>native declaration : jxl/encode.h:494</i>
 	 */
-	int JxlEncoderSetFrameHeader(PointerByReference frame_settings, JxlFrameHeader frame_header[]);
+	int JxlEncoderSetFrameHeader(PointerByReference frame_settings, JxlFrameHeader[] frame_header);
 	/**
 	 * Sets the frame information for this frame to the encoder. This includes<br>
 	 * animation information such as frame duration to store in the frame header.<br>
@@ -483,7 +487,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderSetExtraChannelBlendInfo(JxlEncoderFrameSettings*, size_t, const JxlBlendInfo*)</code><br>
 	 * <i>native declaration : jxl/encode.h:509</i>
 	 */
-	int JxlEncoderSetExtraChannelBlendInfo(PointerByReference frame_settings, NativeLong index, JxlBlendInfo blend_info[]);
+	int JxlEncoderSetExtraChannelBlendInfo(PointerByReference frame_settings, NativeLong index, JxlBlendInfo[] blend_info);
 	/**
 	 * Sets blend info of an extra channel. The blend info of extra channels is set<br>
 	 * separately from that of the color channels, the color channels are set with<br>
@@ -585,7 +589,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderSetFrameBitDepth(JxlEncoderFrameSettings*, const JxlBitDepth*)</code><br>
 	 * <i>native declaration : jxl/encode.h:548</i>
 	 */
-	int JxlEncoderSetFrameBitDepth(PointerByReference frame_settings, JxlBitDepth bit_depth[]);
+	int JxlEncoderSetFrameBitDepth(PointerByReference frame_settings, JxlBitDepth[] bit_depth);
 	/**
 	 * Sets the bit depth of the input buffer.<br>
 	 * For float pixel formats, only the default JXL_BIT_DEPTH_FROM_PIXEL_FORMAT<br>
@@ -649,7 +653,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderAddJPEGFrame(const JxlEncoderFrameSettings*, const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : jxl/encode.h:577</i>
 	 */
-	int JxlEncoderAddJPEGFrame(PointerByReference frame_settings, byte buffer[], NativeLong size);
+	int JxlEncoderAddJPEGFrame(PointerByReference frame_settings, byte[] buffer, NativeLong size);
 	/**
 	 * Sets the buffer to read JPEG encoded bytes from for the next frame to encode.<br>
 	 * If JxlEncoderSetBasicInfo has not yet been called, calling<br>
@@ -793,7 +797,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderAddImageFrame(const JxlEncoderFrameSettings*, const JxlPixelFormat*, const void*, size_t)</code><br>
 	 * <i>native declaration : jxl/encode.h:645</i>
 	 */
-	int JxlEncoderAddImageFrame(PointerByReference frame_settings, JxlPixelFormat pixel_format[], Pointer buffer, NativeLong size);
+	int JxlEncoderAddImageFrame(PointerByReference frame_settings, JxlPixelFormat[] pixel_format, Pointer buffer, NativeLong size);
 	/**
 	 * Sets the buffer to read pixels from for the next image to encode. Must call<br>
 	 * JxlEncoderSetBasicInfo before JxlEncoderAddImageFrame.<br>
@@ -998,7 +1002,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderSetExtraChannelBuffer(const JxlEncoderFrameSettings*, const JxlPixelFormat*, const void*, size_t, uint32_t)</code><br>
 	 * <i>native declaration : jxl/encode.h:930</i>
 	 */
-	int JxlEncoderSetExtraChannelBuffer(PointerByReference frame_settings, JxlPixelFormat pixel_format[], Pointer buffer, NativeLong size, int index);
+	int JxlEncoderSetExtraChannelBuffer(PointerByReference frame_settings, JxlPixelFormat[] pixel_format, Pointer buffer, NativeLong size, int index);
 	/**
 	 * Sets the buffer to read pixels from for an extra channel at a given index.<br>
 	 * The index must be smaller than the num_extra_channels in the associated<br>
@@ -1151,7 +1155,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderAddBox(JxlEncoder*, const JxlBoxType, const uint8_t*, size_t, JXL_BOOL)</code><br>
 	 * <i>native declaration : jxl/encode.h:1003</i>
 	 */
-	int JxlEncoderAddBox(PointerByReference enc, JxlBoxType type, byte contents[], NativeLong size, int /* JXL_BOOL */ compress_box);
+	int JxlEncoderAddBox(PointerByReference enc, JxlBoxType type, byte[] contents, NativeLong size, int /* JXL_BOOL */ compress_box);
 	/**
 	 * Adds a metadata box to the file format. JxlEncoderProcessOutput must be used<br>
 	 * to effectively write the box to the output. @ref JxlEncoderUseBoxes must<br>
@@ -1363,7 +1367,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderSetColorEncoding(JxlEncoder*, const JxlColorEncoding*)</code><br>
 	 * <i>native declaration : jxl/encode.h:1082</i>
 	 */
-	int JxlEncoderSetColorEncoding(PointerByReference enc, JxlColorEncoding color[]);
+	int JxlEncoderSetColorEncoding(PointerByReference enc, JxlColorEncoding[] color);
 	/**
 	 * Sets the original color encoding of the image encoded by this encoder. This<br>
 	 * is an alternative to JxlEncoderSetICCProfile and only one of these two must<br>
@@ -1410,7 +1414,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderSetICCProfile(JxlEncoder*, const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : jxl/encode.h:1098</i>
 	 */
-	int JxlEncoderSetICCProfile(PointerByReference enc, byte icc_profile[], NativeLong size);
+	int JxlEncoderSetICCProfile(PointerByReference enc, byte[] icc_profile, NativeLong size);
 	/**
 	 * Sets the original color encoding of the image encoded by this encoder as an<br>
 	 * ICC color profile. This is an alternative to JxlEncoderSetColorEncoding and<br>
@@ -1491,7 +1495,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderSetBasicInfo(JxlEncoder*, const JxlBasicInfo*)</code><br>
 	 * <i>native declaration : jxl/encode.h:1149</i>
 	 */
-	int JxlEncoderSetBasicInfo(PointerByReference enc, JxlBasicInfo info[]);
+	int JxlEncoderSetBasicInfo(PointerByReference enc, JxlBasicInfo[] info);
 	/**
 	 * Sets the global metadata of the image encoded by this encoder.<br>
 	 * If the JxlBasicInfo contains information of extra channels beyond an alpha<br>
@@ -1583,7 +1587,7 @@ public interface EncodeLibrary extends Library {
 	 * Original signature : <code>JxlEncoderStatus JxlEncoderSetExtraChannelInfo(JxlEncoder*, size_t, const JxlExtraChannelInfo*)</code><br>
 	 * <i>native declaration : jxl/encode.h:1195</i>
 	 */
-	int JxlEncoderSetExtraChannelInfo(PointerByReference enc, NativeLong index, JxlExtraChannelInfo info[]);
+	int JxlEncoderSetExtraChannelInfo(PointerByReference enc, NativeLong index, JxlExtraChannelInfo[] info);
 	/**
 	 * Sets information for the extra channel at the given index. The index<br>
 	 * must be smaller than num_extra_channels in the associated JxlBasicInfo.<br>

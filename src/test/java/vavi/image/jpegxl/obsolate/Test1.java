@@ -57,5 +57,3 @@ Debug.println(image);
         cdl.await();
     }
 }
-
-/* */

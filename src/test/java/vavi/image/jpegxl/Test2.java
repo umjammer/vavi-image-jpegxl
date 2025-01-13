@@ -6,7 +6,6 @@
 
 package vavi.image.jpegxl;
 
-
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
@@ -44,8 +43,8 @@ import vavi.util.Debug;
 import vavi.util.properties.annotation.Property;
 import vavi.util.properties.annotation.PropsEntity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -306,6 +305,6 @@ Debug.println((System.currentTimeMillis() - t) + " ms");
     void test4() throws Exception {
         int version = DecodeLibrary.INSTANCE.JxlDecoderVersion();
 Debug.println("version: " + version);
-        assertEquals(9000, version);
+        assertTrue(9000 < version);
     }
 }

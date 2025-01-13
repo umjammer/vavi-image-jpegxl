@@ -34,24 +34,29 @@ public class JxlChunkedFrameInputSource extends Structure {
 	/** <i>native declaration : jxl/encode.h</i> */
 	public interface get_color_channels_pixel_format_callback extends Callback {
 		void apply(Pointer opaque, JxlPixelFormat pixel_format);
-	};
-	/** <i>native declaration : jxl/encode.h</i> */
+	}
+
+    /** <i>native declaration : jxl/encode.h</i> */
 	public interface get_color_channel_data_at_callback extends Callback {
 		Pointer apply(Pointer opaque, NativeLong xpos, NativeLong ypos, NativeLong xsize, NativeLong ysize, NativeLongByReference row_offset);
-	};
-	/** <i>native declaration : jxl/encode.h</i> */
+	}
+
+    /** <i>native declaration : jxl/encode.h</i> */
 	public interface get_extra_channel_pixel_format_callback extends Callback {
 		void apply(Pointer opaque, NativeLong ec_index, JxlPixelFormat pixel_format);
-	};
-	/** <i>native declaration : jxl/encode.h</i> */
+	}
+
+    /** <i>native declaration : jxl/encode.h</i> */
 	public interface get_extra_channel_data_at_callback extends Callback {
 		Pointer apply(Pointer opaque, NativeLong ec_index, NativeLong xpos, NativeLong ypos, NativeLong xsize, NativeLong ysize, NativeLongByReference row_offset);
-	};
-	/** <i>native declaration : jxl/encode.h</i> */
+	}
+
+    /** <i>native declaration : jxl/encode.h</i> */
 	public interface release_buffer_callback extends Callback {
 		void apply(Pointer opaque, Pointer buf);
-	};
-	public JxlChunkedFrameInputSource() {
+	}
+
+    public JxlChunkedFrameInputSource() {
 		super();
 	}
 	protected List<String> getFieldOrder() {
@@ -79,8 +84,9 @@ public class JxlChunkedFrameInputSource extends Structure {
 	}
 	public static class ByReference extends JxlChunkedFrameInputSource implements Structure.ByReference {
 		
-	};
-	public static class ByValue extends JxlChunkedFrameInputSource implements Structure.ByValue {
+	}
+
+    public static class ByValue extends JxlChunkedFrameInputSource implements Structure.ByValue {
 		
-	};
+	}
 }

@@ -10,10 +10,11 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 import javax.imageio.IIOException;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
@@ -26,6 +27,8 @@ import vavi.image.jpegxl.JpegXL;
 import vavi.imageio.WrappedImageInputStream;
 import vavi.util.Debug;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * JpegXLImageReader.
@@ -34,6 +37,8 @@ import vavi.util.Debug;
  * @version 0.00 2022-10-06 umjammer initial version <br>
  */
 public class JpegXLImageReader extends ImageReader {
+
+    private static final Logger logger = getLogger(JpegXLImageReader.class.getName());
 
     /** */
     private BufferedImage image;
@@ -71,7 +76,7 @@ public class JpegXLImageReader extends ImageReader {
     public BufferedImage read(int imageIndex, ImageReadParam param)
         throws IIOException {
 
-Debug.println(Level.FINE, "decode start");
+logger.log(Level.DEBUG, "decode start");
 long t = System.currentTimeMillis();
         InputStream stream = new WrappedImageInputStream((ImageInputStream) input);
 
@@ -84,14 +89,14 @@ long t = System.currentTimeMillis();
                 baos.write(b, 0, r);
             }
             int l = baos.size();
-Debug.println(Level.FINE, "size: " + l);
+logger.log(Level.DEBUG, "size: " + l);
 
             image = new JpegXL().decode(baos.toByteArray());
             return image;
         } catch (IOException e) {
             throw new IIOException(e.getMessage(), e);
 } finally {
-Debug.println(Level.FINE, "time: " + (System.currentTimeMillis() - t));
+logger.log(Level.DEBUG, "time: " + (System.currentTimeMillis() - t));
         }
     }
 
@@ -115,5 +120,3 @@ Debug.println(Level.FINE, "time: " + (System.currentTimeMillis() - t));
         return l.iterator();
     }
 }
-
-/* */

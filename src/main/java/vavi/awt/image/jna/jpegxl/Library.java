@@ -142,8 +142,9 @@ public interface Library extends com.sun.jna.Library {
 		int JXL_BLEND_MULADD = 3;
 		/** <i>native declaration : jxl/codestream_header.h:329</i> */
 		int JXL_BLEND_MUL = 4;
-	};
-	/**
+	}
+
+    /**
 	 * <i>native declaration : jxl/color_encoding.h</i><br>
 	 * enum values
 	 */

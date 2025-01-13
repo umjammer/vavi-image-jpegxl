@@ -7,7 +7,6 @@
 
 Java JPEG XL decoder<br/>
 wrapped [libjxl](https://github.com/libjxl/) by jna<br/>
-based on https://github.com/libjxl/libjxl/blob/v0.9.x/examples/
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/JPEG_XL_logo.svg" width="160" alt="jpeg-xl logo"/>
 <sub>© <a href="https://jpeg.org/jpegxl/">JPEG</a></sub>
@@ -20,7 +19,7 @@ based on https://github.com/libjxl/libjxl/blob/v0.9.x/examples/
 
 https://jitpack.io/#umjammer/vavi-image-jpegxl
 
-### jpeg-xl 0.9.x
+### jpeg-xl
 
 ```shell
 $ brew install jpeg-xl
@@ -40,9 +39,11 @@ $ brew install jpeg-xl
 
 ## References
 
+ * [based on](https://github.com/libjxl/libjxl/blob/v0.9.x/examples/)
  * https://github.com/libjxl/libjxl
  * https://github.com/Dwedit/JxlSharp/blob/main/JxlSharp/JXL.cs
  * https://github.com/libjxl/libjxl/tree/v0.6.x/tools/jni/org/jpeg/jpegxl/wrapper (jni!!!)
+ * https://github.com/Traneptora/jxlatte (pure java!!!)
 
 ## TODO
 

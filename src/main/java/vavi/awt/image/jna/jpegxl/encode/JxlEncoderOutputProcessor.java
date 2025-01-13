@@ -48,20 +48,24 @@ public class JxlEncoderOutputProcessor extends Structure {
 	/** <i>native declaration : jxl/encode.h</i> */
 	public interface get_buffer_callback extends Callback {
 		Pointer apply(Pointer opaque, NativeLongByReference size);
-	};
-	/** <i>native declaration : jxl/encode.h</i> */
+	}
+
+    /** <i>native declaration : jxl/encode.h</i> */
 	public interface release_buffer_callback extends Callback {
 		void apply(Pointer opaque, NativeLong written_bytes);
-	};
-	/** <i>native declaration : jxl/encode.h</i> */
+	}
+
+    /** <i>native declaration : jxl/encode.h</i> */
 	public interface seek_callback extends Callback {
 		void apply(Pointer opaque, long position);
-	};
-	/** <i>native declaration : jxl/encode.h</i> */
+	}
+
+    /** <i>native declaration : jxl/encode.h</i> */
 	public interface set_finalized_position_callback extends Callback {
 		void apply(Pointer opaque, long finalized_position);
-	};
-	public JxlEncoderOutputProcessor() {
+	}
+
+    public JxlEncoderOutputProcessor() {
 		super();
 	}
 	protected List<String> getFieldOrder() {
@@ -87,8 +91,9 @@ public class JxlEncoderOutputProcessor extends Structure {
 	}
 	public static class ByReference extends JxlEncoderOutputProcessor implements Structure.ByReference {
 		
-	};
-	public static class ByValue extends JxlEncoderOutputProcessor implements Structure.ByValue {
+	}
+
+    public static class ByValue extends JxlEncoderOutputProcessor implements Structure.ByValue {
 		
-	};
+	}
 }
