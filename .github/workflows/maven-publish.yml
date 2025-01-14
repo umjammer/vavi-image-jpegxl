@@ -12,8 +12,9 @@ jobs:
 
     runs-on: macos-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
+      actions: write
 
     steps:
     - uses: actions/checkout@v4
