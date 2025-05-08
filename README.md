@@ -6,29 +6,27 @@
 # vavi-image-jpegxl
 
 Java JPEG XL decoder<br/>
-wrapped [libjxl](https://github.com/libjxl/) by jna<br/>
+wrapped [libjxl](https://github.com/libjxl/) by JNA and implemented as a Java ImageIO SPI<br/>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/06/JPEG_XL_logo.svg" width="160" alt="jpeg-xl logo"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/06/JPEG_XL_logo.svg" width="120" alt="jpeg-xl logo"/>
 <sub>© <a href="https://jpeg.org/jpegxl/">JPEG</a></sub>
 
 ## Install
 
 ### maven
 
-* repository
+* [repository](https://jitpack.io/#umjammer/vavi-image-jpegxl)
 
-https://jitpack.io/#umjammer/vavi-image-jpegxl
-
-### jpeg-xl
+### native libray
 
 ```shell
 $ brew install jpeg-xl
 ```
 
-* jvm option
+### jvm option
 
 ```
-  -Djna.library.path=/usr/local/lib
+  -Djna.library.path=/opt/homebrew/lib
 ```
 
 ## Usage
