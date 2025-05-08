@@ -249,7 +249,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.10.3</version>
+        <version>5.11.4</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -260,13 +260,13 @@
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-image</artifactId>
-      <version>1.0.12</version>
+      <version>1.0.13</version>
     </dependency>
 
     <dependency>
       <groupId>net.java.dev.jna</groupId>
       <artifactId>jna</artifactId>
-      <version>5.14.0</version>
+      <version>5.17.0</version>
     </dependency>
 
     <dependency>
@@ -288,6 +288,13 @@
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-commons</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
+      <version>1.7.36</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
