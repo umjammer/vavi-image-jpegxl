@@ -194,20 +194,14 @@ logger.log(Level.DEBUG, "JXL_DEC_SUCCESS");
 
         pixels.position(0);
 logger.log(Level.DEBUG, "pixel: " + pixels.capacity() + ", " + pixels.limit());
+        byte[] d = new byte[xsize * 4 * ysize];
+        pixels.get(d);
+
         BufferedImage image = new BufferedImage(xsize, ysize, BufferedImage.TYPE_4BYTE_ABGR);
-        byte[] d = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-//        pixels.get(d);
-        int p = 0;
-        for (int y = 0; y < ysize; y++) {
-            for (int x = 0; x < xsize; x++) {
-                d[p + 3] = pixels.get();
-                d[p + 2] = pixels.get();
-                d[p + 1] = pixels.get();
-                d[p + 0] = pixels.get();
-                p += 4;
-            }
-        }
+        image.getRaster().setDataElements(0, 0, xsize, ysize, d);
+
         DecodeLibrary.INSTANCE.JxlDecoderReleaseInput(dec);
+
         return image;
     }
 }
