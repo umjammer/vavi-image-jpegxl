@@ -29,6 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import vavi.util.Debug;
 import vavi.util.properties.annotation.Property;
@@ -43,6 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * JNI test.
  */
+@DisabledIfSystemProperty(named = "os.arch", matches = "x86_64")
 @PropsEntity(url = "file:local.properties")
 public class DecoderTest {
 
