@@ -4,7 +4,7 @@
  * Programmed by Naohide Sano
  */
 
-package vavi.image.jpegxl.obsolate;
+package vavi.image.jpegxl.obsolete;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -21,12 +21,12 @@ import vavi.util.Debug;
 
 
 /**
- * Test1.
+ * TestObsolete.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2022/10/02 nsano initial version <br>
  */
-class Test1 {
+class TestObsolete {
 
     @Test
     @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")

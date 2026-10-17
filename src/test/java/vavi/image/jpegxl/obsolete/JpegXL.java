@@ -4,7 +4,7 @@
  * Programmed by Naohide Sano
  */
 
-package vavi.image.jpegxl.obsolate;
+package vavi.image.jpegxl.obsolete;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;

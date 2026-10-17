@@ -48,13 +48,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
- * Test2.
+ * TestCase.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2022-10-03 nsano initial version <br>
  */
 @PropsEntity(url = "file:local.properties")
-public class Test2 {
+public class TestCase {
 
     static boolean localPropertiesExists() {
         return Files.exists(Paths.get("local.properties"));
@@ -74,7 +74,7 @@ public class Test2 {
      * @param args 0: jxl
      */
     public static void main(String[] args) throws Exception {
-        Test2 app = new Test2();
+        TestCase app = new TestCase();
         app.setup();
         app.test();
     }
